@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>给定一个字符串 s，由大写/小写字母和空格 ‘ ‘ 组成，返回字符串最后一个单词的长度。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个字符串 s，由大写/小写字母和空格 ‘ ‘ 组成，返回字符串最后一个单词的长度。</p>
 <p>如果最后一个单词不存在，返回 0。</p>
 <a id="more"></a>
 <p><strong>注意</strong>：</p>
@@ -155,8 +154,7 @@
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lengthOfLastWord</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>思路是，从 s 的最后一个字符往前遍历，直到遇到第一个空格，返回单词长度。代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;frequently-used-code-snippets.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lengthOfLastWord</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> length = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = s.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span> &amp;&amp; s[i] != <span class="string">' '</span>; i--) &#123;</div><div class="line">            length++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> length;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    Solution sol;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.lengthOfLastWord(<span class="string">"Hello world"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.lengthOfLastWord(<span class="string">"Helloworld"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.lengthOfLastWord(<span class="string">" "</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="comment">// 5</span></div><div class="line"><span class="comment">// 10</span></div><div class="line"><span class="comment">// 0</span></div></pre></td></tr></table></figure>
@@ -275,7 +273,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

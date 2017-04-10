@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>我们正在玩一个猜数游戏，游戏规则如下：</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>我们正在玩一个猜数游戏，游戏规则如下：</p>
 <p>我从 1 到 n 选择一个数，你猜我选择了哪个数。</p>
 <p>每次你猜错了，我会告诉你你猜的数是大了还是小了。</p>
 <p>你可以调用预定义 API guess(int num)，它有三个不同的返回值：</p>
@@ -158,8 +157,7 @@
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Forward declaration of guess API.</span></div><div class="line"><span class="comment">// @param num, your guess</span></div><div class="line"><span class="comment">// @return -1 if my number is lower, 1 if my number is higher, otherwise return 0</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">guess</span><span class="params">(<span class="keyword">int</span> num)</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">guessNumber</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>我的思路是，low = 1，high = n，每次猜错就减小一半的范围。每次猜的数是 [low, high] 的中间值 mid。如果 mid 小了，则下次需要往大猜，low = mid，mid = (low + high) / 2。如果 mid 大了，则下次需要往小猜，high = (low + high) / 2，mid = (low + high) / 2。猜到最后会剩下两个相邻的数，一奇一偶。</p>
 <p>代码如下：</p>
@@ -277,7 +275,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -147,22 +147,17 @@
         <p>本文意在整理 C++ 指针的用法，和需要注意的地方。见下面代码：</p>
 <a id="more"></a>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// pi 是一个指针，指针的值是 i 的地址</span></div><div class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span>* pi = &amp;i;</div><div class="line"></div><div class="line">    <span class="comment">// 每次运行程序，pi 的值都不同</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pi 保存的地址为："</span> &lt;&lt; pi &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// *pi 即是 i</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pi 指向的值为："</span> &lt;&lt; *pi &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    i++;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pi 指向的值为："</span> &lt;&lt; *pi &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// pi++ 表示 pi 向后移动一个 int 字长（如 int 是四个字节，则 pi++ 向后移动四个字节）</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pi 保存的地址为："</span> &lt;&lt; pi &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    pi++;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pi 保存的地址为："</span> &lt;&lt; pi &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// NULL 指针的地址固定为 0x00000000</span></div><div class="line">    pi = <span class="literal">NULL</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"NULL 的地址为："</span> &lt;&lt; pi &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// pi, pj 都指向同一个地址，也就是 i 的地址</span></div><div class="line">    pi = &amp;i;</div><div class="line">    <span class="keyword">int</span>* pj = &amp;i;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pi 保存的地址为："</span> &lt;&lt; pi &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pj 保存的地址为："</span> &lt;&lt; pj &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line">输出：</div><div class="line">pi 保存的地址为：0026F8B4</div><div class="line"></div><div class="line">pi 指向的值为：0</div><div class="line">pi 指向的值为：1</div><div class="line"></div><div class="line">pi 保存的地址为：0026F8B4</div><div class="line">pi 保存的地址为：0026F8B8</div><div class="line"></div><div class="line">NULL 指针的地址为：00000000</div><div class="line"></div><div class="line">pi 保存的地址为：0026F8B4</div><div class="line">pj 保存的地址为：0026F8B4</div><div class="line">*/</div></pre></td></tr></table></figure>
-<p>#指针定义</p>
-<pre><code>int i = 0;
+<h1 id="指针定义"><a href="#指针定义" class="headerlink" title="指针定义"></a>指针定义</h1><pre><code>int i = 0;
 int* pi = &amp;i;
 </code></pre><p>定义 pi 为“指向 int 型数据的指针”，即“保存 int 型数据地址的变量”，值为 i 的地址，&amp; 为取地址操作符。</p>
 <hr>
-<p>#取指针所指的数据</p>
-<p>pi 是指针，<code>*pi</code> 是取 pi 指向的变量，即是 i 本身，所以 <code>*pi = i</code>。</p>
+<h1 id="取指针所指的数据"><a href="#取指针所指的数据" class="headerlink" title="取指针所指的数据"></a>取指针所指的数据</h1><p>pi 是指针，<code>*pi</code> 是取 pi 指向的变量，即是 i 本身，所以 <code>*pi = i</code>。</p>
 <hr>
-<p>#移动指针</p>
-<p>pi 是 int 型指针，pi++ 表示 pi 向后移动一个 int 字长（如 int 是四个字节，则 pi++ 向后移动四个字节），见上面代码的运行结果。</p>
+<h1 id="移动指针"><a href="#移动指针" class="headerlink" title="移动指针"></a>移动指针</h1><p>pi 是 int 型指针，pi++ 表示 pi 向后移动一个 int 字长（如 int 是四个字节，则 pi++ 向后移动四个字节），见上面代码的运行结果。</p>
 <hr>
-<p>#判断两个指针是否相同</p>
-<p>两个指针相同，即是指向的地址相同：pi = pj。</p>
+<h1 id="判断两个指针是否相同"><a href="#判断两个指针是否相同" class="headerlink" title="判断两个指针是否相同"></a>判断两个指针是否相同</h1><p>两个指针相同，即是指向的地址相同：pi = pj。</p>
 <hr>
-<p>#NULL</p>
-<p><a href="http://www.cplusplus.com/reference/cstring/NULL/" target="_blank" rel="external">C++11 的说明</a>：</p>
+<h1 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h1><p><a href="http://www.cplusplus.com/reference/cstring/NULL/" target="_blank" rel="external">C++11 的说明</a>：</p>
 <blockquote>
 <p>This macro expands to a <em>null pointer constant</em>.</p>
 <p>这个宏展开为一个“空指针常量”。</p>
@@ -173,8 +168,7 @@ int* pi = &amp;i;
 </blockquote>
 <p>更详细的讨论请见<a href="https://www.zhihu.com/question/22203461" target="_blank" rel="external">这篇知乎</a>。</p>
 <hr>
-<p>#void* 指针</p>
-<p><code>void*</code> 指针是无类型指针。可理解为 <code>void*</code> 指针指向一块未知类型的内存。<code>void*</code> 可以转为任意类型的指针。</p>
+<h1 id="void-指针"><a href="#void-指针" class="headerlink" title="void* 指针"></a>void* 指针</h1><p><code>void*</code> 指针是无类型指针。可理解为 <code>void*</code> 指针指向一块未知类型的内存。<code>void*</code> 可以转为任意类型的指针。</p>
 
       
     </div>
@@ -287,7 +281,7 @@ int* pi = &amp;i;
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#指针定义"><span class="nav-number">1.</span> <span class="nav-text">指针定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#取指针所指的数据"><span class="nav-number">2.</span> <span class="nav-text">取指针所指的数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#移动指针"><span class="nav-number">3.</span> <span class="nav-text">移动指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#判断两个指针是否相同"><span class="nav-number">4.</span> <span class="nav-text">判断两个指针是否相同</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NULL"><span class="nav-number">5.</span> <span class="nav-text">NULL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#void-指针"><span class="nav-number">6.</span> <span class="nav-text">void* 指针</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

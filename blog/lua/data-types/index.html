@@ -144,23 +144,18 @@
       
 
       
-        <p>#各种数据类型</p>
-<p>在 Lua 中，有 8 种数据类型：nil、boolean、number、string、function、table、userdata、thread。</p>
+        <h1 id="各种数据类型"><a href="#各种数据类型" class="headerlink" title="各种数据类型"></a>各种数据类型</h1><p>在 Lua 中，有 8 种数据类型：nil、boolean、number、string、function、table、userdata、thread。</p>
 <a id="more"></a>
 <p>函数 type 可以返回变量的数据类型，用 string 表示：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="literal">nil</span>))</div><div class="line"></div><div class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="literal">false</span>))</div><div class="line"></div><div class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="number">3.14</span>))</div><div class="line"></div><div class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="string">"Hello World"</span>))</div><div class="line"></div><div class="line">f = <span class="function"><span class="keyword">function</span><span class="params">()</span></span> <span class="keyword">end</span></div><div class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(f))</div><div class="line"></div><div class="line">t = &#123;&#125;</div><div class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(t))</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="literal">nil</span></div><div class="line">boolean</div><div class="line">number</div><div class="line">string</div><div class="line"><span class="function"><span class="keyword">function</span></span></div><div class="line"><span class="title">table</span></div></pre></td></tr></table></figure>
 <hr>
-<p>#nil</p>
-<p>nil 类型只有一个值 nil。</p>
+<h1 id="nil"><a href="#nil" class="headerlink" title="nil"></a>nil</h1><p>nil 类型只有一个值 nil。</p>
 <hr>
-<p>#boolean</p>
-<p>boolean 类型有两个值，分别是 true、false。在 Lua 中，<strong>只把 false 和 nil 视为“假”，其它值视为“真”</strong>。任何值都可以表示一个判断条件。</p>
+<h1 id="boolean"><a href="#boolean" class="headerlink" title="boolean"></a>boolean</h1><p>boolean 类型有两个值，分别是 true、false。在 Lua 中，<strong>只把 false 和 nil 视为“假”，其它值视为“真”</strong>。任何值都可以表示一个判断条件。</p>
 <hr>
-<p>#number</p>
-<p>number 类型表示实数，Lua 不区分整数和浮点数。</p>
+<h1 id="number"><a href="#number" class="headerlink" title="number"></a>number</h1><p>number 类型表示实数，Lua 不区分整数和浮点数。</p>
 <hr>
-<p>#string</p>
-<p>Lua 的 string 类型是不可变值，可以用单/双引号定义 string 类型变量：</p>
+<h1 id="string"><a href="#string" class="headerlink" title="string"></a>string</h1><p>Lua 的 string 类型是不可变值，可以用单/双引号定义 string 类型变量：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(<span class="string">'a'</span>)</div><div class="line"><span class="built_in">print</span>(<span class="string">"a"</span>)</div><div class="line"><span class="built_in">print</span>(<span class="string">"abc"</span>)</div><div class="line"></div><div class="line">输出：</div><div class="line">a</div><div class="line">a</div><div class="line">abc</div></pre></td></tr></table></figure>
 <p>string 变量中可以包含转义字符：</p>
 <p>Lua 使用 “ .. “ 来连接字符串：</p>
@@ -169,8 +164,7 @@
 <p>在 Lua 中，使用 “#” 来获取字符串长度：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">a = <span class="string">"abc"</span></div><div class="line">b = <span class="string">"你好吗"</span></div><div class="line"><span class="built_in">print</span>(#a)</div><div class="line"><span class="built_in">print</span>(#b)</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">6</span></div></pre></td></tr></table></figure>
 <hr>
-<p>#table</p>
-<p>在 Lua 中，table 是关联数组，可以通过 key 索引得到 value。key 和 value 可以为任意类型的数据（key 不能为 nil）。</p>
+<h1 id="table"><a href="#table" class="headerlink" title="table"></a>table</h1><p>在 Lua 中，table 是关联数组，可以通过 key 索引得到 value。key 和 value 可以为任意类型的数据（key 不能为 nil）。</p>
 <p>table 是 Lua 中唯一的数据结构，可以利用 table 实现很多强大的功能。table 既不是值，也不是变量，而是对象。可以将一个 table 想象成一种动态分配的对象，程序仅持有其引用（或指针）。创建 table 的方式是：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">t = &#123;&#125;</div><div class="line">t[<span class="number">1</span>] = <span class="string">"a"</span>  <span class="comment">-- 键为 1，值为 "a"</span></div><div class="line">t[<span class="number">2</span>] = <span class="string">"b"</span></div><div class="line">t.k = <span class="string">"v"</span>   <span class="comment">-- 键为 "k"，值为 "v"，等价于 t["k"] = "v"</span></div><div class="line">t = <span class="literal">nil</span>     <span class="comment">-- 删除 t</span></div></pre></td></tr></table></figure>
 <p>当然，也可以不指定 key，把 table 当作一般数组使用：</p>
@@ -188,11 +182,9 @@
 <p>table 里的逗号也可以用分号代替，增强可读性：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">t = &#123; x = <span class="number">10</span>, y = <span class="number">45</span>; <span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span> &#125;</div></pre></td></tr></table></figure>
 <hr>
-<p>#userdata</p>
-<p>userdata 类型可以将任意的 C 语言数据存储到 Lua 变量中。在 Lua 中，userdata 类型数据没有太多的预定义操作，只能进行赋值和相等性测试。userdata 用于表示一种由应用程序或 C 语言库所创建的新类型。</p>
+<h1 id="userdata"><a href="#userdata" class="headerlink" title="userdata"></a>userdata</h1><p>userdata 类型可以将任意的 C 语言数据存储到 Lua 变量中。在 Lua 中，userdata 类型数据没有太多的预定义操作，只能进行赋值和相等性测试。userdata 用于表示一种由应用程序或 C 语言库所创建的新类型。</p>
 <hr>
-<p>#thread</p>
-
+<h1 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h1>
       
     </div>
 
@@ -304,7 +296,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#各种数据类型"><span class="nav-number">1.</span> <span class="nav-text">各种数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nil"><span class="nav-number">2.</span> <span class="nav-text">nil</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#boolean"><span class="nav-number">3.</span> <span class="nav-text">boolean</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#number"><span class="nav-number">4.</span> <span class="nav-text">number</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#string"><span class="nav-number">5.</span> <span class="nav-text">string</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#table"><span class="nav-number">6.</span> <span class="nav-text">table</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#userdata"><span class="nav-number">7.</span> <span class="nav-text">userdata</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#thread"><span class="nav-number">8.</span> <span class="nav-text">thread</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

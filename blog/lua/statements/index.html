@@ -147,17 +147,14 @@
         <p>本文整理总结 Lua 中语句（Statements）的相关知识。</p>
 <a id="more"></a>
 <hr>
-<p>#注释</p>
-<p>在 Lua 中，行注释的方式为 “–”：</p>
+<h1 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h1><p>在 Lua 中，行注释的方式为 “–”：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">code <span class="comment">-- 本行代码被注释掉</span></div></pre></td></tr></table></figure>
 <p>块注释的方式为 “–[[ ]]”：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--[[</span></div><div class="line">这几行</div><div class="line">代码</div><div class="line">都被注释掉</div><div class="line">]]</div></pre></td></tr></table></figure>
 <hr>
-<p>#赋值</p>
-<p>最简单就是给变量赋与一个值：</p>
+<h1 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h1><p>最简单就是给变量赋与一个值：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = <span class="string">"hello"</span></div><div class="line">b = <span class="number">1</span></div></pre></td></tr></table></figure>
-<p>##多重赋值</p>
-<p>Lua 允许多重赋值，即在一个语句里对多个变量进行赋值：</p>
+<h2 id="多重赋值"><a href="#多重赋值" class="headerlink" title="多重赋值"></a>多重赋值</h2><p>Lua 允许多重赋值，即在一个语句里对多个变量进行赋值：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">a, b = <span class="string">"hello"</span>, <span class="number">1</span></div><div class="line"><span class="built_in">print</span>(a)</div><div class="line"><span class="built_in">print</span>(b)</div><div class="line"></div><div class="line">输出：</div><div class="line">hello</div><div class="line"><span class="number">1</span></div></pre></td></tr></table></figure>
 <p>在多重赋值中，先对等号右边求值，再逐个赋值到左边的变量，所以我们可以用这个特性来交换两个变量的值：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">a, b = <span class="string">"hello"</span>, <span class="number">1</span></div><div class="line">a, b = b, a</div><div class="line"><span class="built_in">print</span>(a)</div><div class="line"><span class="built_in">print</span>(b)</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="number">1</span></div><div class="line">hello</div></pre></td></tr></table></figure>
@@ -171,28 +168,20 @@
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">a, b = <span class="string">"hello"</span>, <span class="number">1</span>, <span class="number">2</span></div><div class="line"><span class="built_in">print</span>(a)</div><div class="line"><span class="built_in">print</span>(b)</div><div class="line"></div><div class="line">输出：</div><div class="line">hello</div><div class="line"><span class="number">1</span></div></pre></td></tr></table></figure>
 <p>多重赋值的一个常见用法是，对于具有多个返回值的函数，可以一次全部接收，如 a, b = f()</p>
 <hr>
-<p>#控制结构</p>
-<p>控制结构中的条件表达式 cond 可以是任何值，Lua 只会 false 和 nil 视为 false，其它值为 true。</p>
-<p>##if</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">else</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">elseif</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">else</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>##while</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> cond <span class="keyword">do</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>##repeat-until</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">repeat</span></div><div class="line"><span class="keyword">until</span> cond   <span class="comment">-- 在这里仍可访问 repeat 里定义的局部变量</span></div></pre></td></tr></table></figure>
+<h1 id="控制结构"><a href="#控制结构" class="headerlink" title="控制结构"></a>控制结构</h1><p>控制结构中的条件表达式 cond 可以是任何值，Lua 只会 false 和 nil 视为 false，其它值为 true。</p>
+<h2 id="if"><a href="#if" class="headerlink" title="if"></a>if</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">else</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">elseif</span> cond <span class="keyword">then</span></div><div class="line"><span class="keyword">else</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h2 id="while"><a href="#while" class="headerlink" title="while"></a>while</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> cond <span class="keyword">do</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h2 id="repeat-until"><a href="#repeat-until" class="headerlink" title="repeat-until"></a>repeat-until</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">repeat</span></div><div class="line"><span class="keyword">until</span> cond   <span class="comment">-- 在这里仍可访问 repeat 里定义的局部变量</span></div></pre></td></tr></table></figure>
 <p>repeat 循环体里的代码至少会被执行一次。</p>
-<p>##数字型 for</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> i = start, <span class="keyword">end</span>, step <span class="keyword">do</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h2 id="数字型-for"><a href="#数字型-for" class="headerlink" title="数字型 for"></a>数字型 for</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> i = start, <span class="keyword">end</span>, step <span class="keyword">do</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <p>start 是循环的起始索引，end 是结束索引，step 是步长（可选，默认为 1），上面的代码等价于下面的 C++ 代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt;= end; i += step) &#123;&#125;</div></pre></td></tr></table></figure>
 <p>注意上面的 Lua for 循环中的 i 的作用域是 for。</p>
-<p>##泛型 for</p>
-<p>泛型 for 通过一个迭代器（iterator）函数来遍历所有值，如</p>
+<h2 id="泛型-for"><a href="#泛型-for" class="headerlink" title="泛型 for"></a>泛型 for</h2><p>泛型 for 通过一个迭代器（iterator）函数来遍历所有值，如</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- 打印 table a 的所有值</span></div><div class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(a) <span class="keyword">do</span></div><div class="line">    <span class="built_in">print</span>(v)</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
-<p>###迭代器函数</p>
-<p>ipairs 是一个用于遍历 table 的迭代器函数。在上面的代码中，每次循环里 i 会被赋予一个索引值，v 会被赋予一个元素值。</p>
+<h3 id="迭代器函数"><a href="#迭代器函数" class="headerlink" title="迭代器函数"></a>迭代器函数</h3><p>ipairs 是一个用于遍历 table 的迭代器函数。在上面的代码中，每次循环里 i 会被赋予一个索引值，v 会被赋予一个元素值。</p>
 <p>也可以编写自己的迭代器函数。</p>
-<p>##break 与 return</p>
-<p>break 语句可跳出本循环。</p>
+<h2 id="break-与-return"><a href="#break-与-return" class="headerlink" title="break 与 return"></a>break 与 return</h2><p>break 语句可跳出本循环。</p>
 <p>return 语句可结束本函数，并返回值（如果有的话）</p>
 
       
@@ -306,7 +295,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#注释"><span class="nav-number">1.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#赋值"><span class="nav-number">2.</span> <span class="nav-text">赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多重赋值"><span class="nav-number">2.1.</span> <span class="nav-text">多重赋值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#控制结构"><span class="nav-number">3.</span> <span class="nav-text">控制结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#if"><span class="nav-number">3.1.</span> <span class="nav-text">if</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#while"><span class="nav-number">3.2.</span> <span class="nav-text">while</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#repeat-until"><span class="nav-number">3.3.</span> <span class="nav-text">repeat-until</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数字型-for"><span class="nav-number">3.4.</span> <span class="nav-text">数字型 for</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型-for"><span class="nav-number">3.5.</span> <span class="nav-text">泛型 for</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器函数"><span class="nav-number">3.5.1.</span> <span class="nav-text">迭代器函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#break-与-return"><span class="nav-number">3.6.</span> <span class="nav-text">break 与 return</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

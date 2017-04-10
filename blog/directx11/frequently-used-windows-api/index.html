@@ -146,9 +146,7 @@
       
         <p>在 DirectX 编程中，我们会经常使用到 Windows API，本文用于整理用到的 Windows API。</p>
 <a id="more"></a>
-<p>#函数</p>
-<p>##WinMain</p>
-<p>作用：用户提供的 Windows 图形程序入口。</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="WinMain"><a href="#WinMain" class="headerlink" title="WinMain"></a>WinMain</h2><p>作用：用户提供的 Windows 图形程序入口。</p>
 <p>语法：</p>
 <pre><code>int CALLBACK WinMain(
     _In_ HINSTANCE hInstance,
@@ -162,8 +160,7 @@ HINSTANCE hPrevInstance     应用程序上一个实例的 handle。
 LPSTR     lpCmdLine         应用程序的命令行，除了程序名外。
 int       nCmdShow          控制窗口如何显示。
 </code></pre><p><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx" target="_blank" rel="external">MSDN 页面</a></p>
-<p>##ZeroMemory</p>
-<p>作用：用 0 填充一段内存。</p>
+<h2 id="ZeroMemory"><a href="#ZeroMemory" class="headerlink" title="ZeroMemory"></a>ZeroMemory</h2><p>作用：用 0 填充一段内存。</p>
 <p>语法：</p>
 <pre><code>void ZeroMemory(
     PVOID destination,
@@ -174,8 +171,7 @@ int       nCmdShow          控制窗口如何显示。
 SIZE_T length       （需要填充的）内存的字节数。
 </code></pre><p><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366920(v=vs.85).aspx" target="_blank" rel="external">MSDN 页面</a>。</p>
 <hr>
-<p>##RegisterClassEx</p>
-<p>作用：注册一个窗口类（window class），以便在之后的 <code>CreateWindow</code> 或 <code>CreateWindowEx</code> 函数中使用。</p>
+<h2 id="RegisterClassEx"><a href="#RegisterClassEx" class="headerlink" title="RegisterClassEx"></a>RegisterClassEx</h2><p>作用：注册一个窗口类（window class），以便在之后的 <code>CreateWindow</code> 或 <code>CreateWindowEx</code> 函数中使用。</p>
 <p>语法：</p>
 <pre><code>ATOM WINAPI RegisterClassEx(
     _In_ const WNDCLASSEX* lpwcx
@@ -183,8 +179,7 @@ SIZE_T length       （需要填充的）内存的字节数。
 </code></pre><p>参数：</p>
 <pre><code>const WNDCLASSEX* lpwcx     指向 WNDCLASSEX 结构体的指针，在传入该结构体参数时，必须填充好相应的字段值。
 </code></pre><p><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633587(v=vs.85).aspx" target="_blank" rel="external">MSDN 页面</a>。</p>
-<p>##CreateWindowEx</p>
-<p>作用：使用扩展的窗口风格，创建一个重叠的、弹出的、或子窗口。跟 <code>CreateWindow</code> 函数类似。</p>
+<h2 id="CreateWindowEx"><a href="#CreateWindowEx" class="headerlink" title="CreateWindowEx"></a>CreateWindowEx</h2><p>作用：使用扩展的窗口风格，创建一个重叠的、弹出的、或子窗口。跟 <code>CreateWindow</code> 函数类似。</p>
 <p>语法：</p>
 <pre><code>HWND WINAPI CreateWindowEx(
   _In_     DWORD     dwExStyle,
@@ -200,23 +195,20 @@ SIZE_T length       （需要填充的）内存的字节数。
   _In_opt_ HINSTANCE hInstance,
   _In_opt_ LPVOID    lpParam
 );
-</code></pre><p>##AdjustWindowRect</p>
-<p>作用：根据参数给出的“窗口内的矩形大小”（即除去窗口边框的矩形），计算窗口（包含边框）的实际大小。</p>
+</code></pre><h2 id="AdjustWindowRect"><a href="#AdjustWindowRect" class="headerlink" title="AdjustWindowRect"></a>AdjustWindowRect</h2><p>作用：根据参数给出的“窗口内的矩形大小”（即除去窗口边框的矩形），计算窗口（包含边框）的实际大小。</p>
 <p>语法：</p>
 <pre><code>BOOL WINAPI AdjustWindowRect(
     _Inout_ LPRECT lpRect,
     _In_    DWORD  dwStyle,
     _In_    BOOL   bMenu
 );
-</code></pre><p>##ShowWindow</p>
-<p>作用：设置窗口的显示状态。</p>
+</code></pre><h2 id="ShowWindow"><a href="#ShowWindow" class="headerlink" title="ShowWindow"></a>ShowWindow</h2><p>作用：设置窗口的显示状态。</p>
 <p>语法：</p>
 <pre><code>BOOL WINAPI ShowWindow(
     _In_ HWND hWnd,
     _In_ int  nCmdShow
 );
-</code></pre><p>##GetMessage</p>
-<p>作用：从调用线程的消息队列取出一个消息。直到一个消息上传到消息队列，本函数才分发该消息。与 GetMessage 不同，PeekMessage 函数在返回前不会等待一个消息上传（到消息队列）。</p>
+</code></pre><h2 id="GetMessage"><a href="#GetMessage" class="headerlink" title="GetMessage"></a>GetMessage</h2><p>作用：从调用线程的消息队列取出一个消息。直到一个消息上传到消息队列，本函数才分发该消息。与 GetMessage 不同，PeekMessage 函数在返回前不会等待一个消息上传（到消息队列）。</p>
 <p>语法：</p>
 <pre><code>BOOL WINAPI GetMessage(
   _Out_    LPMSG lpMsg,
@@ -225,9 +217,7 @@ SIZE_T length       （需要填充的）内存的字节数。
   _In_     UINT  wMsgFilterMax
 );
 </code></pre><hr>
-<p>#结构体</p>
-<p>##WNDCLASSEX </p>
-<p>作用：包含窗口类（window class）的信息，跟 <code>RegisterClassEx</code> 和 <code>GetClassInfoEx</code> 函数一起使用。</p>
+<h1 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h1><h2 id="WNDCLASSEX"><a href="#WNDCLASSEX" class="headerlink" title="WNDCLASSEX"></a>WNDCLASSEX</h2><p>作用：包含窗口类（window class）的信息，跟 <code>RegisterClassEx</code> 和 <code>GetClassInfoEx</code> 函数一起使用。</p>
 <p>语法：</p>
 <pre><code>typedef struct tagWNDCLASSEX {
     UINT      cbSize;
@@ -356,7 +346,7 @@ SIZE_T length       （需要填充的）内存的字节数。
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-number">1.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WinMain"><span class="nav-number">1.1.</span> <span class="nav-text">WinMain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ZeroMemory"><span class="nav-number">1.2.</span> <span class="nav-text">ZeroMemory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RegisterClassEx"><span class="nav-number">1.3.</span> <span class="nav-text">RegisterClassEx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CreateWindowEx"><span class="nav-number">1.4.</span> <span class="nav-text">CreateWindowEx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdjustWindowRect"><span class="nav-number">1.5.</span> <span class="nav-text">AdjustWindowRect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ShowWindow"><span class="nav-number">1.6.</span> <span class="nav-text">ShowWindow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GetMessage"><span class="nav-number">1.7.</span> <span class="nav-text">GetMessage</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体"><span class="nav-number">2.</span> <span class="nav-text">结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WNDCLASSEX"><span class="nav-number">2.1.</span> <span class="nav-text">WNDCLASSEX</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

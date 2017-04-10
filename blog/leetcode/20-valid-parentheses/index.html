@@ -144,15 +144,13 @@
       
 
       
-        <p>#题目</p>
-<p>给定一个字符串，仅包含字符 <code>(</code>, <code>)</code>, <code>{</code>, <code>}</code>, <code>[</code> 和 <code>]</code>，判断输入的字符串是否有效。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个字符串，仅包含字符 <code>(</code>, <code>)</code>, <code>{</code>, <code>}</code>, <code>[</code> 和 <code>]</code>，判断输入的字符串是否有效。</p>
 <p>括号的开闭必须有序，如 <code>()</code> 和 <code>()[]{}</code> 有序，但 <code>(]</code> 和 <code>([)]</code> 无序。</p>
 <a id="more"></a>
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValid</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>有效的括号 string 的结构是先入后出，所以思路是使用一个 stack，如果当前字符是 <code>(</code>, <code>[</code> 或 <code>{</code>，则入栈。如果当前字符是 <code>)</code>, <code>]</code> 或 <code>}</code>，则检查栈顶元素是否匹配，如果匹配就出栈，继续遍历 s，不匹配则 return false。如果遍历完整个 s，栈里还有元素，则 return false，没有元素则 return true。</p>
 <p>代码如下：</p>
@@ -270,7 +268,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

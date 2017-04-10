@@ -144,8 +144,7 @@
       
 
       
-        <p>#Git 基本工作流程</p>
-<p><a href="https://git-scm.com/" target="_blank" rel="external">Git</a> 是一个优秀的分布式版本控制系统，在熟悉 Git 的常用操作前，我们需要先弄清楚 Git 的基本工作流程。</p>
+        <h1 id="Git-基本工作流程"><a href="#Git-基本工作流程" class="headerlink" title="Git 基本工作流程"></a>Git 基本工作流程</h1><p><a href="https://git-scm.com/" target="_blank" rel="external">Git</a> 是一个优秀的分布式版本控制系统，在熟悉 Git 的常用操作前，我们需要先弄清楚 Git 的基本工作流程。</p>
 <a id="more"></a>
 <p><a href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-Git-%E5%9F%BA%E7%A1%80" target="_blank" rel="external">Git 的基本工作流程</a>是：</p>
 <ol>
@@ -170,22 +169,17 @@
 
 <p>我对暂存区域有个疑问，为什么要设计暂存区域？文件只有“未提交”和“已提交”两种状态不是更方便吗？</p>
 <hr>
-<p>#Git 安装和配置</p>
-<p>见《Pro Git》的 <a href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" target="_blank" rel="external">安装 Git</a> 和 <a href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%88%9D%E6%AC%A1%E8%BF%90%E8%A1%8C-Git-%E5%89%8D%E7%9A%84%E9%85%8D%E7%BD%AE" target="_blank" rel="external">初次运行 Git 前的配置</a> 章节。</p>
+<h1 id="Git-安装和配置"><a href="#Git-安装和配置" class="headerlink" title="Git 安装和配置"></a>Git 安装和配置</h1><p>见《Pro Git》的 <a href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" target="_blank" rel="external">安装 Git</a> 和 <a href="https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%88%9D%E6%AC%A1%E8%BF%90%E8%A1%8C-Git-%E5%89%8D%E7%9A%84%E9%85%8D%E7%BD%AE" target="_blank" rel="external">初次运行 Git 前的配置</a> 章节。</p>
 <hr>
-<p>#Git 命令</p>
-<p>##查看帮助</p>
-<p>查看 XXX 命令的帮助有三种方式：</p>
+<h1 id="Git-命令"><a href="#Git-命令" class="headerlink" title="Git 命令"></a>Git 命令</h1><h2 id="查看帮助"><a href="#查看帮助" class="headerlink" title="查看帮助"></a>查看帮助</h2><p>查看 XXX 命令的帮助有三种方式：</p>
 <pre><code>$ git help XXX
 $ git XXX --help
 $ man git-XXX
-</code></pre><p>##初始化仓库</p>
-<p>对某个目录使用 Git 管理，初始化该目录</p>
+</code></pre><h2 id="初始化仓库"><a href="#初始化仓库" class="headerlink" title="初始化仓库"></a>初始化仓库</h2><p>对某个目录使用 Git 管理，初始化该目录</p>
 <pre><code>$ cd /your-project-directory
 $ git init
 </code></pre><p>该命令将创建一个名为 <code>.git</code> 的子目录，这个子目录含有你初始化的 Git 仓库中所有的必须文件，这些文件是 Git 仓库的骨干。 但是在这个时候，我们仅仅是做了一个初始化的操作，项目里的文件还没有被跟踪。参见 <a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%BA%95%E5%B1%82%E5%91%BD%E4%BB%A4%E5%92%8C%E9%AB%98%E5%B1%82%E5%91%BD%E4%BB%A4" target="_blank" rel="external">Git 内部原理</a> 来了解更多关于到底 <code>.git</code> 文件夹中包含了哪些文件的信息。</p>
-<p>##检查文件状态</p>
-<p>检查文件的当前状态：</p>
+<h2 id="检查文件状态"><a href="#检查文件状态" class="headerlink" title="检查文件状态"></a>检查文件状态</h2><p>检查文件的当前状态：</p>
 <pre><code>$ git status
 </code></pre><p>如果目录是干净的，即所有已跟踪文件在上次提交后都未被更改过。执行 <code>git status</code> 会输出：</p>
 <pre><code>$ git status
@@ -210,8 +204,7 @@ Changes to be committed:
 
     new file:   README
 </code></pre><p><code>Changes to be committed</code> 说明文件已暂存，下次提交会包含该文件。</p>
-<p>##暂存文件</p>
-<p>跟踪 XXX 文件，把 XXX 文件放到暂存区域：</p>
+<h2 id="暂存文件"><a href="#暂存文件" class="headerlink" title="暂存文件"></a>暂存文件</h2><p>跟踪 XXX 文件，把 XXX 文件放到暂存区域：</p>
 <pre><code>$ git add XXX
 </code></pre><p>如果参数是目录的路径，<code>add</code> 命令将递归地跟踪该目录下的所有文件。</p>
 <p>如果暂存了 XXX 文件，在提交前又作出了修改，这时查看状态，会输出：</p>
@@ -237,44 +230,33 @@ A  lib/git.rb           // 新添加到暂存区中的文件
  M README               // 该文件被修改了但是还没放入暂存区
 M  lib/simplegit.rb     // 该文件被修改了并放入了暂存区
 MM Rakefile             // 在工作区被修改并提交到暂存区后又在工作区中被修改了，所以在暂存区和工作区都有该文件被修改了的记录
-</code></pre><p>##提交文件</p>
-<p>现在的暂存区域已经准备妥当可以提交了。在此之前，请一定要确认还有什么修改过的或新建的文件还没有 <code>git add</code> 过，否则提交的时候不会记录这些还没暂存起来的变化。</p>
+</code></pre><h2 id="提交文件"><a href="#提交文件" class="headerlink" title="提交文件"></a>提交文件</h2><p>现在的暂存区域已经准备妥当可以提交了。在此之前，请一定要确认还有什么修改过的或新建的文件还没有 <code>git add</code> 过，否则提交的时候不会记录这些还没暂存起来的变化。</p>
 <p>把暂存区的 XXX 文件提交到本地仓库：</p>
 <pre><code>$ git commit
 </code></pre><p>我们可以在 <code>git commit</code> 时加上提交日志：</p>
 <pre><code>$ git commit -m &quot;本次提交的日志记录&quot;
 </code></pre><p>也可以跳过 <code>git add</code>，直接暂存并提交已跟踪过的文件：</p>
 <pre><code>$ git commit -a
-</code></pre><p>##查看提交历史</p>
-<p>我们可以通过以下命令查看提交历史</p>
+</code></pre><h2 id="查看提交历史"><a href="#查看提交历史" class="headerlink" title="查看提交历史"></a>查看提交历史</h2><p>我们可以通过以下命令查看提交历史</p>
 <pre><code>$ git log
-</code></pre><p>##克隆现有仓库</p>
-<p>获取一份已存在的 Git 仓库的拷贝：</p>
+</code></pre><h2 id="克隆现有仓库"><a href="#克隆现有仓库" class="headerlink" title="克隆现有仓库"></a>克隆现有仓库</h2><p>获取一份已存在的 Git 仓库的拷贝：</p>
 <pre><code>$ git clone [URL] [本地仓库名]
 </code></pre><p>SVN 类似的命令是 <code>checkout</code>，但 SVN <code>checkout</code> 命令只是获取 repo 的最新版本文件，而 <code>git clone</code> 则是获取远程 Git 仓库中的每一个文件的每一个版本（默认配置下）。</p>
-<p>##远程仓库</p>
-<p>###查看远程仓库</p>
-<p>远程仓库是指托管在因特网或其它网络中的我们的项目的版本库。如果想查看我们已经配置的远程仓库服务器，可以运行 <code>git remote</code> 命令，它会列出指定的每一个远程服务器的简写。</p>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><h3 id="查看远程仓库"><a href="#查看远程仓库" class="headerlink" title="查看远程仓库"></a>查看远程仓库</h3><p>远程仓库是指托管在因特网或其它网络中的我们的项目的版本库。如果想查看我们已经配置的远程仓库服务器，可以运行 <code>git remote</code> 命令，它会列出指定的每一个远程服务器的简写。</p>
 <pre><code>$ git remote
 </code></pre><p>如果想查看远程仓库及其 URL，可加上 <code>-v</code> 参数：</p>
 <pre><code>$ git remote -v
-</code></pre><p>###添加远程仓库</p>
-<p>我们可以执行以下命令来添加一个新的远程 Git 仓库，并指定仓库的简写：</p>
+</code></pre><h3 id="添加远程仓库"><a href="#添加远程仓库" class="headerlink" title="添加远程仓库"></a>添加远程仓库</h3><p>我们可以执行以下命令来添加一个新的远程 Git 仓库，并指定仓库的简写：</p>
 <pre><code>$ git remote add &lt;remote-repo-shortname&gt; &lt;URL&gt;
-</code></pre><p>###从远程仓库获取数据</p>
-<p>从远程仓库中获取我们本地还没有的数据，可以执行：</p>
+</code></pre><h3 id="从远程仓库获取数据"><a href="#从远程仓库获取数据" class="headerlink" title="从远程仓库获取数据"></a>从远程仓库获取数据</h3><p>从远程仓库中获取我们本地还没有的数据，可以执行：</p>
 <pre><code>$ git fetch [remote-repo-shortname]
 </code></pre><p>执行完成后，我们将拥有该远程仓库中全部分支的引用，可以查看或合并。</p>
-<p>###推送数据到远程仓库</p>
-<p>如果我们想要推送数据到远程仓库，可以执行：</p>
+<h3 id="推送数据到远程仓库"><a href="#推送数据到远程仓库" class="headerlink" title="推送数据到远程仓库"></a>推送数据到远程仓库</h3><p>如果我们想要推送数据到远程仓库，可以执行：</p>
 <pre><code>$ git push [remote-repo-shortname] [branch-name]
-</code></pre><p>###移除远程仓库</p>
-<pre><code>$ git remote rename [old remote-repo-shortname] [new remote-repo-shortname]
-</code></pre><p>###重命名远程仓库</p>
-<pre><code>$ git remote rm [remote-repo-shortname]
+</code></pre><h3 id="移除远程仓库"><a href="#移除远程仓库" class="headerlink" title="移除远程仓库"></a>移除远程仓库</h3><pre><code>$ git remote rename [old remote-repo-shortname] [new remote-repo-shortname]
+</code></pre><h3 id="重命名远程仓库"><a href="#重命名远程仓库" class="headerlink" title="重命名远程仓库"></a>重命名远程仓库</h3><pre><code>$ git remote rm [remote-repo-shortname]
 </code></pre><hr>
-<p>#参考资料</p>
-<ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%8E%B7%E5%8F%96-Git-%E4%BB%93%E5%BA%93" target="_blank" rel="external">Pro Git - 2.1 Git 基础 - 获取 Git 仓库</a></li>
 <li><a href="https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93" target="_blank" rel="external">Pro Git - 2.2 Git 基础 - 记录每次更新到仓库</a></li>
 <li><a href="https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8" target="_blank" rel="external">Pro Git - 2.5 Git 基础 - 远程仓库的使用</a></li>
@@ -391,7 +373,7 @@ MM Rakefile             // 在工作区被修改并提交到暂存区后又在�
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-基本工作流程"><span class="nav-number">1.</span> <span class="nav-text">Git 基本工作流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-安装和配置"><span class="nav-number">2.</span> <span class="nav-text">Git 安装和配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-命令"><span class="nav-number">3.</span> <span class="nav-text">Git 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看帮助"><span class="nav-number">3.1.</span> <span class="nav-text">查看帮助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化仓库"><span class="nav-number">3.2.</span> <span class="nav-text">初始化仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查文件状态"><span class="nav-number">3.3.</span> <span class="nav-text">检查文件状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暂存文件"><span class="nav-number">3.4.</span> <span class="nav-text">暂存文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交文件"><span class="nav-number">3.5.</span> <span class="nav-text">提交文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看提交历史"><span class="nav-number">3.6.</span> <span class="nav-text">查看提交历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#克隆现有仓库"><span class="nav-number">3.7.</span> <span class="nav-text">克隆现有仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程仓库"><span class="nav-number">3.8.</span> <span class="nav-text">远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看远程仓库"><span class="nav-number">3.8.1.</span> <span class="nav-text">查看远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加远程仓库"><span class="nav-number">3.8.2.</span> <span class="nav-text">添加远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从远程仓库获取数据"><span class="nav-number">3.8.3.</span> <span class="nav-text">从远程仓库获取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送数据到远程仓库"><span class="nav-number">3.8.4.</span> <span class="nav-text">推送数据到远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除远程仓库"><span class="nav-number">3.8.5.</span> <span class="nav-text">移除远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重命名远程仓库"><span class="nav-number">3.8.6.</span> <span class="nav-text">重命名远程仓库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -146,8 +146,7 @@
       
         <p>本文意在整理 C++ 程序常见报错，并分析报错的原因。</p>
 <a id="more"></a>
-<p>#string</p>
-<p>使用 string 要 <code>#include &lt;string&gt;</code>，否则 cout &lt;&lt; str 时会报错：</p>
+<h1 id="string"><a href="#string" class="headerlink" title="string"></a>string</h1><p>使用 string 要 <code>#include &lt;string&gt;</code>，否则 cout &lt;&lt; str 时会报错：</p>
 <pre><code>No operator &quot;&lt;&lt;&quot; matches these operands.
 </code></pre><p>意思是，没有操作符 “&lt;&lt;” 匹配这些（string 类型）操作数。</p>
 <p>这是因为，string 类重载了 &lt;&lt; 操作符，如果没有 <code>#include &lt;string&gt;</code>，那么 &lt;&lt; 不能作用在 string 上，所以报错。</p>
@@ -263,7 +262,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#string"><span class="nav-number">1.</span> <span class="nav-text">string</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

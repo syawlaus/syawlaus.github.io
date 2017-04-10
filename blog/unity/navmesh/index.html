@@ -161,23 +161,20 @@
 <li>在脚本中把敌人的移动目标设为玩家当前位置</li>
 </ul>
 <hr>
-<p>#NavMesh Baking</p>
-<p>创建 NavMesh 的过程，称为 Baking。</p>
+<h1 id="NavMesh-Baking"><a href="#NavMesh-Baking" class="headerlink" title="NavMesh Baking"></a>NavMesh Baking</h1><p>创建 NavMesh 的过程，称为 Baking。</p>
 <p>首先我们要对整个场景使用 NavMesh Baking，来定义敌人寻路的范围。我们先打开 Navigation view：</p>
 <p><img src="/images/unity/navmesh/navigation.png" alt=""></p>
 <p>Navigation view 显示如下：</p>
 <p><img src="/images/unity/navmesh/navigation-view-object-tab.png" alt=""></p>
 <p>在 Baking 前，我们必须告诉 Unity 哪些对象是 Navigation Static。Navigation Static 的对象是静态的不会移动，用于计算场景中 Agent 允许移动的范围。</p>
-<p>##Object 过滤</p>
-<p>我们在 Navigation view 中的 Object tab 来检查哪些对象是 Navigation Static。</p>
+<h2 id="Object-过滤"><a href="#Object-过滤" class="headerlink" title="Object 过滤"></a>Object 过滤</h2><p>我们在 Navigation view 中的 Object tab 来检查哪些对象是 Navigation Static。</p>
 <p>“All” 表示我们想要检查 Hierarchy 中所有 GameObject 的 Inspector 是否勾选了 Navigation Static，见下图：</p>
 <p><img src="/images/unity/navmesh/inspector-navigation-static.png" alt=""></p>
 <p>“Mesh Renderers” 表示我们只想检查 Hierarchy 中所有带有 Mesh Renderer 组件的 GameObject 的 Inspector 是否勾选了 Navigation Static。我们可以把某些不想 Baking 的 GameObject 去掉，只要取消勾选 Navigation Static 即可。见下图：</p>
 <p><img src="/images/unity/navmesh/navigation-view-object-tab-mesh-renderers.png" alt=""></p>
 <p>“Generate OffMeshLinks” 表示是否生成 Off-mesh links。在下文会有讲述，暂不展开。</p>
 <p>“Terrains” 表示我们想要检查 Hierarchy 中所有带有 Terrain 组件的 GameObject 的 Inspector 是否勾选了 Navigation StaticTerrains”。</p>
-<p>##Bake 设置</p>
-<p>Bake tab 如下图：</p>
+<h2 id="Bake-设置"><a href="#Bake-设置" class="headerlink" title="Bake 设置"></a>Bake 设置</h2><p>Bake tab 如下图：</p>
 <p><img src="/images/unity/navmesh/navigation-view-bake-tab.png" alt=""></p>
 <p>各个选项分别表示：</p>
 <ul>
@@ -216,18 +213,14 @@
 <p><img src="/images/unity/navmesh/navigation-view-bake-tab-height-mesh.svg" alt=""></p>
 <center>图 5：Height Mesh（<a href="http://docs.unity3d.com/Manual/nav-HeightMesh.html" target="_blank" rel="external">图片来源</a>）</center>
 
-<p>##Areas 设置</p>
-<p>Areas tab 如下图：</p>
+<h2 id="Areas-设置"><a href="#Areas-设置" class="headerlink" title="Areas 设置"></a>Areas 设置</h2><p>Areas tab 如下图：</p>
 <p><img src="/images/unity/navmesh/navigation-view-areas-tab.png" alt=""></p>
 <p>NavMesh 生成的可行走区域（walkable area）都默认分配了一个 Layer 和对应的 cost。Layer 的默认 cost 为 1。cost 越高，表示 NavMesh Agent 在寻路时该 Layer 被选择的优先级越低。比如，场景中有一条河，Agent 既可以游泳过河，也可以走桥过河。如果游泳的 cost 比过桥高，那么 Agent 会优先选择走桥过河。</p>
 <p><strong>注意</strong>：我们修改了 Areas tab 的设置时，要 re-bake 一次。</p>
-<p>##Bake</p>
-<p>在完成三个 Object, Bake, Areas 三个 tab 里的设置后，我们按下 Bake 按钮，Unity 就会开始为我们生成 NavMesh 了。可行走区域会标记为蓝色，见下图：</p>
+<h2 id="Bake"><a href="#Bake" class="headerlink" title="Bake"></a>Bake</h2><p>在完成三个 Object, Bake, Areas 三个 tab 里的设置后，我们按下 Bake 按钮，Unity 就会开始为我们生成 NavMesh 了。可行走区域会标记为蓝色，见下图：</p>
 <p><img src="/images/unity/navmesh/baking-done.png" alt=""></p>
 <hr>
-<p>#NavMesh Agent</p>
-<p>##NavMesh Agent 设置</p>
-<p>在完成场景 NavMesh Baking 后，为需要寻路的 GameObject 添加 NavMesh Agent 组件。NavMesh Agent 负责为其绑定的 GameObject 里导航到目标位置，并在 NavMesh 里寻路时绕开障碍物。在 Survival Shooter 中，我们为 Zombunny 添加 NavMesh Agent 组件（Add component -&gt; Navigation -&gt; Nav Mesh Agent），如下图：</p>
+<h1 id="NavMesh-Agent"><a href="#NavMesh-Agent" class="headerlink" title="NavMesh Agent"></a>NavMesh Agent</h1><h2 id="NavMesh-Agent-设置"><a href="#NavMesh-Agent-设置" class="headerlink" title="NavMesh Agent 设置"></a>NavMesh Agent 设置</h2><p>在完成场景 NavMesh Baking 后，为需要寻路的 GameObject 添加 NavMesh Agent 组件。NavMesh Agent 负责为其绑定的 GameObject 里导航到目标位置，并在 NavMesh 里寻路时绕开障碍物。在 Survival Shooter 中，我们为 Zombunny 添加 NavMesh Agent 组件（Add component -&gt; Navigation -&gt; Nav Mesh Agent），如下图：</p>
 <p><img src="/images/unity/navmesh/navmesh-agent.png" alt=""></p>
 <p>各个选项分别表示：</p>
 <ul>
@@ -260,13 +253,11 @@
 <p><img src="/images/unity/navmesh/navmesh-agent-base-offset.svg" alt=""></p>
 <center>图 1：Base Offset（<a href="http://docs.unity3d.com/Manual/class-NavMeshAgent.html" target="_blank" rel="external">图片来源</a>，详细解释见<a href="http://docs.unity3d.com/Manual/class-NavMeshAgent.html" target="_blank" rel="external"> Details 部分</a>）</center>
 
-<p>##脚本设定寻路目标</p>
-<p>需要寻路的 GameObject 是 Zombunny，那么我们打开 Zombunny 绑定的脚本 Enemy_Movement.cs，代码如下（已省略无关代码）：</p>
+<h2 id="脚本设定寻路目标"><a href="#脚本设定寻路目标" class="headerlink" title="脚本设定寻路目标"></a>脚本设定寻路目标</h2><p>需要寻路的 GameObject 是 Zombunny，那么我们打开 Zombunny 绑定的脚本 Enemy_Movement.cs，代码如下（已省略无关代码）：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnemyMovement</span> : <span class="title">MonoBehaviour</span> &#123;</div><div class="line">    <span class="keyword">private</span> Transform playerTransform;</div><div class="line">    <span class="keyword">private</span> NavMeshAgent agent;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="comment">// find player in code</span></div><div class="line">        playerTransform = GameObject.FindGameObjectWithTag (<span class="string">"Player"</span>).transform;</div><div class="line"></div><div class="line">        <span class="comment">// get navmesh agent reference</span></div><div class="line">        agent = GetComponent &lt;NavMeshAgent&gt; ();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        agent.SetDestination (playerTransform.position);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>代码很简单，只要获取 Zombunny 的 NavMesh Agent 引用，再 SetDestination 为 Player.transform.position 即可。</p>
 <hr>
-<p>#参考资料</p>
-<ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://www.binpress.com/tutorial/unity3d-ai-navmesh-navigation/119" target="_blank" rel="external">Unity 3D AI: NavMesh Navigation</a></li>
 </ul>
 
@@ -381,7 +372,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NavMesh-Baking"><span class="nav-number">1.</span> <span class="nav-text">NavMesh Baking</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-过滤"><span class="nav-number">1.1.</span> <span class="nav-text">Object 过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bake-设置"><span class="nav-number">1.2.</span> <span class="nav-text">Bake 设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Areas-设置"><span class="nav-number">1.3.</span> <span class="nav-text">Areas 设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bake"><span class="nav-number">1.4.</span> <span class="nav-text">Bake</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NavMesh-Agent"><span class="nav-number">2.</span> <span class="nav-text">NavMesh Agent</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NavMesh-Agent-设置"><span class="nav-number">2.1.</span> <span class="nav-text">NavMesh Agent 设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本设定寻路目标"><span class="nav-number">2.2.</span> <span class="nav-text">脚本设定寻路目标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

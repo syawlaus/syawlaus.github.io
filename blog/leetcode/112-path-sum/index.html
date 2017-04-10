@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>给定一棵二叉树以及一个和值 sum，判断二叉树是否存在一条根到叶子节点的路径，该路径上所有节点值的和与 sum 相等。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一棵二叉树以及一个和值 sum，判断二叉树是否存在一条根到叶子节点的路径，该路径上所有节点值的和与 sum 相等。</p>
 <a id="more"></a>
 <p><strong>示例</strong>：</p>
 <p>给定下面的二叉树和 sum = 22，</p>
@@ -160,8 +159,7 @@
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Definition for a binary tree node.</div><div class="line"> * struct TreeNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     TreeNode *left;</div><div class="line"> *     TreeNode *right;</div><div class="line"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</div><div class="line"> * &#125;;</div><div class="line"> */</div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasPathSum</span><span class="params">(TreeNode* root, <span class="keyword">int</span> sum)</span> </span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>思路是递归，以示例的二叉树为例，要判断是否存在一条根到叶子节点的路径使得节点和为 22，对于左右子树来说，需要判断是否存在一条以左右子节点（即 4、8）为根节点到叶子节点的路径，使得节点和为 22－5＝17。这样可以递归判断下去，直到 root 为叶子节点，这时判断 root-&gt;val 是否等于 sum。</p>
 <p>代码如下：</p>
@@ -279,7 +277,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

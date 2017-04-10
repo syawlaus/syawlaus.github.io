@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>给定两个字符串 s 和 t，判断它们是否同形。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定两个字符串 s 和 t，判断它们是否同形。</p>
 <p>同形字符串即是 s 中的字符可以替换成为 t。</p>
 <p>所有出现的字符都必须替换为另外一个字符，且保留其顺序。两个字符不能映射到同一字符，但一个字符能映射到自身。</p>
 <a id="more"></a>
@@ -158,8 +157,7 @@
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isIsomorphic</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>我对同形字符串的理解是，如果 s 的字符在一一映射为另一个字符（可以为本字符自身）后能变为 t，那么 s 和 t 同形。所以需要一个数据结构来记录 s 和 t 一一映射的关系，可以使用 <code>map&lt;char, char&gt;</code>。</p>
 <p>思路是，遍历 s 字符 sc，如果 sc 首次出现，则记录到 map 里，key = sc，value = tc，注意 value 不能已被使用。如果 sc 非首次出现，判断 map.getValue(sc) 是否等于 tc，等于继续遍历，否则 return false。</p>
@@ -279,7 +277,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

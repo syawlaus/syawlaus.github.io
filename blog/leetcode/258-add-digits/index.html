@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>给定一个非负整数 num，重复相加各位数字，直到结果只有一位数字。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个非负整数 num，重复相加各位数字，直到结果只有一位数字。</p>
 <a id="more"></a>
 <p><strong>示例</strong>：</p>
 <p>给定 num = 38，执行过程：3 + 8 = 11，1 + 1 = 2，因为 2 只有一个数字，返回 2。</p>
@@ -154,8 +153,7 @@
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">addDigits</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>首先，很自然的思路是，怎么取出 num 里的各位数字？如 38 怎么取出 3 和 8？</p>
 <p>容易想到，38 / 10 = 3（int 除法），38 % 10 = 8。但对于任意 num，怎么知道 num 有多少位？</p>
@@ -186,8 +184,7 @@
 2  -&gt; 结束程序
 </code></pre><p>可以看到，纵向形成一个循环，即 38 -&gt; 11 -&gt; 2。循环结束的条件是：num 只有一位数字。</p>
 <p>横向也形成一个循环，即 3 + 8 = 11，或 1 + 1 = 2，循环结束的条件是：num 分解后的各位数字全部相加完毕。</p>
-<p>##写法一：循环</p>
-<p>根据上面的思路，我们可以写出两个嵌套的循环，伪代码如下：</p>
+<h2 id="写法一：循环"><a href="#写法一：循环" class="headerlink" title="写法一：循环"></a>写法一：循环</h2><p>根据上面的思路，我们可以写出两个嵌套的循环，伪代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">int addDigits(int num)</div><div class="line">    temp = num</div><div class="line">    while (true)    // 纵循环</div><div class="line">        if (getNumDigits(temp) == 1)</div><div class="line">            return temp</div><div class="line">    </div><div class="line">        temp = 0</div><div class="line">        for (each digit in num)     // 横循环</div><div class="line">            temp += digit</div></pre></td></tr></table></figure>
 <p>getNumDigits 函数，输入为 int num，输出为 int numDigits。方法就是上面提到的分解 num 的方法。我们把每位数字保存到一个 vector<int> 里。那么 getNumDigits 的输入修改为 int num 和 vector<int>&amp;。</int></int></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">int addDigits(int num, vector&lt;int&gt;&amp; vecDigits)</div><div class="line">    temp = num</div><div class="line">    while (true)    // 纵循环</div><div class="line">        numDigits = getNumDigits(temp, vecDigits)</div><div class="line"></div><div class="line">        if (numDigits == 1)</div><div class="line">            return temp</div><div class="line">    </div><div class="line">        temp = 0</div><div class="line">        for (each digit in vecDigits)     // 横循环</div><div class="line">            temp += digit</div><div class="line"></div><div class="line">        reset vector</div></pre></td></tr></table></figure>
@@ -220,8 +217,7 @@
 <p>代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">addDigits</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</div><div class="line">        <span class="keyword">while</span> (num / <span class="number">10</span> &gt; <span class="number">0</span>) &#123;      <span class="comment">// 纵循环</span></div><div class="line">            <span class="keyword">int</span> temp = num;</div><div class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">            <span class="keyword">while</span> (temp &gt; <span class="number">0</span>) &#123;      <span class="comment">// 横循环</span></div><div class="line">                <span class="keyword">int</span> lastDigit = temp % <span class="number">10</span>;</div><div class="line">                sum += lastDigit;</div><div class="line">                temp /= <span class="number">10</span>;</div><div class="line">            &#125;</div><div class="line">            num = sum;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> num;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>提交到 Leetcode，Accepted! :) 运行时间为 8ms。</p>
-<p>##写法二：递归</p>
-<p>我们再使用递归来改写一下程序，回看分析过程：</p>
+<h2 id="写法二：递归"><a href="#写法二：递归" class="headerlink" title="写法二：递归"></a>写法二：递归</h2><p>我们再使用递归来改写一下程序，回看分析过程：</p>
 <pre><code>38 -&gt; 3 + 8 = 11 -&gt; 11
 11 -&gt; 1 + 1 = 2  -&gt; 2
 2  -&gt; 结束程序
@@ -235,8 +231,7 @@
 <p>代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">addDigits</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</div><div class="line">        <span class="comment">// 递归结束条件</span></div><div class="line">        <span class="keyword">if</span> (num / <span class="number">10</span> == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> num;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span> (num &gt; <span class="number">0</span>) &#123;   <span class="comment">// 横循环</span></div><div class="line">            <span class="keyword">int</span> lastDigit = num % <span class="number">10</span>;</div><div class="line">            sum += lastDigit;</div><div class="line">            num /= <span class="number">10</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 递归（即纵循环）</span></div><div class="line">        <span class="keyword">return</span> addDigits(sum);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>提交到 Leetcode，Accepted! :) 运行时间为 12ms。</p>
-<p>##写法三：O(1)</p>
-<p>题目的后续：</p>
+<h2 id="写法三：O-1"><a href="#写法三：O-1" class="headerlink" title="写法三：O(1)"></a>写法三：O(1)</h2><p>题目的后续：</p>
 <blockquote>
 <p>你的程序可以不使用任何循环/递归，且运行时间为 O(1) 吗？</p>
 </blockquote>
@@ -402,7 +397,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#写法一：循环"><span class="nav-number">2.1.</span> <span class="nav-text">写法一：循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写法二：递归"><span class="nav-number">2.2.</span> <span class="nav-text">写法二：递归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写法三：O-1"><span class="nav-number">2.3.</span> <span class="nav-text">写法三：O(1)</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

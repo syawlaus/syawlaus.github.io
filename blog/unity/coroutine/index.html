@@ -144,8 +144,7 @@
       
 
       
-        <p>#示例</p>
-<p>最近在学习 Unity 的 <a href="https://unity3d.com/cn/learn/tutorials/projects/space-shooter-tutorial" target="_blank" rel="external">Space Shooter</a> 教程，里面有一个游戏逻辑是，游戏开始后，每秒生成一块陨石在随机位置掉落。实现的方式是（省略了不相干 C# 的代码）：</p>
+        <h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>最近在学习 Unity 的 <a href="https://unity3d.com/cn/learn/tutorials/projects/space-shooter-tutorial" target="_blank" rel="external">Space Shooter</a> 教程，里面有一个游戏逻辑是，游戏开始后，每秒生成一块陨石在随机位置掉落。实现的方式是（省略了不相干 C# 的代码）：</p>
 <a id="more"></a>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    StartCoroutine(spawnRock());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">IEnumerator <span class="title">spawnRock</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">        Instantiate(rock, randomPosition, randomRotation);</div><div class="line">        <span class="function"><span class="keyword">yield</span> return new <span class="title">WaitForSeconds</span>(<span class="params"><span class="number">1</span></span>)</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>从上面代码中看到，<code>spawnRock</code> 是一个 coroutine（协程），调用方式为 <code>StartCoroutine(spawnRock())</code>，我的疑问是：</p>
@@ -160,8 +159,7 @@
 <p>这一连串的疑问，让我对 coroutine 越发好奇，接下来就逐一解开谜题吧。</p>
 <p>我的思路是，首先需要弄清楚 coroutine 的概念，什么是 coroutine，上面代码的语法如何实现 coroutine。</p>
 <hr>
-<p>#什么是 coroutine？</p>
-<p>首先看看 coroutine 的<a href="https://en.wikipedia.org/wiki/Coroutine" target="_blank" rel="external">维基百科词条</a>：</p>
+<h1 id="什么是-coroutine？"><a href="#什么是-coroutine？" class="headerlink" title="什么是 coroutine？"></a>什么是 coroutine？</h1><p>首先看看 coroutine 的<a href="https://en.wikipedia.org/wiki/Coroutine" target="_blank" rel="external">维基百科词条</a>：</p>
 <blockquote>
 <p>Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations. Coroutines are well-suited for implementing more familiar program components such as cooperative tasks, exceptions, event loop, iterators, infinite lists and pipes.</p>
 <p>coroutine 是计算机程序组件，用于对非抢占式多任务一般化子例程。一般化的方式是，允许多个程序入口在特定位置挂起和恢复执行。Coroutine 合适用于实现常用程序组件，如协作式任务、中断、事件循环、迭代、无限列表和管道。</p>
@@ -188,8 +186,7 @@
 </ul>
 <p>回到 coroutine 的理解中，我对 coroutine 的理解是，<strong>coroutine 是一个能暂停执行的函数，下次调用 coroutine 时，从上次暂停的地方，以上次的状态继续执行</strong>。那么，两个 coroutine 之间是如何协作的？coroutineA 如何暂停执行，并开始执行 coroutineB 的呢？</p>
 <hr>
-<p>#yield 和 IEnumerator</p>
-<p>yield 这个 C# 关键字的作用，参见 <a href="https://msdn.microsoft.com/en-us/library/9k7k7cf0.aspx" target="_blank" rel="external">MSDN</a> 说明：</p>
+<h1 id="yield-和-IEnumerator"><a href="#yield-和-IEnumerator" class="headerlink" title="yield 和 IEnumerator"></a>yield 和 IEnumerator</h1><p>yield 这个 C# 关键字的作用，参见 <a href="https://msdn.microsoft.com/en-us/library/9k7k7cf0.aspx" target="_blank" rel="external">MSDN</a> 说明：</p>
 <blockquote>
 <p>When you use the yield keyword in a statement, you indicate that the method, operator, or get accessor in which it appears is an iterator. Using yield to define an iterator removes the need for an explicit extra class (the class that holds the state for an enumeration, see <code>IEnumerator&lt;T&gt;</code> for an example) when you implement the IEnumerable and IEnumerator pattern for a custom collection type.</p>
 <p>当你在一个语句中使用 yield 关键字时，表明你想要语句中的方法、操作符、get 存取器出现在一个迭代器中。使用 yield 定义一个迭代器，当你对自定义的集合类型实现 IEnumerable 和 IEnumerator 模式时，无需定义一个明确的额外的类（该类存储了一个枚举的信息，例子请见 <code>IEnumerator&lt;T&gt;</code>）。</p>
@@ -354,7 +351,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#示例"><span class="nav-number">1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是-coroutine？"><span class="nav-number">2.</span> <span class="nav-text">什么是 coroutine？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yield-和-IEnumerator"><span class="nav-number">3.</span> <span class="nav-text">yield 和 IEnumerator</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

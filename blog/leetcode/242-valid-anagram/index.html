@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>给定两个字符串 s 和 t，编写一个函数，判断 t 是否 s 的易位构词。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定两个字符串 s 和 t，编写一个函数，判断 t 是否 s 的易位构词。</p>
 <a id="more"></a>
 <p><strong>示例</strong>：</p>
 <p>s = “anagram”，t = “nagaram”，返回 true。<br>s = “rat”，t = “car”，返回 false。</p>
@@ -156,8 +155,7 @@
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>首先解释一下所谓的 anagram（易位构词）。如果 t 是 s 的（其中一个）易位构词，即是使用 s 中每一个字符（且使用一次）构成一个新词 t。</p>
 <p>一个简单的思路是，遍历 t 的每个字符 ct，如果在 s 找到 ct，就标记为“已使用”，在遍历 t 完成后，如果“已使用”的标记个数等于 s 的字符数目，则返回 true。</p>
@@ -294,7 +292,7 @@ t = &quot;rmhdxtymfgxjluxmeeerhxrrtjgecmyfdhevakyosvvuwgbwmxiakbmtqjjpgctjojdqat
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

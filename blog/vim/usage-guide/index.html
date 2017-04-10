@@ -144,12 +144,10 @@
       
 
       
-        <p>#原则</p>
-<p><strong>Vim tutor：切记您要在使用中学习，而不是在记忆中学习。</strong></p>
+        <h1 id="原则"><a href="#原则" class="headerlink" title="原则"></a>原则</h1><p><strong>Vim tutor：切记您要在使用中学习，而不是在记忆中学习。</strong></p>
 <a id="more"></a>
 <hr>
-<p>#光标移动</p>
-<p>光标上下左右移动</p>
+<h1 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h1><p>光标上下左右移动</p>
 <pre><code>    K
 H     L
   J
@@ -205,8 +203,7 @@ X = (name_1,vision_3); # this is a comment
 </code></pre><p>光标移到跳转列表的下一个位置（old -&gt; new）</p>
 <pre><code>Ctrl-I
 </code></pre><hr>
-<p>#Insert 模式</p>
-<p>切换为 <code>Insert 模式</code></p>
+<h1 id="Insert-模式"><a href="#Insert-模式" class="headerlink" title="Insert 模式"></a>Insert 模式</h1><p>切换为 <code>Insert 模式</code></p>
 <pre><code>i  -- 在光标前输入，记忆：insert
 I  -- 在当前行的首个非空白字符前输入（即 ^i）
 
@@ -227,8 +224,7 @@ cfx     -- 删除光标到下一个 x 字符之间的内容，并切换为 Inser
 </code></pre><p>下一条补全</p>
 <pre><code>Ctrl-N  -- 记忆：next completion
 </code></pre><hr>
-<p>#编辑（Normal 模式）</p>
-<p>删除光标所在字条</p>
+<h1 id="编辑（Normal-模式）"><a href="#编辑（Normal-模式）" class="headerlink" title="编辑（Normal 模式）"></a>编辑（Normal 模式）</h1><p>删除光标所在字条</p>
 <pre><code>x
 </code></pre><p>undo</p>
 <pre><code>u
@@ -237,8 +233,7 @@ cfx     -- 删除光标到下一个 x 字符之间的内容，并切换为 Inser
 </code></pre><p>redo</p>
 <pre><code>Ctrl-R
 </code></pre><hr>
-<p>#查找/替换</p>
-<p>在当前文件中查找（自动 wrapscan，除非 wrapscan 被复位）</p>
+<h1 id="查找-替换"><a href="#查找-替换" class="headerlink" title="查找/替换"></a>查找/替换</h1><p>在当前文件中查找（自动 wrapscan，除非 wrapscan 被复位）</p>
 <pre><code>/key   -- 往下查找
 ?key   -- 往上查找
 </code></pre><p>仅在本次查找忽略大小写</p>
@@ -263,8 +258,7 @@ N   -- 反向查看（与 / 或 ? 查找方向相反）
 </code></pre><p>进入/退出替换模式</p>
 <pre><code>R / &lt;Esc&gt;
 </code></pre><hr>
-<p>#复制/剪切/粘贴</p>
-<p>删除当前行</p>
+<h1 id="复制-剪切-粘贴"><a href="#复制-剪切-粘贴" class="headerlink" title="复制/剪切/粘贴"></a>复制/剪切/粘贴</h1><p>删除当前行</p>
 <pre><code>dd
 </code></pre><p>删除 N 行（向下删除）</p>
 <pre><code>Ndd
@@ -288,8 +282,7 @@ N   -- 反向查看（与 / 或 ? 查找方向相反）
 <pre><code>p  -- Normal 模式下使用，记忆：paste
 </code></pre><p>注意：<code>d</code> 命令都可以用 <code>c</code> 命令代替，而且执行后还切换到 <code>Insert 模式</code></p>
 <hr>
-<p>#Visual 模式</p>
-<p>切换至 <code>Visual 模式</code></p>
+<h1 id="Visual-模式"><a href="#Visual-模式" class="headerlink" title="Visual 模式"></a>Visual 模式</h1><p>切换至 <code>Visual 模式</code></p>
 <pre><code>v
 </code></pre><p>退出 <code>Visual 模式</code></p>
 <pre><code>&lt;Esc&gt;
@@ -298,8 +291,7 @@ N   -- 反向查看（与 / 或 ? 查找方向相反）
 </code></pre><p>可视块（<code>Visual block</code>）</p>
 <pre><code>Ctrl-V
 </code></pre><hr>
-<p>#存档/退出</p>
-<p>写入文件 / 强制写入文件</p>
+<h1 id="存档-退出"><a href="#存档-退出" class="headerlink" title="存档/退出"></a>存档/退出</h1><p>写入文件 / 强制写入文件</p>
 <pre><code>:w / :w! -- 记忆：write
 </code></pre><p>退出 Vim 或 <code>help</code> / 强制退出 Vim 或 <code>help</code>（且不写入）</p>
 <pre><code>:q / :q! -- 记忆：quit
@@ -308,8 +300,7 @@ N   -- 反向查看（与 / 或 ? 查找方向相反）
 或
 :x
 </code></pre><hr>
-<p>#分屏</p>
-<p>上下分屏</p>
+<h1 id="分屏"><a href="#分屏" class="headerlink" title="分屏"></a>分屏</h1><p>上下分屏</p>
 <pre><code>Ctrl-W S        -- 上下分屏，记忆：split
 或
 :sp [fileName]  -- 不加 fileName 是当前文件分屏，加 fileName 是不同文件分屏
@@ -330,16 +321,14 @@ Ctrl-W -  -- 减小高度
 <pre><code>Ctrl-W L
 Ctrl-W R
 </code></pre><hr>
-<p>#宏</p>
-<p>录制一个宏 a 并保存到寄存器中</p>
+<h1 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h1><p>录制一个宏 a 并保存到寄存器中</p>
 <pre><code>qa
 </code></pre><p>停止录制宏</p>
 <pre><code>q
 </code></pre><p>播放宏 a</p>
 <pre><code>@a
 </code></pre><hr>
-<p>#其它操作</p>
-<p>进入 <code>help</code></p>
+<h1 id="其它操作"><a href="#其它操作" class="headerlink" title="其它操作"></a>其它操作</h1><p>进入 <code>help</code></p>
 <pre><code>:help
 </code></pre><p>查看某命令的 <code>help</code></p>
 <pre><code>:help cmd
@@ -354,8 +343,7 @@ Ctrl-W R
 </code></pre><p>执行上一条命令</p>
 <pre><code>.
 </code></pre><hr>
-<p>#教程图</p>
-<p><img src="/images/vim/usage-guide/lession 1 - basic editing.gif" alt=""><br><img src="/images/vim/usage-guide/lession 2 - operators &amp; repetition.gif" alt=""><br><img src="/images/vim/usage-guide/lession 3 - yank &amp; paste.gif" alt=""><br><img src="/images/vim/usage-guide/lession 4 - searching.gif" alt=""><br><img src="/images/vim/usage-guide/lession 5 - marks &amp; macros.gif" alt=""><br><img src="/images/vim/usage-guide/lession 6 - various motions.gif" alt=""><br><img src="/images/vim/usage-guide/lession 7 - various commands.gif" alt=""><br><img src="/images/vim/usage-guide/Vim-Cheat-Sheet-for-Programmers.png" alt=""></p>
+<h1 id="教程图"><a href="#教程图" class="headerlink" title="教程图"></a>教程图</h1><p><img src="/images/vim/usage-guide/lession 1 - basic editing.gif" alt=""><br><img src="/images/vim/usage-guide/lession 2 - operators &amp; repetition.gif" alt=""><br><img src="/images/vim/usage-guide/lession 3 - yank &amp; paste.gif" alt=""><br><img src="/images/vim/usage-guide/lession 4 - searching.gif" alt=""><br><img src="/images/vim/usage-guide/lession 5 - marks &amp; macros.gif" alt=""><br><img src="/images/vim/usage-guide/lession 6 - various motions.gif" alt=""><br><img src="/images/vim/usage-guide/lession 7 - various commands.gif" alt=""><br><img src="/images/vim/usage-guide/Vim-Cheat-Sheet-for-Programmers.png" alt=""></p>
 
       
     </div>
@@ -468,7 +456,7 @@ Ctrl-W R
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原则"><span class="nav-number">1.</span> <span class="nav-text">原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#光标移动"><span class="nav-number">2.</span> <span class="nav-text">光标移动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Insert-模式"><span class="nav-number">3.</span> <span class="nav-text">Insert 模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编辑（Normal-模式）"><span class="nav-number">4.</span> <span class="nav-text">编辑（Normal 模式）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查找-替换"><span class="nav-number">5.</span> <span class="nav-text">查找/替换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复制-剪切-粘贴"><span class="nav-number">6.</span> <span class="nav-text">复制/剪切/粘贴</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Visual-模式"><span class="nav-number">7.</span> <span class="nav-text">Visual 模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存档-退出"><span class="nav-number">8.</span> <span class="nav-text">存档/退出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分屏"><span class="nav-number">9.</span> <span class="nav-text">分屏</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#宏"><span class="nav-number">10.</span> <span class="nav-text">宏</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其它操作"><span class="nav-number">11.</span> <span class="nav-text">其它操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#教程图"><span class="nav-number">12.</span> <span class="nav-text">教程图</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -144,12 +144,10 @@
       
 
       
-        <p>#什么是正则表达式？</p>
-<p>正则表达式（Regular Expression），“Regular”意为“规则”、“规律”，Regular Expression 即“描述某种文本规则的表达式”。下文简称为“正则”。</p>
+        <h1 id="什么是正则表达式？"><a href="#什么是正则表达式？" class="headerlink" title="什么是正则表达式？"></a>什么是正则表达式？</h1><p>正则表达式（Regular Expression），“Regular”意为“规则”、“规律”，Regular Expression 即“描述某种文本规则的表达式”。下文简称为“正则”。</p>
 <a id="more"></a>
 <hr>
-<p>#正则的用途</p>
-<p>既然正则描述了某种文本规则，那么我们就可以判断某文本是否符合某正则的规则，或者是利用某正则来找出符合其规则的文本。</p>
+<h1 id="正则的用途"><a href="#正则的用途" class="headerlink" title="正则的用途"></a>正则的用途</h1><p>既然正则描述了某种文本规则，那么我们就可以判断某文本是否符合某正则的规则，或者是利用某正则来找出符合其规则的文本。</p>
 <p>举些例子：</p>
 <ul>
 <li>判断字符串 <code>abcde</code> 里是否包含字符 <code>c</code></li>
@@ -157,21 +155,17 @@
 <li>找出字符串 <code>abcde</code> 和 <code>abcde-123</code> 的哪个字符串包含字符 <code>-</code></li>
 </ul>
 <hr>
-<p>#如何使用正则？</p>
-<p>正则有很多语法，我们由浅到深逐个学习吧，<a href="http://tool.oschina.net/regex" target="_blank" rel="external">这个网站</a>可以在线测试正则。</p>
-<p>##字符串匹配</p>
-<pre><code>c           匹配字符 &apos;c&apos;
+<h1 id="如何使用正则？"><a href="#如何使用正则？" class="headerlink" title="如何使用正则？"></a>如何使用正则？</h1><p>正则有很多语法，我们由浅到深逐个学习吧，<a href="http://tool.oschina.net/regex" target="_blank" rel="external">这个网站</a>可以在线测试正则。</p>
+<h2 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h2><pre><code>c           匹配字符 &apos;c&apos;
 abc         匹配字符串 &quot;abc&quot;
-</code></pre><p>##转义字符</p>
-<pre><code>\r          匹配回车
+</code></pre><h2 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h2><pre><code>\r          匹配回车
 \n          匹配换行符
 \t          匹配制表符
 \\          匹配 \ 本身
 \^          匹配 ^ 本身
 \$          匹配 $ 本身
 \.          匹配 . 本身
-</code></pre><p>##多种字符</p>
-<pre><code>\d          匹配任意一个数字，即 0~9 中任意一个
+</code></pre><h2 id="多种字符"><a href="#多种字符" class="headerlink" title="多种字符"></a>多种字符</h2><pre><code>\d          匹配任意一个数字，即 0~9 中任意一个
 \w          匹配任意一个字母或数字或下划线，也就是 A~Z, a~z, 0~9, _ 中任意一个
 \s          匹配包括空格、制表符、换页符等空白字符中任意一个
 .           匹配除了换行符（\n）以外的任意一个字符
@@ -180,15 +174,13 @@ abc         匹配字符串 &quot;abc&quot;
 [^abc]      匹配除 &quot;a&quot;,&quot;b&quot;,&quot;c&quot; 以外的任意一个字符
 [f-k]       匹配 &quot;f&quot;~&quot;k&quot; 之间的任意一个字母
 [^A-F0-3]   匹配 &quot;A&quot;~&quot;F&quot;,&quot;0&quot;~&quot;3&quot; 以外的任意一个字符
-</code></pre><p>##多次匹配</p>
-<pre><code>{n}         表达式重复 n 次，如 &quot;\w{2}&quot; 相当于 &quot;\w\w&quot;
+</code></pre><h2 id="多次匹配"><a href="#多次匹配" class="headerlink" title="多次匹配"></a>多次匹配</h2><pre><code>{n}         表达式重复 n 次，如 &quot;\w{2}&quot; 相当于 &quot;\w\w&quot;
 {m,n}       表达式至少重复 m 次，最多重复 n 次，如 &quot;ba{1,3}&quot; 可以匹配 &quot;ba&quot; 或 &quot;baa&quot; 或 &quot;baaa&quot;
 {m,}        表达式至少重复 m 次，如 &quot;\w\d{2,}&quot; 可以匹配 &quot;a12&quot;,&quot;_456&quot;,&quot;M12344&quot;...
 ?           表达式出现 0 或 1次，相当于 {0,1}，如 &quot;a[cd]?&quot;可以匹配 &quot;a&quot;,&quot;ac&quot;,&quot;ad&quot;
 +           表达式至少出现 1 次，相当于 {1,}，如 &quot;a+b&quot; 可以匹配 &quot;ab&quot;,&quot;aab&quot;,&quot;aaab&quot;...
 *           表达式不出现或出现任意次，相当于 {0,}，比如：&quot;\^*b&quot;可以匹配 &quot;b&quot;,&quot;^^^b&quot;...
-</code></pre><p>##特殊符号</p>
-<pre><code>^           与字符串开始的地方匹配，不匹配任何字符
+</code></pre><h2 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h2><pre><code>^           与字符串开始的地方匹配，不匹配任何字符
 $           与字符串结束的地方匹配，不匹配任何字符
 \b          匹配一个单词边界，也就是单词和空格之间的位置，不匹配任何字符
 |           匹配 | 左右两个表达式
@@ -197,11 +189,9 @@ $           与字符串结束的地方匹配，不匹配任何字符
 <p>举例3：表达式 <code>.\b.</code> 在匹配 <code>@@@abc</code> 时，匹配成功，匹配到的内容是 <code>@a</code>。进一步说明：<code>\b</code> 与 <code>^</code> 和 <code>$</code> 类似，本身不匹配任何字符，但是它要求它在匹配结果中所处位置的左右两边，其中一边是 <code>\w</code> 范围，另一边是 非<code>\w</code> 的范围。</p>
 <p>举例4：表达式 <code>\bend\b</code> 在匹配 <code>weekend,endfor,end</code> 时，匹配成功，匹配到的内容是 <code>end</code>。</p>
 <p>举例5：表达式 <code>Tom|Jack</code> 在匹配 <code>I&#39;m Tom, he is Jack</code> 时，匹配成功，匹配到的内容是 <code>Tom</code>。匹配下一个时，匹配成功，匹配到的内容是 <code>Jack</code>。</p>
-<p>##其它语法</p>
-<p>其它更多的语法，可阅读下面的参考资料。</p>
+<h2 id="其它语法"><a href="#其它语法" class="headerlink" title="其它语法"></a>其它语法</h2><p>其它更多的语法，可阅读下面的参考资料。</p>
 <hr>
-<p>#参考资料</p>
-<ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F" target="_blank" rel="external">正则表达式- 维基百科，自由的百科全书</a></li>
 <li><a href="http://www.regexlab.com/zh/regref.htm" target="_blank" rel="external">揭开正则表达式的神秘面纱</a></li>
 </ul>
@@ -317,7 +307,7 @@ $           与字符串结束的地方匹配，不匹配任何字符
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是正则表达式？"><span class="nav-number">1.</span> <span class="nav-text">什么是正则表达式？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正则的用途"><span class="nav-number">2.</span> <span class="nav-text">正则的用途</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用正则？"><span class="nav-number">3.</span> <span class="nav-text">如何使用正则？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串匹配"><span class="nav-number">3.1.</span> <span class="nav-text">字符串匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转义字符"><span class="nav-number">3.2.</span> <span class="nav-text">转义字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多种字符"><span class="nav-number">3.3.</span> <span class="nav-text">多种字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多次匹配"><span class="nav-number">3.4.</span> <span class="nav-text">多次匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊符号"><span class="nav-number">3.5.</span> <span class="nav-text">特殊符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它语法"><span class="nav-number">3.6.</span> <span class="nav-text">其它语法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

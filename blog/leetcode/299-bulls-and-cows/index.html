@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>你正在与朋友玩「<a href="https://en.wikipedia.org/wiki/Bulls_and_Cows" target="_blank" rel="external">公牛与母牛</a>」的游戏，规则如下：你写下一个秘密数字让朋友猜。你的朋友每猜一次，你都提示他猜的数有多少数位的数字和位置都猜对了（即“公牛”），以及有多少数位的数字猜对，但位置不对（即“母牛”）。你的朋友不断修改猜测值，直到与你的秘密数字相同。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>你正在与朋友玩「<a href="https://en.wikipedia.org/wiki/Bulls_and_Cows" target="_blank" rel="external">公牛与母牛</a>」的游戏，规则如下：你写下一个秘密数字让朋友猜。你的朋友每猜一次，你都提示他猜的数有多少数位的数字和位置都猜对了（即“公牛”），以及有多少数位的数字猜对，但位置不对（即“母牛”）。你的朋友不断修改猜测值，直到与你的秘密数字相同。</p>
 <a id="more"></a>
 <p><strong>示例</strong>：</p>
 <pre><code>你的秘密数字：&quot;1807&quot;
@@ -160,8 +159,7 @@
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getHint</span><span class="params">(<span class="built_in">string</span> secret, <span class="built_in">string</span> guess)</span> </span>&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>我的思路是，把 secret 和 guess 转化为 char secretArr[] 和 char guessArr[]，同时遍历。如果 guessArr[i] == secretArr[i]，说明 guessArr 的第 i 位是公牛，则记录到 int numA 里。如果 guessArr[i] != secretArr[i]，则把 guessArr[i] 和 secretArr[i] 分别保存到 <code>mapGuess&lt;char, int&gt;</code> 和 <code>mapSecret&lt;char, int&gt;</code> 中。遍历完成后，根据 mapGuess和 mapSecret 计算出 int numB。</p>
 <p>伪代码如下：</p>
@@ -281,7 +279,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

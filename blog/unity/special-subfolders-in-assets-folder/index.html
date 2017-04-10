@@ -147,8 +147,7 @@
         <p>本文用于整理 Unity 工程中 /Assets 里面的特殊子文件夹，以及每个子文件夹的作用。</p>
 <a id="more"></a>
 <hr>
-<p>#/Editor</p>
-<p>以 Editor 命名的文件夹允许其中的脚本访问 Unity Editor 的API。如果脚本中使用了在 UnityEditor 命名空间中的类或方法，该脚本必须被放在名为 Editor 的文件夹中。</p>
+<h1 id="Editor"><a href="#Editor" class="headerlink" title="/Editor"></a>/Editor</h1><p>以 Editor 命名的文件夹允许其中的脚本访问 Unity Editor 的API。如果脚本中使用了在 UnityEditor 命名空间中的类或方法，该脚本必须被放在名为 Editor 的文件夹中。</p>
 <p>在 /Editor 中的脚本将不会被打包到发布的游戏中，它们仅仅只是在 Editor 模式中使用。</p>
 <p>在项目中可以有多个 /Editor。</p>
 <p><strong>注意</strong>：</p>
@@ -157,8 +156,7 @@
 <li>如果 /Editor 在普通文件夹下，/Editor 可以处于普通文件夹的任何层级。</li>
 </ul>
 <hr>
-<p>#/Plugins</p>
-<p>将脚本中需要访问的原生插件（native plugins）放入到此文件夹中，它们将自动的被打入到游戏发布包中，</p>
+<h1 id="Plugins"><a href="#Plugins" class="headerlink" title="/Plugins"></a>/Plugins</h1><p>将脚本中需要访问的原生插件（native plugins）放入到此文件夹中，它们将自动的被打入到游戏发布包中，</p>
 <p><strong>注意</strong>：</p>
 <ul>
 <li>/Plugins 必须放在 /Assets 下，不能放到其它地方。</li>
@@ -170,12 +168,10 @@
 <li>在 Linux 平台，插件为 .so</li>
 </ul>
 <p>与 /Standard Assets 一样，/Plugins 的脚本将会被提前编译，这样允许它们被其它在 /Plugins 以外的脚本调用。</p>
-<p>##/Plugins/Android</p>
-<p>在 /Plugins/Android 里面放入任何需要被 Android 工程包含的 .JAR 文件（Java 插件使用），或 .so 文件（Android NDK 插件使用）。更多可以参考 <a href="http://docs.unity3d.com/Documentation/Manual/PluginsForAndroid.html" target="_blank" rel="external">Building Plugins for Android</a>。</p>
+<h2 id="Plugins-Android"><a href="#Plugins-Android" class="headerlink" title="/Plugins/Android"></a>/Plugins/Android</h2><p>在 /Plugins/Android 里面放入任何需要被 Android 工程包含的 .JAR 文件（Java 插件使用），或 .so 文件（Android NDK 插件使用）。更多可以参考 <a href="http://docs.unity3d.com/Documentation/Manual/PluginsForAndroid.html" target="_blank" rel="external">Building Plugins for Android</a>。</p>
 <p>例如读取通讯录，微信分享等调用原生 Java 功能接口的 JAR 编译后放在 /Plugins/Android。</p>
 <hr>
-<p>#/Resources</p>
-<p>不同于在 Unity Editor 中直接拖拽资源到 Inspector 脚本变量这种直接引用资源的方法，/Resources 是一个允许你在脚本里面直接通过路径和名字读取资源的文件夹。</p>
+<h1 id="Resources"><a href="#Resources" class="headerlink" title="/Resources"></a>/Resources</h1><p>不同于在 Unity Editor 中直接拖拽资源到 Inspector 脚本变量这种直接引用资源的方法，/Resources 是一个允许你在脚本里面直接通过路径和名字读取资源的文件夹。</p>
 <p><strong>注意</strong>：</p>
 <ul>
 <li>正因为这个原因，所以在放置资源到 /Resources 时必须加以注意。因为即使在 /Resources 中的某些资源没有被用到但是都会被打包到最终的游戏包中。因为你通过脚本使用这些资源，而 Unity 没有办法检测到哪些资源有被用到哪些没有。</li>
@@ -187,8 +183,7 @@
 <li>当资源被 MonoBehaviour 脚本中的变量访问时，这些资源将会在 MonoBehaviour 脚本实例化的时候加载到内存中。如果引用的资源过大而你不想这样加载的话，你可以将体积过大的资源放到 /Resources，再通过 Resources.Load 来加载。当资源不再被使用时，你能通过 Object.Destroy 删除这个资源，最后再调用 Resources.UnloadUnusedAssets 释放它所占用的内存。</li>
 </ul>
 <hr>
-<p>#/Standard Assets</p>
-<p>在 /Standard Assets 中的脚本最先被编译。/Standard Assets 中的脚本（根据不同的语言）会被导出到</p>
+<h1 id="Standard-Assets"><a href="#Standard-Assets" class="headerlink" title="/Standard Assets"></a>/Standard Assets</h1><p>在 /Standard Assets 中的脚本最先被编译。/Standard Assets 中的脚本（根据不同的语言）会被导出到</p>
 <ul>
 <li>Assembly-CSharp-firstpass.csproj</li>
 <li>Assembly-UnityScript-firstpass.csproj</li>
@@ -196,8 +191,7 @@
 </ul>
 <p>的 C# 项目中。将脚本放在 /Standard Assets 里，就可以用 C# 脚本来访问 JavaScript 脚本或其它语言的脚本。更多可以参考 <a href="http://docs.unity3d.com/Documentation/Manual/ScriptCompileOrderFolders.html" target="_blank" rel="external">Special Folders and Script Compilation Order</a>。</p>
 <hr>
-<p>#/StreamingAssets</p>
-<p>这里的文件会被拷贝到build文件夹中，不会修改（移动和网页版不同，他们会被嵌入到最终build文件中）。</p>
+<h1 id="StreamingAssets"><a href="#StreamingAssets" class="headerlink" title="/StreamingAssets"></a>/StreamingAssets</h1><p>这里的文件会被拷贝到build文件夹中，不会修改（移动和网页版不同，他们会被嵌入到最终build文件中）。</p>
 <p>任何在 /StreamingAssets 的资源都会原封不动地拷贝到发布版文件夹中（除了移动和网页发布包，/StreamingAssets 里面的资源将会打包到一个最终的发布包中），/StreamingAssets 的路径虽然在每个平台都不一样，但是可以统一通过 Application.streamingAssetsPath 获取到。更多可以参考 <a href="http://docs.unity3d.com/Documentation/ScriptReference/Application-streamingAssetsPath.html" target="_blank" rel="external">Application.streamingAssetsPath</a> 和 <a href="http://docs.unity3d.com/Documentation/Manual/StreamingAssets.html" target="_blank" rel="external">Streaming Assets</a>。</p>
 
       
@@ -311,7 +305,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Editor"><span class="nav-number">1.</span> <span class="nav-text">/Editor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugins"><span class="nav-number">2.</span> <span class="nav-text">/Plugins</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Plugins-Android"><span class="nav-number">2.1.</span> <span class="nav-text">/Plugins/Android</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Resources"><span class="nav-number">3.</span> <span class="nav-text">/Resources</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Standard-Assets"><span class="nav-number">4.</span> <span class="nav-text">/Standard Assets</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#StreamingAssets"><span class="nav-number">5.</span> <span class="nav-text">/StreamingAssets</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -147,30 +147,25 @@
         <p>本文整理 Lua 中函数相关的知识。</p>
 <a id="more"></a>
 <hr>
-<p>#函数定义</p>
-<p>在 Lua 中，这样定义一个函数：</p>
+<h1 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h1><p>在 Lua 中，这样定义一个函数：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(n)</span></span></div><div class="line">    <span class="keyword">do</span> something</div><div class="line">    <span class="keyword">return</span> xxx <span class="comment">-- 需要返回值时</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <p>或者这样：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">foo = <span class="function"><span class="keyword">function</span><span class="params">(n)</span></span></div><div class="line">    <span class="keyword">do</span> something</div><div class="line">    <span class="keyword">return</span> xxx <span class="comment">-- 需要返回值时</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <hr>
-<p>#函数调用</p>
-<p>函数调用的方式很简单：</p>
+<h1 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h1><p>函数调用的方式很简单：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">foo(<span class="number">1</span>)</div><div class="line"><span class="built_in">print</span> <span class="string">"Hello World"</span></div><div class="line"></div><div class="line">t = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</div><div class="line"><span class="built_in">print</span>(t)</div></pre></td></tr></table></figure>
 <p>见第 2、5 行代码，当只有一个参数，且参数为 string 或 table 构造式时，函数调用的小括号可以省略。</p>
-<p>##冒号操作符</p>
-<p>当我们使用 Lua 面向对象编程时，可以使用冒号来调用函数：</p>
+<h2 id="冒号操作符"><a href="#冒号操作符" class="headerlink" title="冒号操作符"></a>冒号操作符</h2><p>当我们使用 Lua 面向对象编程时，可以使用冒号来调用函数：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">obj:foo(args)</div><div class="line"></div><div class="line">等价于</div><div class="line"></div><div class="line">obj.foo(obj, args)</div></pre></td></tr></table></figure>
 <p>冒号操作符将 obj 自身隐含地当作第一个参数。</p>
-<p>##关于实参个数</p>
-<p>函数调用时传入的实参个数，可以跟函数定义时的形参个数不同。跟多重赋值一样，可分为三种情况：</p>
+<h2 id="关于实参个数"><a href="#关于实参个数" class="headerlink" title="关于实参个数"></a>关于实参个数</h2><p>函数调用时传入的实参个数，可以跟函数定义时的形参个数不同。跟多重赋值一样，可分为三种情况：</p>
 <ul>
 <li>形参个数 &lt; 实参个数，丢弃多余的实参。</li>
 <li>形参个数 = 实参个数，一一对应赋值。</li>
 <li>形参个数 &gt; 实参个数，没有实参赋值的形参初始化为 nil。</li>
 </ul>
 <hr>
-<p>#多个返回值</p>
-<p>函数可返回多个值：</p>
+<h1 id="多个返回值"><a href="#多个返回值" class="headerlink" title="多个返回值"></a>多个返回值</h1><p>函数可返回多个值：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>, <span class="number">2</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <p>如果函数调用不是表达式中的最后一个元素，那么只返回第一个值，如：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">x, y = foo(), <span class="number">20</span>  <span class="comment">-- 即 x = 1, y = 20</span></div></pre></td></tr></table></figure>
@@ -184,28 +179,24 @@
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f(<span class="built_in">unpack</span>(a))</div></pre></td></tr></table></figure>
 <p>unpack 将返回 a 中所有的值，这些值作为 f 的实参。</p>
 <hr>
-<p>#变长参数</p>
-<p>Lua 中的函数可以接收不同数量的实参。如：</p>
+<h1 id="变长参数"><a href="#变长参数" class="headerlink" title="变长参数"></a>变长参数</h1><p>Lua 中的函数可以接收不同数量的实参。如：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(...)</span></span></div><div class="line">    <span class="keyword">local</span> sum = <span class="number">0</span></div><div class="line">    <span class="keyword">local</span> t = &#123;...&#125;</div><div class="line">    <span class="keyword">for</span> _, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(t) <span class="keyword">do</span></div><div class="line">        sum = sum + v</div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="keyword">return</span> sum</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="built_in">print</span>(add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>))</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="number">15</span></div></pre></td></tr></table></figure>
 <p>参数列表中的（…）表示该函数可接受不同数量的实参。函数要访问它的变长参数时，仍需要用到（…）。表达式“…”的行为类似于一个具有多重返回值的函数，它返回的是当前函数的所有变长参数。如：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">local</span> a, b = ...</div></pre></td></tr></table></figure>
 <hr>
-<p>#第一类值</p>
-<p>在 Lua 中，函数是作为第一类值，可以把函数像一般数据一样赋值：</p>
+<h1 id="第一类值"><a href="#第一类值" class="headerlink" title="第一类值"></a>第一类值</h1><p>在 Lua 中，函数是作为第一类值，可以把函数像一般数据一样赋值：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">foo = <span class="function"><span class="keyword">function</span> <span class="params">(n)</span></span></div><div class="line">    <span class="built_in">print</span>(n)</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">foo(<span class="number">3</span>)</div><div class="line">foo(<span class="number">4</span>)</div><div class="line">foo(<span class="number">5</span>)</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">5</span></div></pre></td></tr></table></figure>
 <p>这样表示函数可以存储在变量中，可以通过参数传递给其它函数，还可以作为其它函数的返回值。这种特性使 Lua 具有极大的灵活性。为了给一个函数添加新功能，程序可以重新定义该函数。而在运行一些不受信任的代码时，可以先删除某些函数，从而创建一个安全的运行环境。</p>
 <p>Lua 既可以调用 Lua 编写的函数，也可以调用 C 编写的函数。Lua 所有的标准库都由 C 编写的，包括字符串操作、table 操作、I/O、数学函数等。</p>
 <p>在 Lua 中，函数与其它所有值一样是没有名字的，我们讨论的某个函数 f，只是持有函数的某个变量 f。所以我们可以像操作其它变量一样操作这个持有函数的变量 f。</p>
 <p>我们平时习惯使用的函数定义方式 <code>function f() end</code>，只不过是 <code>f = function() end</code> 的语法糖而已。所以，函数定义实际是一个赋值语句，这条语句创建了一种类型为“函数”的值，并赋值给一个变量，就像 table 构造式 {} 一样。</p>
-<p>##闭包</p>
-<p>将函数 outer 内嵌套函数 inner，在 inner 内可使用 outer 局部变量，这项特性称为 <em>词法域（Lexical Scoping）</em>。例如：</p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>将函数 outer 内嵌套函数 inner，在 inner 内可使用 outer 局部变量，这项特性称为 <em>词法域（Lexical Scoping）</em>。例如：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">newCounter</span><span class="params">()</span></span></div><div class="line">    <span class="keyword">local</span> i = <span class="number">0</span></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span>      <span class="comment">-- 匿名函数</span></div><div class="line">               i = i + <span class="number">1</span></div><div class="line">               <span class="keyword">return</span> i</div><div class="line">           <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">f = newCounter()</div><div class="line"><span class="built_in">print</span>(f())</div><div class="line"><span class="built_in">print</span>(f())</div><div class="line"><span class="built_in">print</span>(f())</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">3</span></div></pre></td></tr></table></figure>
 <p>在匿名函数中，使用其外部的函数 newCounter 里的局部变量 i。在匿名函数中，i 称为 <em>非局部变量</em>，或 <em>upvalue</em>。</p>
 <p>可以看到，每次调用 f，i 都能在上次的值上自加 1。简单来说，一个 <em>闭包（closure）</em> 就是一个函数加上该函数所需访问的所有 upvalue。如果再次调用 newCounter，那么它会创建一个新的局部变量 i，从而得到一个新的闭包。如：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">f2 = newCounter()</div><div class="line"><span class="built_in">print</span>(f2())</div><div class="line"><span class="built_in">print</span>(f2())</div><div class="line"></div><div class="line"><span class="built_in">print</span>(<span class="string">"---"</span>)</div><div class="line"></div><div class="line">f3 = newCounter()</div><div class="line"><span class="built_in">print</span>(f3())</div><div class="line"><span class="built_in">print</span>(f3())</div><div class="line"><span class="built_in">print</span>(f3())</div><div class="line"><span class="built_in">print</span>(f3())</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="comment">---</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">4</span></div></pre></td></tr></table></figure>
 <p>f, f2, f3 分别是三个独立的闭包，它们各自拥有 upvalue i 的实例。再深入一点思考，其实函数本身就是闭包的特例，函数只是“没有 upvalue 的闭包”而已。</p>
-<p>##非全局的函数</p>
-<p>将函数存储在一个局部变量中，就得到一个局部函数。Lua 将每个程序块（chunk）作为一个函数处理，那么在程序块中声明的函数就是局部函数，只能在该程序块中可见。</p>
+<h2 id="非全局的函数"><a href="#非全局的函数" class="headerlink" title="非全局的函数"></a>非全局的函数</h2><p>将函数存储在一个局部变量中，就得到一个局部函数。Lua 将每个程序块（chunk）作为一个函数处理，那么在程序块中声明的函数就是局部函数，只能在该程序块中可见。</p>
 <p>如果局部函数是递归定义，如：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- 局部函数定义方式一</span></div><div class="line"><span class="keyword">local</span> fact = <span class="function"><span class="keyword">function</span><span class="params">(n)</span></span></div><div class="line">    <span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">then</span></div><div class="line">        <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="keyword">return</span> n * fact(n<span class="number">-1</span>)    <span class="comment">-- 调用的是全局函数 fact</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <p>方式一的问题是，在代码第 5 行，因为 local fact 还没定义完毕，所以调用的是全局函数 fact。解决的办法是：</p>
@@ -217,13 +208,11 @@
 <p>Lua 会展开为：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">local</span> g</div><div class="line">g = <span class="function"><span class="keyword">function</span><span class="params">()</span></span></div><div class="line">    f()</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">local</span> f</div><div class="line">f = <span class="function"><span class="keyword">function</span><span class="params">()</span></span></div><div class="line">    g()</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <p>那么代码第 2 行调用的是全局函数 f，因为局部函数 f 还没定义。在第 6 行调用的则是局部函数 g。</p>
-<p>##正确的尾调用</p>
-<p>下面是代码对 g 的调用是一个 <em>尾调用（tail call）</em>：</p>
+<h2 id="正确的尾调用"><a href="#正确的尾调用" class="headerlink" title="正确的尾调用"></a>正确的尾调用</h2><p>下面是代码对 g 的调用是一个 <em>尾调用（tail call）</em>：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span><span class="params">(x)</span></span></div><div class="line">    <span class="keyword">return</span> g(x)</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span><span class="params">(x)</span></span></div><div class="line">    g(x)</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <p>因为调用 g(x) 是 f 里的最后一个动作，之后便再没有任何工作。用 g 的调用栈替换 f 的调用栈，这样就是 <em>尾调用消除</em>。满足尾调用消除的函数调用链，不管嵌套层次多深，都不会栈溢出。</p>
 <hr>
-<p>#一些常用的函数 API</p>
-<ul>
+<h1 id="一些常用的函数-API"><a href="#一些常用的函数-API" class="headerlink" title="一些常用的函数 API"></a>一些常用的函数 API</h1><ul>
 <li>把 string 转换为 number：tonumber</li>
 <li>把其它类型的值转换为 string：tostring，或 val .. “”</li>
 <li>对实数 n 下取整：math.floor(n)</li>
@@ -342,7 +331,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#函数定义"><span class="nav-number">1.</span> <span class="nav-text">函数定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数调用"><span class="nav-number">2.</span> <span class="nav-text">函数调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#冒号操作符"><span class="nav-number">2.1.</span> <span class="nav-text">冒号操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于实参个数"><span class="nav-number">2.2.</span> <span class="nav-text">关于实参个数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多个返回值"><span class="nav-number">3.</span> <span class="nav-text">多个返回值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变长参数"><span class="nav-number">4.</span> <span class="nav-text">变长参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第一类值"><span class="nav-number">5.</span> <span class="nav-text">第一类值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包"><span class="nav-number">5.1.</span> <span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非全局的函数"><span class="nav-number">5.2.</span> <span class="nav-text">非全局的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正确的尾调用"><span class="nav-number">5.3.</span> <span class="nav-text">正确的尾调用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些常用的函数-API"><span class="nav-number">6.</span> <span class="nav-text">一些常用的函数 API</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

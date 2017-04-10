@@ -146,23 +146,19 @@
       
         <p>本文意在整理 C++ string 的用法，和需要注意的地方。</p>
 <a id="more"></a>
-<p>#include</p>
-<p>在 C++ 程序中，使用 string 要 <code>#include &lt;string&gt;</code>，原因见《<a href="http://syawlaus.github.io/blog/c++/frequent-errors/" target="_blank" rel="external">C++ 程序常见报错</a>》。</p>
+<h1 id="include"><a href="#include" class="headerlink" title="include"></a>include</h1><p>在 C++ 程序中，使用 string 要 <code>#include &lt;string&gt;</code>，原因见《<a href="http://syawlaus.github.io/blog/c++/frequent-errors/" target="_blank" rel="external">C++ 程序常见报错</a>》。</p>
 <hr>
-<p>#string 作为 char 数组</p>
-<p>string 可以当 char 数组使用，变量名为数组首元素地址。见下面代码：</p>
+<h1 id="string-作为-char-数组"><a href="#string-作为-char-数组" class="headerlink" title="string 作为 char 数组"></a>string 作为 char 数组</h1><p>string 可以当 char 数组使用，变量名为数组首元素地址。见下面代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="built_in">string</span> s = <span class="string">"hello"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; s[i] &lt;&lt; <span class="string">' '</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">char</span> ch : s) &#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; ch &lt;&lt; <span class="string">' '</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line">输出：</div><div class="line">h e l l o </div><div class="line">h e l l o </div><div class="line">*/</div></pre></td></tr></table></figure>
 <hr>
-<p>#操作符重载</p>
-<pre><code>operator+       字符串链接
+<h1 id="操作符重载"><a href="#操作符重载" class="headerlink" title="操作符重载"></a>操作符重载</h1><pre><code>operator+       字符串链接
 operator==      判断是否相等
 operator!=      判断是否不等于
 operator&lt;       判断是否小于
 operator&gt;&gt;      从输入流中读入字符串
 operator&lt;&lt;      字符串写入输出流
 </code></pre><hr>
-<p>#常用函数</p>
-<p>To be continued.</p>
+<h1 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h1><p>To be continued.</p>
 
       
     </div>
@@ -275,7 +271,7 @@ operator&lt;&lt;      字符串写入输出流
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#include"><span class="nav-number">1.</span> <span class="nav-text">include</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#string-作为-char-数组"><span class="nav-number">2.</span> <span class="nav-text">string 作为 char 数组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作符重载"><span class="nav-number">3.</span> <span class="nav-text">操作符重载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用函数"><span class="nav-number">4.</span> <span class="nav-text">常用函数</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

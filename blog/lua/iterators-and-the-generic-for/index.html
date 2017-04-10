@@ -146,8 +146,7 @@
       
         <p>本文整理 Lua 中迭代器与泛型 for 相关的知识。</p>
 <a id="more"></a>
-<p>#创建简单的迭代器</p>
-<p>我们知道，在 Lua 中，遍历一个 table 的方式是：</p>
+<h1 id="创建简单的迭代器"><a href="#创建简单的迭代器" class="headerlink" title="创建简单的迭代器"></a>创建简单的迭代器</h1><p>我们知道，在 Lua 中，遍历一个 table 的方式是：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">t = &#123;<span class="string">"ABC"</span>, <span class="number">123</span>, <span class="literal">true</span>&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></div><div class="line">    <span class="built_in">print</span>(v)</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">输出：</div><div class="line">ABC</div><div class="line"><span class="number">123</span></div><div class="line"><span class="literal">true</span></div></pre></td></tr></table></figure>
 <p>那么为什么 <code>for k, v in pairs(t)</code> 能正确遍历 table 的每个元素呢？我直观的理解是，pairs(t) 在执行本次循环体前，给 for 返回“上次循环元素的下一个元素”，for 判断是否为 nil，是则结束循环，否则继续循环。 那么 pairs(t) 是如何返回“上次循环元素的下一个元素”呢？这里用闭包来实现就会非常合适，因为闭包会保存内部函数及 upvalue，pairs(t) 可以返回一个内部函数，而 upvalue 则为“上次循环的元素的索引”，代码如下：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">t = &#123;<span class="string">"ABC"</span>, <span class="number">123</span>, <span class="literal">true</span>&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mypairs</span><span class="params">(t)</span></span></div><div class="line">    <span class="keyword">local</span> i = <span class="number">0</span></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span></div><div class="line">               i = i + <span class="number">1</span></div><div class="line">               <span class="keyword">return</span> i, t[i]</div><div class="line">           <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">iter = mypairs(t)</div><div class="line"><span class="built_in">print</span>(iter())</div><div class="line"><span class="built_in">print</span>(iter())</div><div class="line"><span class="built_in">print</span>(iter())</div><div class="line"></div><div class="line">输出：</div><div class="line"><span class="number">1</span>   ABC</div><div class="line"><span class="number">2</span>   <span class="number">123</span></div><div class="line"><span class="number">3</span>   <span class="literal">true</span></div></pre></td></tr></table></figure>
@@ -158,8 +157,7 @@
 <p>每次运行 for 会创建并保存一个新的闭包作为迭代器，在本次循环中，for 内部运行一次闭包，并记录闭包返回的 idx 和 nextVal，在本次循环体中使用。</p>
 <p>上面的 mypairs 有一个问题，就是每次执行闭包时，都会返回 t[i]，即是 table 作为数组使用时才有效。那么如果 table 作为 hash 来使用的时候，要怎么定义 mypairs？</p>
 <hr>
-<p>#泛型 for</p>
-<p>泛型 for 的语法如下：</p>
+<h1 id="泛型-for"><a href="#泛型-for" class="headerlink" title="泛型 for"></a>泛型 for</h1><p>泛型 for 的语法如下：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> &lt;var-list&gt; <span class="keyword">in</span> &lt;exp-list&gt; <span class="keyword">do</span></div><div class="line">    &lt;body&gt;</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
 <p><code>&lt;var-list&gt;</code> 实际上有三个值：迭代器函数（即闭包）、恒定状态、控制变量。for 首先会对 <code>&lt;exp-list&gt;</code> 求值，把返回的三个值多重赋值给 <code>&lt;var-list&gt;</code>。控制变量即是闭包返回的元素 t[i]，如果 t[i] == nil，则终止循环，否则继续执行，所以在 for 里的 t[i] 都不会为 nil。</p>
 <p>在第二次执行循环体前，再次调用闭包，参数是恒定状态和控制变量。以代码来说明会更清晰：</p>
@@ -275,7 +273,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建简单的迭代器"><span class="nav-number">1.</span> <span class="nav-text">创建简单的迭代器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型-for"><span class="nav-number">2.</span> <span class="nav-text">泛型 for</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

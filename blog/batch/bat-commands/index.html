@@ -146,10 +146,8 @@
       
         <p>本文意在常用的 Windows 批处理命令。</p>
 <a id="more"></a>
-<p>#打开 Windows 资源管理器窗口</p>
-<pre><code>start \YOUR_PATH
-</code></pre><p>#删除文件/目录</p>
-<pre><code>del FILE_PATH   删除文件
+<h1 id="打开-Windows-资源管理器窗口"><a href="#打开-Windows-资源管理器窗口" class="headerlink" title="打开 Windows 资源管理器窗口"></a>打开 Windows 资源管理器窗口</h1><pre><code>start \YOUR_PATH
+</code></pre><h1 id="删除文件-目录"><a href="#删除文件-目录" class="headerlink" title="删除文件/目录"></a>删除文件/目录</h1><pre><code>del FILE_PATH   删除文件
     /f             强制删除只读文件
     /p            删除每个文件前确认
     /q            删除文件，并无需确认
@@ -159,8 +157,7 @@ del DIR_PATH    删除目录里的所有文件，不包括子目录
 rd  DIR_PATH
     /s             删除目录，包括所有子文件、子目录
     /q            删除，并无需确认
-</code></pre><p>#复制文件/目录</p>
-<pre><code>xcopy  SRC_DIR_PATH  DES_DIR_PATH   复制目录，只包含子文件
+</code></pre><h1 id="复制文件-目录"><a href="#复制文件-目录" class="headerlink" title="复制文件/目录"></a>复制文件/目录</h1><pre><code>xcopy  SRC_DIR_PATH  DES_DIR_PATH   复制目录，只包含子文件
     /e                                复制目录和子目录，包括空目录
     /i                                 如果目标不存在，又在复制一个以上的文件，则假定目标一定是一个目录
     /y                                覆盖已有文件，且没有提示
@@ -168,13 +165,11 @@ rd  DIR_PATH
 xcopy  SRC_FILE_PATH  DES_DIR_PATH
 
 xcopy  SRC_FILE_PATH  DES_FILE_PATH
-</code></pre><p>#获取路径</p>
-<pre><code>%cd%        当前盘符和路径
+</code></pre><h1 id="获取路径"><a href="#获取路径" class="headerlink" title="获取路径"></a>获取路径</h1><pre><code>%cd%        当前盘符和路径
 %~d0        当前盘符
 %~dp0       当前盘符和路径（同 %cd%）
 %~f0        当前批处理文件全路径
-</code></pre><p>#创建目录</p>
-<pre><code>md
+</code></pre><h1 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h1><pre><code>md
 </code></pre><p>To be continued.</p>
 
       
@@ -288,7 +283,7 @@ xcopy  SRC_FILE_PATH  DES_FILE_PATH
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#打开-Windows-资源管理器窗口"><span class="nav-number">1.</span> <span class="nav-text">打开 Windows 资源管理器窗口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除文件-目录"><span class="nav-number">2.</span> <span class="nav-text">删除文件/目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复制文件-目录"><span class="nav-number">3.</span> <span class="nav-text">复制文件/目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取路径"><span class="nav-number">4.</span> <span class="nav-text">获取路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建目录"><span class="nav-number">5.</span> <span class="nav-text">创建目录</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

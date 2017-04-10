@@ -150,8 +150,7 @@
 </blockquote>
 <a id="more"></a>
 <hr>
-<p>#信息存储</p>
-<blockquote>
+<h1 id="信息存储"><a href="#信息存储" class="headerlink" title="信息存储"></a>信息存储</h1><blockquote>
 <p>In isolation, a single bit is not very useful. When we group bits together and apply some <em>interpretation</em> that gives meaning to the different possible bit patterns, however, we can represent the elements of any finite set.</p>
 </blockquote>
 <p>现代计算机保存和处理的信息，其实都是一组 01 电信号。显然，单个电信号位只能表示两个值，用处不大，组合多个电信号，每种组合表示一种信息。对于多种组合，对其进行不同的<em>解析（interpretation）</em>，可以表示多种不同的信息。</p>
@@ -174,23 +173,19 @@
 <p>In subsequent chapters, we will cover how the compiler and run-time system partitions this memory space into more manageable units to store the different <em>program objects</em>, that is, program data, instructions, and control information. Various mechanisms are used to allocate and manage the storage for different parts of the program. This management is all performed within the virtual address space.</p>
 <p>Although the C compiler maintains pointer type information, the actual machine-level program it generates has no information about data types. It simply treats each program bject as a block of bytes, and the program itself as a sequence of bytes.</p>
 </blockquote>
-<p>##十六进制表示法</p>
-<p>由于二进制表示过于冗长，所以使用十六进制来表示。每个十六进制位，能表示 4 个二进制位的所有组合（16 = 2<sup>4</sup>）。两个十六进制位能表示一个字节。</p>
+<h2 id="十六进制表示法"><a href="#十六进制表示法" class="headerlink" title="十六进制表示法"></a>十六进制表示法</h2><p>由于二进制表示过于冗长，所以使用十六进制来表示。每个十六进制位，能表示 4 个二进制位的所有组合（16 = 2<sup>4</sup>）。两个十六进制位能表示一个字节。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.2.png" alt=""></p>
 <blockquote>
 <p>Every computer has a <em>word size</em>, indicating the nominal size of integer and pointer data. Since a virtual address is encoded by such a word, the most important system parameter determined by the word size is the maximum size of the virtual address space. That is, for a machine with a w-bit word size, the virtual addresses can range from 0 to 2<sup>w</sup>-1, giving the program access to at most 2<sup>w</sup> bytes.</p>
 </blockquote>
-<p>##字</p>
-<p>计算机的<em>字长</em>（word-size），表示单个整数或指针数据所占内存大小。</p>
+<h2 id="字"><a href="#字" class="headerlink" title="字"></a>字</h2><p>计算机的<em>字长</em>（word-size），表示单个整数或指针数据所占内存大小。</p>
 <p>我对 <em>word</em> 的理解是，操作系统对内存的解析（interpret）和使用的最小单位。比如在 32 位设备上，一个 word 就是 32 位，设备能访问的虚拟地址最大为 2<sup>32</sup>。</p>
-<p>##数据大小</p>
-<p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.3.png" alt=""></p>
+<h2 id="数据大小"><a href="#数据大小" class="headerlink" title="数据大小"></a>数据大小</h2><p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.3.png" alt=""></p>
 <blockquote>
 <p>A “long” integer uses the full word size of the machine. A pointer also uses the full word size of the machine.</p>
 <p>One aspect of program portability is to make the program insensitive to the exact sizes of the different data types.</p>
 </blockquote>
-<p>##寻址和字节序</p>
-<blockquote>
+<h2 id="寻址和字节序"><a href="#寻址和字节序" class="headerlink" title="寻址和字节序"></a>寻址和字节序</h2><blockquote>
 <p>For program objects that span multiple bytes, we must establish two conventions: what the address of the object will be, and how we will order the bytes in memory (Big endian / Little endian).</p>
 </blockquote>
 <p>对于多字节对象，不同设备可能使用不同的字节排列方式，Big endian 是最高有效字节排在前面，Little endian 是最高有效字节排在后面。</p>
@@ -204,34 +199,29 @@
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.4.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.5.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.6.png" alt=""></p>
-<p>##字符串表示</p>
-<blockquote>
+<h2 id="字符串表示"><a href="#字符串表示" class="headerlink" title="字符串表示"></a>字符串表示</h2><blockquote>
 <p>This same result would be obtained on any system using ASCII as its character code, independent of the byte ordering and word size conventions. As a consequence, text data is more platform-independent than binary data.</p>
 </blockquote>
 <p>字符串其实也是一堆 01 数据，对其使用不同的字符编码集（如 ASCII，Unicode 等），能解析出不同的字符。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/binary-code.png" alt=""></p>
-<p>##代码表示</p>
-<blockquote>
+<h2 id="代码表示"><a href="#代码表示" class="headerlink" title="代码表示"></a>代码表示</h2><blockquote>
 <p>Different machine types use different and incompatible instructions and encodings. Even identical processors running different operating systems have differences in their coding conventions and hence are not binary compatible. Binary code is seldom portable across different combinations of machine and operating system.</p>
 <p>A fundamental concept of computer systems is that a program, from the perspective of the machine, is simply a sequence of bytes. The machine has no information about the original source program, except perhaps some auxiliary tables maintained to aid in debugging.</p>
 </blockquote>
 <p>Q：对于同一份二进制数据，是不是有类型信息？否则系统如何知道有什么方式解析这些数据？</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.7.png" alt=""></p>
-<p>##布尔代数</p>
-<p>布尔代数有：</p>
+<h2 id="布尔代数"><a href="#布尔代数" class="headerlink" title="布尔代数"></a>布尔代数</h2><p>布尔代数有：</p>
 <ul>
 <li>按位与 &amp;</li>
 <li>按位或 |</li>
 <li>按位异或 ^</li>
 </ul>
-<p>##C 语言的逻辑操作</p>
-<ul>
+<h2 id="C-语言的逻辑操作"><a href="#C-语言的逻辑操作" class="headerlink" title="C 语言的逻辑操作"></a>C 语言的逻辑操作</h2><ul>
 <li>按值与 &amp;&amp;</li>
 <li>按值或 ||</li>
 <li>按值异或 ^</li>
 </ul>
-<p>##C 语言中移位操作</p>
-<p>对于布尔代数来说，向量 a 的加法逆元是 a 本身，运算是异或运算，即 a ^ a = 0，这里的 0 是指全为 0 的位向量。</p>
+<h2 id="C-语言中移位操作"><a href="#C-语言中移位操作" class="headerlink" title="C 语言中移位操作"></a>C 语言中移位操作</h2><p>对于布尔代数来说，向量 a 的加法逆元是 a 本身，运算是异或运算，即 a ^ a = 0，这里的 0 是指全为 0 的位向量。</p>
 <p>位运算的一个常用用法是<em>掩码（masking）</em>操作。</p>
 <blockquote>
 <p>Computers generate color pictures on a video screen or liquid crystal display by mixing three different colors of light: red, green and blue.</p>
@@ -251,8 +241,7 @@
 <p>Java, on the other hand, has a precise definition of how right shifts should be performed. The expression x &gt;&gt; k shifts x arithmetically by k positions, while x &gt;&gt;&gt; k shifts it logically.</p>
 </blockquote>
 <hr>
-<p>#整数表示</p>
-<p>对于数的表示，可分为无符号数（unsigned numbers）和有符号数（signed numbers）。</p>
+<h1 id="整数表示"><a href="#整数表示" class="headerlink" title="整数表示"></a>整数表示</h1><p>对于数的表示，可分为无符号数（unsigned numbers）和有符号数（signed numbers）。</p>
 <ul>
 <li>对于无符号整数（unsigned integers），其二进制 01 串里每一位都是数位。</li>
 <li>对于有符号整数（signed integers），其二进制 01 串里，最高位是符号权位，其它的是数位。<ul>
@@ -263,10 +252,8 @@
 <p>同一个数字的整数和浮点数的二进制表示里，有若干相同的数位。在后面学习的浮点数表示会了解到原因。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.8.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.9.png" alt=""></p>
-<p>##整数的数据类型</p>
-<p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.10.png" alt=""></p>
-<p>##无符号整数编码</p>
-<blockquote>
+<h2 id="整数的数据类型"><a href="#整数的数据类型" class="headerlink" title="整数的数据类型"></a>整数的数据类型</h2><p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.10.png" alt=""></p>
+<h2 id="无符号整数编码"><a href="#无符号整数编码" class="headerlink" title="无符号整数编码"></a>无符号整数编码</h2><blockquote>
 <p>Both C and C++ support signed (the default) and unsigned numbers. Java supports only signed numbers.</p>
 </blockquote>
 <p>对于无符号整数，二进制转换到十进制的方法，见公式 2.1：</p>
@@ -276,8 +263,7 @@
 <blockquote>
 <p>The most common computer representation of signed numbers is known as <em>two’s-complement</em> form. This is defined by interpreting the most significant bit of the word to have negative weight.</p>
 </blockquote>
-<p>##有符号整数的补码编码</p>
-<p>对于有符号整数，一般使用补码表示，最高位表示<em>负权（negative weight）</em>。比如一个 32 位数据，最高位的负权就是 -1 * x<sub>31</sub> * 2<sup>31</sup>。二进制转换到十进制的方法，见公式 2.3：</p>
+<h2 id="有符号整数的补码编码"><a href="#有符号整数的补码编码" class="headerlink" title="有符号整数的补码编码"></a>有符号整数的补码编码</h2><p>对于有符号整数，一般使用补码表示，最高位表示<em>负权（negative weight）</em>。比如一个 32 位数据，最高位的负权就是 -1 * x<sub>31</sub> * 2<sup>31</sup>。二进制转换到十进制的方法，见公式 2.3：</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.3.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.4.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.12.png" alt=""></p>
@@ -292,8 +278,7 @@
 </blockquote>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/alternative-representations-of-signed-numbers.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.14.png" alt=""></p>
-<p>##有符号/无符号整数之间的转换</p>
-<blockquote>
+<h2 id="有符号-无符号整数之间的转换"><a href="#有符号-无符号整数之间的转换" class="headerlink" title="有符号/无符号整数之间的转换"></a>有符号/无符号整数之间的转换</h2><blockquote>
 <p>The effect of converting in both directions between unsigned and two’s complement representations, is to keep the bit patterns identical but change how these bits are interpreted.</p>
 </blockquote>
 <p>对于无符号整数和有符号整数之间的转换，采取的原则是：保持原二进制表示不变，使用不同的解析方式来解析。对于同一个二进制表示对应的无符号整数 U 和有符号整数补码 T 之间的关系（以 32 位为例，且 T 为负数），则是 T = U - 2 * 2<sup>31</sup> = U - 2<sup>32</sup>，因为最高位的权从无符号的 2<sup>31</sup> 变为有符号的 -2<sup>31</sup>，即公式 2.6。</p>
@@ -304,13 +289,11 @@
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.7.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.8.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.17.png" alt=""></p>
-<p>##C 语言中的有符号/符号整数</p>
-<blockquote>
+<h2 id="C-语言中的有符号-符号整数"><a href="#C-语言中的有符号-符号整数" class="headerlink" title="C 语言中的有符号/符号整数"></a>C 语言中的有符号/符号整数</h2><blockquote>
 <p>When an operation is performed where one operand is signed and the other is unsigned, C implicitly casts the signed argument to unsigned and performs the operations assuming the numbers are nonnegative.</p>
 </blockquote>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/writing-tmin-in-c.png" alt=""></p>
-<p>##扩展一个数字的位表示</p>
-<p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.18.png" alt=""></p>
+<h2 id="扩展一个数字的位表示"><a href="#扩展一个数字的位表示" class="headerlink" title="扩展一个数字的位表示"></a>扩展一个数字的位表示</h2><p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.18.png" alt=""></p>
 <blockquote>
 <p>To convert an unsigned number to a larger data type, we can simply add leading zeros to the representation; this operation is known as <em>zero extension</em>. For converting a two’s complement number to a larger data type, the rule is to perform a <em>sign extension</em>, adding copies of the most significant big to the representation. Thus, if our original value has bit representation [x<sub>w-1</sub>, …, x<sub>w-1</sub>, x<sub>w-1</sub>, x<sub>w-2</sub>, …, x<sub>0</sub>].</p>
 </blockquote>
@@ -320,8 +303,7 @@
 <li>有符号整数扩展数位，在高位补原最高位的值。对于负数在高位补 1 不会改变原来的值，见下面的数学归纳法证明。</li>
 </ul>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.19.png" alt=""></p>
-<p>##截断数字</p>
-<p>关于减少数位，丢弃高 w-k 位，截断一个数字可能会改变其值。</p>
+<h2 id="截断数字"><a href="#截断数字" class="headerlink" title="截断数字"></a>截断数字</h2><p>关于减少数位，丢弃高 w-k 位，截断一个数字可能会改变其值。</p>
 <ul>
 <li>对于无符号数 x，截断到 k 位后的值为 x mod 2<sup>k</sup>，因为 w-k 位所表示的值能被 2<sup>k</sup> 整除。</li>
 <li>对于有符号数的补码表示，截断到 k 位后的值为 U2T<sub>w</sub>(x mod 2<sup>k</sup>)。</li>
@@ -336,9 +318,7 @@
 <p>We can see that this problem arises due to the mismatch between data types: in one place the length parameter is signed; in another place it is unsigned. Such mismatches can be a source of bugs and ,at this example shows, can even lead to security vulnerabilities.</p>
 </blockquote>
 <hr>
-<p>#整数运算</p>
-<p>##无符号加法</p>
-<p>我们先把整数加法细分一下：</p>
+<h1 id="整数运算"><a href="#整数运算" class="headerlink" title="整数运算"></a>整数运算</h1><h2 id="无符号加法"><a href="#无符号加法" class="headerlink" title="无符号加法"></a>无符号加法</h2><p>我们先把整数加法细分一下：</p>
 <ul>
 <li>无符号整数加法</li>
 <li>有符号整数加法</li>
@@ -353,8 +333,7 @@
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.22.png" alt=""></p>
 <p>对于阿贝尔群里的每个元素 x，总有一个加法逆元 x’，使得 x + x’ = 0。这里我的理解是，假设把 x 从十进制转换为二进制，假设 x 为 32 位，那么 x’ 就是 0x0 - x，见公式 2.12。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.12.png" alt=""></p>
-<p>##补码加法</p>
-<p>对于有符号整数（补码）加法，能细分出三种情况：</p>
+<h2 id="补码加法"><a href="#补码加法" class="headerlink" title="补码加法"></a>补码加法</h2><p>对于有符号整数（补码）加法，能细分出三种情况：</p>
 <ul>
 <li>a + b &gt; TMax，即和正溢出，最终的和为 a + b - 2<sup>32</sup></li>
 <li>TMin &lt;= a + b &lt;= TMax，即和仍在取值范围</li>
@@ -368,40 +347,34 @@
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.14.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.24.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.25.png" alt=""></p>
-<p>##补码取反</p>
-<p>接下来是整数取反，对于无符号整数，自然不存在取反操作。那么对于有符号整数 t，取反的值，也就是加法逆元，自然是 -t。但 TMin 比较特殊，其加法逆元是 TMin 自身。为了方便阐述，这里取 4 位有符号整数的 TMin = [1000]。要计算 TMin 的加法逆元 TMin’，显然 TMin’ 的低三位均是 0，最高位为 1，这样 TMin + TMin’ = [1000] + [1000] = [10000]，然后把最高位截掉，剩下 [0000]，可见 TMin’ = TMin。另一方面，因为 TMin + TMin = -2<sup>3</sup> - 2<sup>3</sup> = -2<sup>4</sup> 负溢出，我们根据上面的公式 2.14，对于负溢出的和要加上 2<sup>w</sup>，这里 w = 4，所以 TMin + TMin = -2<sup>4</sup> + 2<sup>4</sup> = 0，满足了阿贝尔群的特性。再次得出 TMin 的加法逆元是自身。</p>
+<h2 id="补码取反"><a href="#补码取反" class="headerlink" title="补码取反"></a>补码取反</h2><p>接下来是整数取反，对于无符号整数，自然不存在取反操作。那么对于有符号整数 t，取反的值，也就是加法逆元，自然是 -t。但 TMin 比较特殊，其加法逆元是 TMin 自身。为了方便阐述，这里取 4 位有符号整数的 TMin = [1000]。要计算 TMin 的加法逆元 TMin’，显然 TMin’ 的低三位均是 0，最高位为 1，这样 TMin + TMin’ = [1000] + [1000] = [10000]，然后把最高位截掉，剩下 [0000]，可见 TMin’ = TMin。另一方面，因为 TMin + TMin = -2<sup>3</sup> - 2<sup>3</sup> = -2<sup>4</sup> 负溢出，我们根据上面的公式 2.14，对于负溢出的和要加上 2<sup>w</sup>，这里 w = 4，所以 TMin + TMin = -2<sup>4</sup> + 2<sup>4</sup> = 0，满足了阿贝尔群的特性。再次得出 TMin 的加法逆元是自身。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.15.png" alt=""></p>
 <p>对于求一个 w 位有符号整数 x 二进制表示的加法逆元，方式很简单：</p>
 <ol>
 <li>x = TMin，则加法逆元为 TMin。</li>
 <li>x ≠ TMin，各位取反得到 x’，最后 x’ + 1。因为 x + x’ 会得到 w 位的 [11…1]，再加 1 就得到 w+1 位的 [100…0]，再把最高位截掉，就剩下 w 位的 [00…0]。</li>
 </ol>
-<p>##无符号乘法</p>
-<p>对于 w 位的无符号整数的乘法 x * y = p，p 可能正溢出。因为 p 只保留 w 位，所以根据公式 2.9，只需要 p mod 2<sup>w</sup> 即可。</p>
+<h2 id="无符号乘法"><a href="#无符号乘法" class="headerlink" title="无符号乘法"></a>无符号乘法</h2><p>对于 w 位的无符号整数的乘法 x * y = p，p 可能正溢出。因为 p 只保留 w 位，所以根据公式 2.9，只需要 p mod 2<sup>w</sup> 即可。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.16.png" alt=""></p>
-<p>##补码乘法</p>
-<p>有符号整数的乘法同理。</p>
+<h2 id="补码乘法"><a href="#补码乘法" class="headerlink" title="补码乘法"></a>补码乘法</h2><p>有符号整数的乘法同理。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.17.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.26.png" alt=""></p>
 <p>公式 2.8 证明了为什么 w 位无符号乘法和补码乘法得出的乘积，其二进制表示的低 w 位是一样的，其中 x, y 是补码，x’, y’ 是无符号：</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Equation-2.18.png" alt=""></p>
-<p>##乘以常数</p>
-<blockquote>
+<h2 id="乘以常数"><a href="#乘以常数" class="headerlink" title="乘以常数"></a>乘以常数</h2><blockquote>
 <p>On most machines, the integer multiply instruction is fairly slow, requiring 10 or more clock cycles, whereas other integer operations - such as addition, subtraction, bit-level operations, and shifting - require only 1 clock cycle. As a consequence, one important optimization used by compilers is to attempt to replace multiplications by constant factors with combinations of shift and addition operations. We will first consider the case of multiplying by a power of 2, and then generalize this to arbitrary constants.</p>
 </blockquote>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/multiplying-by-constants.png" alt=""></p>
 <blockquote>
 <p>Given that integer multiplication is much more costly than shifting and adding, many C compilers try to remove many cases where an integer is being multiplied by a constant with combinations of shifting, adding, and subtracting. For example, suppose a program contains the expression x*14. Recognizing that 14 = 2<sup>3</sup> + 2<sup>2</sup> + 2<sup>1</sup>, the compiler can rewrite the multiplication as (x&lt;&lt;3) + (x&lt;&lt;2) + (x&lt;&lt;1), replacing one multiplication with three shifts and two additions.</p>
 </blockquote>
-<p>##除以 2 的幂</p>
-<blockquote>
+<h2 id="除以-2-的幂"><a href="#除以-2-的幂" class="headerlink" title="除以 2 的幂"></a>除以 2 的幂</h2><blockquote>
 <p>Integer division on most machines is even slower than integer multiplication - requiring 30 or more clock cycles. Dividing by a power of 2 can also be performed using shift operations, but we use a right shift rather than a left shift. The two different shifts - logical and arithmetic - serve this purpose for unsigned and two’s-complement numbers, respectively.</p>
 </blockquote>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.27.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.28.png" alt=""></p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.29.png" alt=""></p>
-<p>##关于整数运算的最后思考</p>
-<blockquote>
+<h2 id="关于整数运算的最后思考"><a href="#关于整数运算的最后思考" class="headerlink" title="关于整数运算的最后思考"></a>关于整数运算的最后思考</h2><blockquote>
 <p>As we have seen, the “integer” arithmetic performed by computers is really a form of modular arithmetic.</p>
 <p>We have especially seen that the <em>unsigned</em> data type, while conceptually straightforward, can lead to behaviors that even experienced programmers do not expect.</p>
 </blockquote>
@@ -517,7 +490,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#信息存储"><span class="nav-number">1.</span> <span class="nav-text">信息存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#十六进制表示法"><span class="nav-number">1.1.</span> <span class="nav-text">十六进制表示法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字"><span class="nav-number">1.2.</span> <span class="nav-text">字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据大小"><span class="nav-number">1.3.</span> <span class="nav-text">数据大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻址和字节序"><span class="nav-number">1.4.</span> <span class="nav-text">寻址和字节序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串表示"><span class="nav-number">1.5.</span> <span class="nav-text">字符串表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码表示"><span class="nav-number">1.6.</span> <span class="nav-text">代码表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布尔代数"><span class="nav-number">1.7.</span> <span class="nav-text">布尔代数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言的逻辑操作"><span class="nav-number">1.8.</span> <span class="nav-text">C 语言的逻辑操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言中移位操作"><span class="nav-number">1.9.</span> <span class="nav-text">C 语言中移位操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整数表示"><span class="nav-number">2.</span> <span class="nav-text">整数表示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整数的数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">整数的数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号整数编码"><span class="nav-number">2.2.</span> <span class="nav-text">无符号整数编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有符号整数的补码编码"><span class="nav-number">2.3.</span> <span class="nav-text">有符号整数的补码编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有符号-无符号整数之间的转换"><span class="nav-number">2.4.</span> <span class="nav-text">有符号/无符号整数之间的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言中的有符号-符号整数"><span class="nav-number">2.5.</span> <span class="nav-text">C 语言中的有符号/符号整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展一个数字的位表示"><span class="nav-number">2.6.</span> <span class="nav-text">扩展一个数字的位表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#截断数字"><span class="nav-number">2.7.</span> <span class="nav-text">截断数字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整数运算"><span class="nav-number">3.</span> <span class="nav-text">整数运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号加法"><span class="nav-number">3.1.</span> <span class="nav-text">无符号加法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码加法"><span class="nav-number">3.2.</span> <span class="nav-text">补码加法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码取反"><span class="nav-number">3.3.</span> <span class="nav-text">补码取反</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号乘法"><span class="nav-number">3.4.</span> <span class="nav-text">无符号乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码乘法"><span class="nav-number">3.5.</span> <span class="nav-text">补码乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乘以常数"><span class="nav-number">3.6.</span> <span class="nav-text">乘以常数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#除以-2-的幂"><span class="nav-number">3.7.</span> <span class="nav-text">除以 2 的幂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于整数运算的最后思考"><span class="nav-number">3.8.</span> <span class="nav-text">关于整数运算的最后思考</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

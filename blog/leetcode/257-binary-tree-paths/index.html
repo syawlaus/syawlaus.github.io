@@ -144,8 +144,7 @@
       
 
       
-        <p>#题目</p>
-<p>给定一棵二叉树，返回所有「根节点到叶子节点」的路径。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一棵二叉树，返回所有「根节点到叶子节点」的路径。</p>
 <a id="more"></a>
 <p><strong>示例</strong>：</p>
 <p>给定下面的二叉树：</p>
@@ -159,8 +158,7 @@
 </code></pre><p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Definition for a binary tree node.</div><div class="line"> * struct TreeNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     TreeNode *left;</div><div class="line"> *     TreeNode *right;</div><div class="line"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</div><div class="line"> * &#125;;</div><div class="line"> */</div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; binaryTreePaths(TreeNode *root) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>思路是使用<a href="https://zh.wikipedia.org/zh-hans/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2" target="_blank" rel="external">深度优先搜索</a>（DFS）的<a href="https://zh.wikipedia.org/wiki/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86#.E5.85.88.E5.BA.8F.E9.81.8D.E5.8E.86.28Pre-Order_Traversal.29" target="_blank" rel="external">先序遍历</a>。用一个 struct 把 TreeNode 及其 ParentNode 封装起来。用 DFS 填充各个 ParentNode。然后从各个叶子节点开始，往上回溯到根节点，’每次回溯就能得出一条「根节点到叶子节点的路径」。但 binaryTreePaths 接收的是 TreeNode 数据，暂时想不到什么办法通过 TreeNode 获取到其对应的 ParentNode，所以这个思路的实现先搁置。</p>
 <p>另一个思路是，利用二叉树的递归结构。对于 root 来说，假设已经有了左右子树的两个路径 <code>vector&lt;string&gt;</code>，以示例的二叉树来说，左子树的路径 <code>vector&lt;string&gt; = {&quot;2-&gt;5&quot;}</code>，右子树的路径 <code>vector&lt;string&gt; = {&quot;3&quot;}</code>，那么在两个路径 <code>vector&lt;string&gt;</code> 中，添加上 root 即可。如果 root 的左右子节点为 NULL，那么 <code>vector&lt;string&gt; = { root-&gt;val }</code>。</p>
@@ -279,7 +277,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

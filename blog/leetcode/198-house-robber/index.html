@@ -144,15 +144,13 @@
       
 
       
-        <p>#题目</p>
-<p>你是一个专业的强盗，计划抢劫街上的房子。每个房子里都藏有一些钱，阻止你抢劫的唯一因素是，相邻的房子连接了安全系统，如果相邻的两个房子在同一晚被抢劫，系统会自动报警。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>你是一个专业的强盗，计划抢劫街上的房子。每个房子里都藏有一些钱，阻止你抢劫的唯一因素是，相邻的房子连接了安全系统，如果相邻的两个房子在同一晚被抢劫，系统会自动报警。</p>
 <p>给定一个非负整数列表，每个非负整数代表每个房子藏有的钱。计算出你在不惊动警方的情况下，能抢劫的金额最大值。</p>
 <a id="more"></a>
 <p><strong>难度</strong>：容易</p>
 <p><strong>编程语言</strong>：C++</p>
 <hr>
-<p>#分析</p>
-<p>程序框架为：</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>程序框架为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Solution &#123;</div><div class="line">public:</div><div class="line">    int rob(vector&lt;int&gt;&amp; nums) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>我们假设 nums = { 1, 2, 3, 4, 5 }：</p>
 <ul>
@@ -204,8 +202,7 @@
  85, 83, 123, 120, 131, 203, 219, 10, 82, 35, 120, 180, 
  249, 106, 37, 169, 225, 54, 103, 55, 166, 124]
 </code></pre><hr>
-<p>#时间复杂度</p>
-<p>我们分析一下上面代码的时间复杂度，rob(a, b, c, d, …) = max(a + rob(c, d, …), b + rob(d, e, …))。我们把上面算法对于有 n 个数据时的运行时间设为 T(n)，那么可得出计算时间复杂度的递推方程 T(n) = max(T(n-2), T(n-3))，即 T(n) = T(n-2) + T(n-3) + O(1)。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>我们分析一下上面代码的时间复杂度，rob(a, b, c, d, …) = max(a + rob(c, d, …), b + rob(d, e, …))。我们把上面算法对于有 n 个数据时的运行时间设为 T(n)，那么可得出计算时间复杂度的递推方程 T(n) = max(T(n-2), T(n-3))，即 T(n) = T(n-2) + T(n-3) + O(1)。</p>
 <pre><code>T(n) = T(n-2) + T(n-3) + O(1)
      = T(n-4) + T(n-5) + O(1) +     // T(n-2)
        T(n-5) + T(n-6) + O(1) +     // T(n-3)
@@ -239,8 +236,7 @@
 </code></pre><p>所以 T(n) = 2*T(n-3) + O(1) 的时间复杂度为 O(2^(n/3))。</p>
 <p>所以 T(n) = T(n-2) + T(n-3) + O(1) 的时间复杂度可简化为 O(2^n)。</p>
 <hr>
-<p>#改进</p>
-<p>改进的思路很简单，就是把各个计算结果记录下来，那么下次就能直接使用无需重复计算。以 rob(1, 2, 3, 4, 5) 为例。</p>
+<h1 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h1><p>改进的思路很简单，就是把各个计算结果记录下来，那么下次就能直接使用无需重复计算。以 rob(1, 2, 3, 4, 5) 为例。</p>
 <p>以 rob(1, 2, 3, 4, 5) 为例，用 R(n) 表示 rob(1, 2, …, n)，那么：</p>
 <ul>
 <li>R(1) = 1</li>
@@ -367,7 +363,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时间复杂度"><span class="nav-number">3.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#改进"><span class="nav-number">4.</span> <span class="nav-text">改进</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
