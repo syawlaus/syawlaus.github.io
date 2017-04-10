@@ -1,0 +1,931 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> 《3D 游戏编程大师技巧》第 3 章学习笔记 // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              《3D 游戏编程大师技巧》第 3 章学习笔记
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-06-30
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/计算机图形学/">计算机图形学</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>最近在学习《3D 游戏编程大师技巧》第 3 章，摘抄一些我认为重要的信息，并添加上自己的一些思考。</p>
+<a id="more"></a>
+<blockquote>
+<p>本章将建立一个基于软件接口的虚拟计算机系统，它将支持线性 8/16 位帧缓存（双缓存）／输入设备以及声音和音乐处理功能。有了这个接口，本书剩余部分便可以将重点放在 3D 数学、图形和游戏编程上。</p>
+<p>只要能够有一个支持输入、声音和音乐的双缓存、线性寻址图形系统通信，谁会在乎它的工作原理呢？我们的兴趣在于 3D 图形编程，而不是低级设置。由于我们 99% 的工作都与光栅化、纹理映射、光照、隐藏面消除等相关，所以这种方法是可行的。</p>
+<p>创建一台通用虚拟计算机，再在上面进行 3D 图形试验和编写游戏。</p>
+<p>我的最低底线是，要移植 3D 内容，只要能够创建双缓存显示，一切都将正常工作。</p>
+<p>请牢记，只要理解了我提供的 API，将不需要了解有关 Win32 和 DirectX 的任何知识，因为我们对 3D 图形所做的任何处理都是由这些 API、帧缓存和 C/C++ 代码组成的。</p>
+<p>虚拟计算机的主旨在于帮助我们将精力集中在 3D 而不是（Win32 和 DirectX）设置细节上。</p>
+<p>我过去常说：“只要能够绘制像素和读取键盘输入，就能够编写 DOOM。” 的确是这样，您只需能够访问帧缓存，其它一切都很简单。由于本书主要介绍软件 3D 编程和光栅化，因此所有算法都没有使用任何形式的 3D 加速。我们将绘制多边形，进行光照计算，对帧缓存中的每个像素进行其它处理。</p>
+</blockquote>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.1.png" alt=""></p>
+<blockquote>
+<p>注意：您可能会说，在可以使用硬件的情况下，为什么使用软件呢？原因有 3 个：首先，要成为优秀的图形编程人员，必须知道如何自动动手来完成各项任务；其次，了解工作原理有助于理解硬件加速；最后，谁来编写硬件代码呢？</p>
+<p>我们将设计这样一个系统，即基于一个可见的主显示缓存和一个不可见的离屏辅显示缓存。这两个缓存都应该是可线性寻址的。</p>
+</blockquote>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.2.png" alt=""></p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.3.png" alt=""></p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.4.png" alt=""></p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.5.png" alt=""></p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.6.png" alt=""></p>
+<blockquote>
+<p>这是一个非常有用的练习。基本上，我们设计一个可移植的图形系统。彩这些思想，将能够设计出这样的游戏引擎，即通过实现少数几个函数的“内部细节”，就能够将它移植到其它平台。</p>
+<p>我们将逐层建立游戏控制台，直到实现虚拟计算机。首先我们将从方程中消除 Windows。</p>
+<p>第一版本的游戏控制台应执行下列任务：</p>
+<ol>
+<li>打开窗口。</li>
+<li>调用用户定义的初始化函数 Game_Init()。</li>
+<li>进入到主 Windows 事件循环，处理消息，然后返回。</li>
+<li>调用用户定义的主工作函数 Game_Main()，它执行一次游戏逻辑循环，然后返回。</li>
+<li>回到第 3 步，直到用户关闭应用程序。</li>
+<li>调用用户定义的关闭函数 Game_Shutdown()，它执行清除工作。</li>
+</ol>
+<p>如果能够实现一个执行步骤 1～6 中功能的外壳程序，则完全不用考虑 Windows，从而将精力集中在函数 Game_Init()、Game_Main()、Game_Shutdown() 上。</p>
+</blockquote>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.7.png" alt=""></p>
+<p>我们在本书<a href="syawlaus.github.io/blog/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter2-notes/">第 2 章学习笔记</a>代码的基础上，构造第一版本的游戏控制台。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* includes</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;    // include the basic windows header file</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* consts</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> INITGUID</span></div><div class="line"><span class="comment">// 用于 Windows 接口的常量</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WINDOW_CLASS_NAME <span class="meta-string">"WIN3DCLASS"</span>  <span class="comment">// Windows 类名称</span></span></div><div class="line"><span class="comment">// 用于以方式读取键盘输入</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) &amp; 0x8000) ? 1 : 0)</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*************************************************************************</span></div><div class="line">* global variables</div><div class="line">*/</div><div class="line">HWND main_window_handle = <span class="literal">NULL</span>;     <span class="comment">// 用于存储窗口句柄</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*************************************************************************</span></div><div class="line">* function prototypes</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createAndShowWindow</span><span class="params">(HINSTANCE hInstance, <span class="keyword">int</span> nCmdShow)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerWindow</span><span class="params">(HINSTANCE hInstance)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createWindow</span><span class="params">(HINSTANCE hInstance)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">showWindow</span><span class="params">(HWND hWnd, <span class="keyword">int</span> nCmdShow)</span></span>;</div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WindowProc</span><span class="params">(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)</span></span>;</div><div class="line"><span class="comment">// 游戏控制台</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Init</span><span class="params">(<span class="keyword">void</span>* param = <span class="literal">NULL</span>)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Shutdown</span><span class="params">(<span class="keyword">void</span>* param = <span class="literal">NULL</span>)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Main</span><span class="params">(<span class="keyword">void</span>* param = <span class="literal">NULL</span>)</span></span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* function definitions</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createAndShowWindow</span><span class="params">(HINSTANCE hInstance, <span class="keyword">int</span> nCmdShow)</span> </span>&#123;</div><div class="line">    registerWindow(hInstance);</div><div class="line">    createWindow(hInstance);    <span class="comment">// 将窗口句柄和实例存储到全局变量中</span></div><div class="line">    showWindow(main_window_handle, nCmdShow);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerWindow</span><span class="params">(HINSTANCE hInstance)</span> </span>&#123;</div><div class="line">    <span class="comment">// this struct holds information for the window class</span></div><div class="line">    <span class="comment">// the 'EX' is there to indicate that this is the extended version of the struct WNDCLASS</span></div><div class="line">    WNDCLASSEX winclass;</div><div class="line"></div><div class="line">    <span class="comment">// clear out the window class for use</span></div><div class="line">    <span class="comment">// ZeroMemory() is a function that initializes an entire block of memory to NULL.</span></div><div class="line">    <span class="comment">// The address provided in the first parameter sets where the block is to start.</span></div><div class="line">    <span class="comment">// The second parameter indicates how long the block is.</span></div><div class="line">    ZeroMemory(&amp;winclass, <span class="keyword">sizeof</span>(WNDCLASSEX));</div><div class="line"></div><div class="line">    <span class="comment">// fill in the struct with the needed information</span></div><div class="line">    winclass.cbSize = <span class="keyword">sizeof</span>(WNDCLASSEX);</div><div class="line">    winclass.style = CS_HREDRAW |                                   <span class="comment">// What these two values do is tell Windows to redraw the window if it is moved vertically or horizontally.</span></div><div class="line">                     CS_VREDRAW |</div><div class="line">                     CS_OWNDC |</div><div class="line">                     CS_DBLCLKS;</div><div class="line">    winclass.lpfnWndProc = WindowProc;                              <span class="comment">// "lpfnWndProc" tells the window class what function to use ("WindowProc()") when it gets a message from Windows</span></div><div class="line">    winclass.cbClsExtra = <span class="number">0</span>;</div><div class="line">    winclass.cbWndExtra = <span class="number">0</span>;</div><div class="line">    winclass.hInstance = hInstance;                                 <span class="comment">// a handle to a copy of our application</span></div><div class="line">    winclass.hIcon = LoadIcon(<span class="literal">NULL</span>, IDI_APPLICATION);</div><div class="line">    winclass.hCursor = LoadCursor(<span class="literal">NULL</span>, IDC_ARROW);                 <span class="comment">// stores the default mouse image for the window class</span></div><div class="line">    winclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);   <span class="comment">// contains the "brush" (is used to indicate the color of the background) that will be used to color the background of our window. </span></div><div class="line">    winclass.lpszMenuName = <span class="literal">NULL</span>;</div><div class="line">    winclass.lpszClassName = WINDOW_CLASS_NAME;                     <span class="comment">// the name of the window class we are building.</span></div><div class="line"></div><div class="line">    RegisterClassEx(&amp;winclass);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createWindow</span><span class="params">(HINSTANCE hInstance)</span> </span>&#123;</div><div class="line">    <span class="comment">// the handle for the window, filled by a function</span></div><div class="line">    HWND hWnd = CreateWindowEx(<span class="literal">NULL</span>,</div><div class="line">                               WINDOW_CLASS_NAME,       <span class="comment">// name of the window class</span></div><div class="line">                               <span class="string">"Your Basic Window"</span>,     <span class="comment">// title of the window</span></div><div class="line">                               WS_OVERLAPPEDWINDOW,     <span class="comment">// window style</span></div><div class="line">                               <span class="number">0</span>,                       <span class="comment">// x-position of the window</span></div><div class="line">                               <span class="number">0</span>,                       <span class="comment">// y-position of the window</span></div><div class="line">                               <span class="number">400</span>,                     <span class="comment">// width of the window</span></div><div class="line">                               <span class="number">400</span>,                     <span class="comment">// height of the window</span></div><div class="line">                               <span class="literal">NULL</span>,                    <span class="comment">// we have no parent window, NULL</span></div><div class="line">                               <span class="literal">NULL</span>,                    <span class="comment">// we aren't using menus, NULL</span></div><div class="line">                               hInstance,               <span class="comment">// application handle</span></div><div class="line">                               <span class="literal">NULL</span>);                   <span class="comment">// used with multiple windows, NULL</span></div><div class="line"></div><div class="line">    main_window_handle = hWnd;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">showWindow</span><span class="params">(HWND hWnd, <span class="keyword">int</span> nCmdShow)</span> </span>&#123;</div><div class="line">    ShowWindow(hWnd, nCmdShow);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Init</span><span class="params">(<span class="keyword">void</span>* param)</span> </span>&#123;</div><div class="line">    <span class="comment">// 所有游戏初始化工作都在这个函数中执行</span></div><div class="line"></div><div class="line">    <span class="comment">// 成功返回</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Shutdown</span><span class="params">(<span class="keyword">void</span>* param)</span> </span>&#123;</div><div class="line">    <span class="comment">// 在这个函数中关闭游戏并释放为游戏分配的所有资源</span></div><div class="line"></div><div class="line">    <span class="comment">// 成功返回</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Main</span><span class="params">(<span class="keyword">void</span>* param)</span> </span>&#123;</div><div class="line">    <span class="comment">// 这是游戏的核心，将不断被实时调用</span></div><div class="line">    <span class="comment">// 它类似于 C 语言的 main()，所有游戏调用都是在这里进行的</span></div><div class="line"></div><div class="line">    <span class="comment">// 游戏逻辑</span></div><div class="line"></div><div class="line">    <span class="comment">// 检查用户是否要退出</span></div><div class="line">    <span class="keyword">if</span> (KEY_DOWN(VK_ESCAPE)) &#123;</div><div class="line">        PostMessage(main_window_handle, WM_DESTROY, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* main entry</div><div class="line">*/</div><div class="line"><span class="comment">// the entry point for any Windows program</span></div><div class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hInstance,</span></span></div><div class="line">    HINSTANCE hPrevInstance,</div><div class="line">    LPSTR lpCmdLine,</div><div class="line">    <span class="keyword">int</span> nShowCmd) &#123;</div><div class="line"></div><div class="line">    <span class="comment">// 创建并显示 Windows 窗口</span></div><div class="line">    createAndShowWindow(hInstance, nShowCmd);</div><div class="line"></div><div class="line">    <span class="comment">// 执行游戏控制台特有的初始化</span></div><div class="line">    Game_Init();</div><div class="line"></div><div class="line">    MSG msg;</div><div class="line">    <span class="comment">// 进入主事件循环</span></div><div class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">        <span class="comment">// 检测消息队列中是否有消息，如果有，读取它</span></div><div class="line">        <span class="keyword">if</span> (PeekMessage(&amp;msg, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="number">0</span>, PM_REMOVE)) &#123;</div><div class="line"></div><div class="line">            <span class="comment">// 检测是否是退出消息</span></div><div class="line">            <span class="keyword">if</span> (msg.message = WM_QUIT) &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="comment">// 转换加速键</span></div><div class="line">            TranslateMessage(&amp;msg);</div><div class="line"></div><div class="line">            <span class="comment">// 将消息发送给 Window proc</span></div><div class="line">            DispatchMessage(&amp;msg);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 主游戏处理逻辑</span></div><div class="line">        Game_Main();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 关闭游戏并释放所有资源</span></div><div class="line">    Game_Shutdown();</div><div class="line"></div><div class="line">    <span class="comment">// 返回到 Windows 操作系统</span></div><div class="line">    <span class="keyword">return</span> (msg.wParam);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// the main message handler for the program</span></div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WindowProc</span><span class="params">(HWND hWnd,</span></span></div><div class="line">                            UINT message,</div><div class="line">                            WPARAM wParam,</div><div class="line">                            LPARAM lParam) &#123;</div><div class="line"></div><div class="line">    <span class="comment">// 这是系统的主消d息处理函数</span></div><div class="line">    PAINTSTRUCT paintStruct;    <span class="comment">// 用于 WM_PAINT</span></div><div class="line">    HDC hdc;                    <span class="comment">// Handle of Device Context，设备场景句柄</span></div><div class="line"></div><div class="line">    <span class="comment">// sort through and find what code to run for the message given</span></div><div class="line">    <span class="keyword">switch</span> (message) &#123;</div><div class="line">    <span class="keyword">case</span> WM_CREATE: &#123;</div><div class="line">        <span class="comment">// 执行初始化的代码</span></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">case</span> WM_PAINT: &#123;</div><div class="line">        <span class="comment">// 开始绘制</span></div><div class="line">        hdc = BeginPaint(hWnd, &amp;paintStruct);</div><div class="line">        <span class="comment">// 完成绘制</span></div><div class="line">        EndPaint(hWnd, &amp;paintStruct);</div><div class="line">        <span class="comment">// 成功返回</span></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">case</span> WM_DESTROY: &#123;      <span class="comment">// this message is read when the window is closed</span></div><div class="line">        PostQuitMessage(<span class="number">0</span>); <span class="comment">// close the application entirely</span></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Handle any messages the switch statement didn't</span></div><div class="line">    <span class="keyword">return</span> DefWindowProc(hWnd, message, wParam, lParam);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>（上面的代码）创建一个窗口，调用 Game_Init()，在每次事件循环中调用 Game_Main()。最后，用户关闭该窗口时，将调用 Game_Shutdown()。</p>
+<p>您只需要将全部游戏功能加入到这 3 个函数中，仅此而已——我们已经将一个 Windows 应用程序抽象成 3 个函数调用，其它工作都已经完成。</p>
+<p>现在需要 DirectX 接口来模拟虚拟计算机，并提供基本的双缓存图形系统以及声音和输入功能。</p>
+<p>如图 3.9 所示，T3DLIB1 是一个相当简单的 2D 引擎。实质上，它是一个 2D、8/16 位颜色、双缓存的 DirectX 引擎，支持任何分辨率和裁剪。该引擎还支持窗口模式和全屏模式，并负责所有设置工作。因此，不管是在窗口模式下还是在全屏模式下，都可以将像素写入辅助缓存，程序逻辑负责将辅助缓存复制到主缓存的处理细节。</p>
+</blockquote>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/figure-3.9.png" alt=""></p>
+<p>现在我们利用作者编写的 T3DLIB 创建第二版本的游戏控制台。首先我们需要：</p>
+<ul>
+<li>把 t3dlib1.h、t3dlib2.h、t3dlib3.h 添加到工程的 \Header Files 目录</li>
+<li>把 t3dlib1.lib、t3dlib2.lib、t3dlib3.lib 添加到工程的 \Source Files 目录</li>
+</ul>
+<p>工程目录见下图：</p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/t3dconsole-solution-explorer.png" alt=""></p>
+<p>然后在 Project Properties -&gt; Configuration Properties -&gt; VC++ Directores -&gt; Include Directores 和 Library Directores 添加 DirectX9 的对应路径，其中 \DirectX9 是从本书光盘资源的 \DirectX\dx9sdkcp.exe 直接解压而来。见下图：</p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/t3dconsole-vcpp-directories.png" alt=""></p>
+<p>然后在 Project Properties -&gt; Configuration Properties -&gt; Linker -&gt; Input -&gt; Additional Dependencies 添加：</p>
+<ul>
+<li>ddraw.lib</li>
+<li>dsound.lib</li>
+<li>dinput.lib</li>
+<li>dinput8.lib</li>
+<li>winmm.lib</li>
+</ul>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/t3dconsole-linker-input-additional-dependencies.png" alt=""></p>
+<p>接下来就是第二版本控制台的完整代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* includes</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;    // include the basic windows header file</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windowsx.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mmsystem.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt; // include important C/C++ stuff</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;conio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;malloc.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdarg.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;io.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ddraw.h&gt;  // directX includes</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dsound.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dmksctrl.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dmusici.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dmusicc.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dmusicf.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dinput.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"T3DLIB1.h"</span>    <span class="comment">// DirectDraw 模块</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"T3DLIB2.h"</span>    <span class="comment">// DirectInput 模块</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"T3DLIB3.h"</span>    <span class="comment">// DirectSound / DirectMusic 模块</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* consts</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> INITGUID    <span class="comment">// 确保所有的 COM　接口可用，也可以不这样做，而是包含 .lib 文件 dxguid.lib</span></span></div><div class="line"><span class="comment">// 用于 Windows 接口的常量</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WINDOW_CLASS_NAME <span class="meta-string">"WIN3DCLASS"</span>  <span class="comment">// Windows 类名称</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WINDOW_TITLE <span class="meta-string">"T3D Graphics Console Version 2.0"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WINDOW_WIDTH  640</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WINDOW_HEIGHT 480</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WINDOW_BPP    16    <span class="comment">// 窗口的位深（8、16、24 等）</span></span></div><div class="line">                            <span class="comment">// 如果采用窗口模式，但不是全屏，位深必须与系统位深相同</span></div><div class="line">                            <span class="comment">// 另外，如果位深为 8 位，将创建一个调色板，并将其与应用程序关联起来</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> WINDOWED_APP  1     <span class="comment">// 0 全屏模式，1 窗口模式</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*************************************************************************</span></div><div class="line">* global variables</div><div class="line">*/</div><div class="line">HWND main_window_handle = <span class="literal">NULL</span>;     <span class="comment">// 用于存储窗口句柄</span></div><div class="line">HINSTANCE main_instance = <span class="literal">NULL</span>;     <span class="comment">// 用于存储实例</span></div><div class="line"><span class="keyword">char</span> buffer[<span class="number">256</span>];                   <span class="comment">// 用于打印文本</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*************************************************************************</span></div><div class="line">* function prototypes</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createAndShowWindow</span><span class="params">(HINSTANCE hInstance, <span class="keyword">int</span> nCmdShow)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerWindow</span><span class="params">(HINSTANCE hInstance)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createWindow</span><span class="params">(HINSTANCE hInstance)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">adjustClientSizeToRequestedSize</span><span class="params">()</span></span>;</div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WindowProc</span><span class="params">(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)</span></span>;</div><div class="line"><span class="comment">// 游戏控制台</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Init</span><span class="params">(<span class="keyword">void</span>* params = <span class="literal">NULL</span>)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Shutdown</span><span class="params">(<span class="keyword">void</span>* params = <span class="literal">NULL</span>)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Main</span><span class="params">(<span class="keyword">void</span>* params = <span class="literal">NULL</span>)</span></span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* function definitions</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createAndShowWindow</span><span class="params">(HINSTANCE hInstance, <span class="keyword">int</span> nCmdShow)</span> </span>&#123;</div><div class="line">    registerWindow(hInstance);</div><div class="line">    createWindow(hInstance);    <span class="comment">// 将窗口句柄和实例存储到全局变量中</span></div><div class="line">    ShowWindow(main_window_handle, SW_SHOW);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerWindow</span><span class="params">(HINSTANCE hInstance)</span> </span>&#123;</div><div class="line">    <span class="comment">// this struct holds information for the window class</span></div><div class="line">    <span class="comment">// the 'EX' is there to indicate that this is the extended version of the struct WNDCLASS</span></div><div class="line">    WNDCLASSEX winclass;</div><div class="line"></div><div class="line">    <span class="comment">// clear out the window class for use</span></div><div class="line">    <span class="comment">// ZeroMemory() is a function that initializes an entire block of memory to NULL.</span></div><div class="line">    <span class="comment">// The address provided in the first parameter sets where the block is to start.</span></div><div class="line">    <span class="comment">// The second parameter indicates how long the block is.</span></div><div class="line">    ZeroMemory(&amp;winclass, <span class="keyword">sizeof</span>(WNDCLASSEX));</div><div class="line"></div><div class="line">    <span class="comment">// fill in the struct with the needed information</span></div><div class="line">    winclass.cbSize = <span class="keyword">sizeof</span>(WNDCLASSEX);</div><div class="line">    winclass.style = CS_HREDRAW |                                   <span class="comment">// What these two values do is tell Windows to redraw the window if it is moved vertically or horizontally.</span></div><div class="line">                     CS_VREDRAW |</div><div class="line">                     CS_OWNDC |</div><div class="line">                     CS_DBLCLKS;</div><div class="line">    winclass.lpfnWndProc = WindowProc;                              <span class="comment">// "lpfnWndProc" tells the window class what function to use ("WindowProc()") when it gets a message from Windows</span></div><div class="line">    winclass.cbClsExtra = <span class="number">0</span>;</div><div class="line">    winclass.cbWndExtra = <span class="number">0</span>;</div><div class="line">    winclass.hInstance = hInstance;                                 <span class="comment">// a handle to a copy of our application</span></div><div class="line">    winclass.hIcon = LoadIcon(<span class="literal">NULL</span>, IDI_APPLICATION);</div><div class="line">    winclass.hCursor = LoadCursor(<span class="literal">NULL</span>, IDC_ARROW);                 <span class="comment">// stores the default mouse image for the window class</span></div><div class="line">    winclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);   <span class="comment">// contains the "brush" (is used to indicate the color of the background) that will be used to color the background of our window. </span></div><div class="line">    winclass.lpszMenuName = <span class="literal">NULL</span>;</div><div class="line">    winclass.lpszClassName = WINDOW_CLASS_NAME;                     <span class="comment">// the name of the window class we are building.</span></div><div class="line"></div><div class="line">    RegisterClassEx(&amp;winclass);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createWindow</span><span class="params">(HINSTANCE hInstance)</span> </span>&#123;</div><div class="line">    <span class="comment">// the handle for the window, filled by a function</span></div><div class="line">    HWND hWnd = CreateWindowEx(<span class="literal">NULL</span>,</div><div class="line">                               WINDOW_CLASS_NAME,                              <span class="comment">// name of the window class</span></div><div class="line">                               WINDOW_TITLE,                                   <span class="comment">// title of the window</span></div><div class="line">                               (WINDOWED_APP ? (WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION) : (WS_POPUP | WS_VISIBLE)),  <span class="comment">// window style</span></div><div class="line">                               <span class="number">0</span>,                                              <span class="comment">// x-position of the window</span></div><div class="line">                               <span class="number">0</span>,                                              <span class="comment">// y-position of the window</span></div><div class="line">                               WINDOW_WIDTH,                                   <span class="comment">// width of the window</span></div><div class="line">                               WINDOW_HEIGHT,                                  <span class="comment">// height of the window</span></div><div class="line">                               <span class="literal">NULL</span>,                                           <span class="comment">// we have no parent window, NULL</span></div><div class="line">                               <span class="literal">NULL</span>,                                           <span class="comment">// we aren't using menus, NULL</span></div><div class="line">                               hInstance,                                      <span class="comment">// application handle</span></div><div class="line">                               <span class="literal">NULL</span>);                                          <span class="comment">// used with multiple windows, NULL</span></div><div class="line"></div><div class="line">    <span class="comment">// 将窗口句柄和实例存储到全局变量中</span></div><div class="line">    main_window_handle = hWnd;</div><div class="line">    main_instance = hInstance;</div><div class="line"></div><div class="line">    <span class="comment">// 调整窗口大小，使 client_size 为 width * height</span></div><div class="line">    adjustClientSizeToRequestedSize();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">adjustClientSizeToRequestedSize</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (WINDOWED_APP) &#123;</div><div class="line">        <span class="comment">// 调整窗口的大小，使 client_size 的大小等于请求的大小</span></div><div class="line">        <span class="comment">// 如果应该程序为窗口模式时，将由边框和控件调整</span></div><div class="line">        <span class="comment">// 应用程序不是窗口模式时，无需调整</span></div><div class="line">        RECT window_rect = &#123; <span class="number">0</span>, <span class="number">0</span>, WINDOW_WIDTH - <span class="number">1</span>, WINDOW_HEIGHT - <span class="number">1</span> &#125;;</div><div class="line"></div><div class="line">        <span class="comment">// 调用函数来调整 window_rect</span></div><div class="line">        AdjustWindowRectEx(&amp;window_rect,</div><div class="line">                           GetWindowStyle(main_window_handle),</div><div class="line">                           GetMenu(main_window_handle) != <span class="literal">NULL</span>,</div><div class="line">                           GetWindowExStyle(main_window_handle));</div><div class="line"></div><div class="line">        <span class="comment">// 将 client_size 偏移量保存到全局变量中，因为 DDraw_Flip() 要使用它们</span></div><div class="line">        window_client_x0 = -window_rect.left;</div><div class="line">        window_client_y0 = -window_rect.top;</div><div class="line"></div><div class="line">        <span class="comment">// 调用 MoveWindow() 来移动窗口</span></div><div class="line">        MoveWindow(main_window_handle,</div><div class="line">                   <span class="number">0</span>,</div><div class="line">                   <span class="number">0</span>,</div><div class="line">                   window_rect.right - window_rect.left,   <span class="comment">// 宽度</span></div><div class="line">                   window_rect.bottom - window_rect.top,   <span class="comment">// 高度</span></div><div class="line">                   FALSE);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Init</span><span class="params">(<span class="keyword">void</span>* params)</span> </span>&#123;</div><div class="line">    <span class="comment">// 所有游戏初始化工作都在这个函数中执行</span></div><div class="line"></div><div class="line">    <span class="comment">// 启动 DirectDraw</span></div><div class="line">    DDraw_Init(WINDOW_WIDTH,</div><div class="line">               WINDOW_HEIGHT,</div><div class="line">               WINDOW_BPP,</div><div class="line">               WINDOWED_APP);</div><div class="line"></div><div class="line">    <span class="comment">// 初始化 DirectInput</span></div><div class="line">    DInput_Init();</div><div class="line"></div><div class="line">    <span class="comment">// 接管键盘</span></div><div class="line">    DInput_Init_Keyboard();</div><div class="line"></div><div class="line">    <span class="comment">// 在这里加入接管其它 DirectInput 设备的函数调用...</span></div><div class="line"></div><div class="line">    <span class="comment">// 初始化 DirectSound 和 DirectMusic</span></div><div class="line">    DSound_Init();</div><div class="line">    DMusic_Init();</div><div class="line"></div><div class="line">    <span class="comment">// 隐藏鼠标</span></div><div class="line">    ShowCursor(FALSE);</div><div class="line"></div><div class="line">    <span class="comment">// 随机数生成器</span></div><div class="line">    srand(Start_Clock());</div><div class="line"></div><div class="line">    <span class="comment">// 在这里加入初始化代码...</span></div><div class="line"></div><div class="line">    <span class="comment">// 成功返回</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Shutdown</span><span class="params">(<span class="keyword">void</span>* params)</span> </span>&#123;</div><div class="line">    <span class="comment">// 在这个函数中关闭游戏并释放为游戏分配的所有资源</span></div><div class="line"></div><div class="line">    <span class="comment">// 关闭一切</span></div><div class="line"></div><div class="line">    <span class="comment">// 在这里加入释放为游戏分配的资源的代码...</span></div><div class="line"></div><div class="line">    <span class="comment">// 关闭 DirectSound</span></div><div class="line">    DSound_Stop_All_Sounds();</div><div class="line">    DSound_Delete_All_Sounds();</div><div class="line">    DSound_Shutdown();</div><div class="line"></div><div class="line">    <span class="comment">// 关闭 DirectMusic</span></div><div class="line">    DMusic_Delete_All_MIDI();</div><div class="line">    DMusic_Shutdown();</div><div class="line"></div><div class="line">    <span class="comment">// 释放所有输出设备</span></div><div class="line">    DInput_Release_Keyboard();</div><div class="line"></div><div class="line">    <span class="comment">// 关闭 DirectInput</span></div><div class="line">    DInput_Shutdown();</div><div class="line"></div><div class="line">    <span class="comment">// 最后关闭 DirectDraw</span></div><div class="line">    DDraw_Shutdown();</div><div class="line"></div><div class="line">    <span class="comment">// 成功返回</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Game_Main</span><span class="params">(<span class="keyword">void</span>* params)</span> </span>&#123;</div><div class="line">    <span class="comment">// 这是游戏核心，将不断地被实时调用</span></div><div class="line">    <span class="comment">// 它类似于 C 语言中的 main()，所有游戏调用都是在这里进行的</span></div><div class="line"></div><div class="line">    <span class="keyword">int</span> index;  <span class="comment">// 循环变量</span></div><div class="line"></div><div class="line">    <span class="comment">// 启动定时时钟</span></div><div class="line">    Start_Clock();</div><div class="line"></div><div class="line">    <span class="comment">// 清空缓存</span></div><div class="line">    DDraw_Fill_Surface(lpddsback, <span class="number">0</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 读取键盘和其它设备输入</span></div><div class="line">    DInput_Read_Keyboard();</div><div class="line"></div><div class="line">    <span class="comment">// 在这里加入游戏逻辑代码...</span></div><div class="line"></div><div class="line">    <span class="comment">// 交换缓存</span></div><div class="line">    DDraw_Flip();</div><div class="line"></div><div class="line">    <span class="comment">// 同步到 30 帧/秒</span></div><div class="line">    Wait_Clock(<span class="number">30</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 检查用户是否要退出</span></div><div class="line">    <span class="keyword">if</span> (KEY_DOWN(VK_ESCAPE) ||</div><div class="line">        keyboard_state[DIK_ESCAPE]) &#123;</div><div class="line">        PostMessage(main_window_handle, WM_DESTROY, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* main entry</div><div class="line">*/</div><div class="line"><span class="comment">// the entry point for any Windows program</span></div><div class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hInstance,</span></span></div><div class="line">                   HINSTANCE hPrevInstance,</div><div class="line">                   LPSTR lpCmdLine,</div><div class="line">                   <span class="keyword">int</span> nShowCmd) &#123;</div><div class="line"></div><div class="line">    <span class="comment">// 创建并显示 Windows 窗口</span></div><div class="line">    createAndShowWindow(hInstance, nShowCmd);</div><div class="line"></div><div class="line">    <span class="comment">// 执行游戏控制台特有的初始化</span></div><div class="line">    Game_Init();</div><div class="line"></div><div class="line">    <span class="comment">// 进入主事件循环</span></div><div class="line">    MSG msg;</div><div class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line"></div><div class="line">        <span class="comment">// 检测消息队列中是否有消息，如果有，读取它</span></div><div class="line">        <span class="keyword">if</span> (PeekMessage(&amp;msg, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="number">0</span>, PM_REMOVE)) &#123;</div><div class="line"></div><div class="line">            <span class="comment">// 检测是否是退出消息</span></div><div class="line">            <span class="keyword">if</span> (msg.message == WM_QUIT) &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="comment">// 转换加速键</span></div><div class="line">            TranslateMessage(&amp;msg);</div><div class="line"></div><div class="line">            <span class="comment">// 将消息发送给 Window proc</span></div><div class="line">            DispatchMessage(&amp;msg);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 主游戏处理逻辑</span></div><div class="line">        Game_Main();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 关闭游戏并释放所有资源</span></div><div class="line">    Game_Shutdown();</div><div class="line"></div><div class="line">    <span class="comment">// 返回到 Windows 操作系统</span></div><div class="line">    <span class="keyword">return</span> (msg.wParam);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// the main message handler for the program</span></div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WindowProc</span><span class="params">(HWND hWnd,</span></span></div><div class="line">                            UINT message,</div><div class="line">                            WPARAM wParam,</div><div class="line">                            LPARAM lParam) &#123;</div><div class="line"></div><div class="line">    <span class="comment">// 这是系统的主消d息处理函数</span></div><div class="line">    PAINTSTRUCT paintStruct;    <span class="comment">// 用于 WM_PAINT</span></div><div class="line">    HDC hdc;                    <span class="comment">// Handle of Device Context，设备场景句柄</span></div><div class="line"></div><div class="line">    <span class="comment">// sort through and find what code to run for the message given</span></div><div class="line">    <span class="keyword">switch</span> (message) &#123;</div><div class="line">        <span class="keyword">case</span> WM_CREATE: &#123;</div><div class="line">            <span class="comment">// 执行初始化的代码</span></div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125; <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> WM_PAINT: &#123;</div><div class="line">            <span class="comment">// 开始绘制</span></div><div class="line">            hdc = BeginPaint(hWnd, &amp;paintStruct);</div><div class="line">            <span class="comment">// 结束绘制</span></div><div class="line">            EndPaint(hWnd, &amp;paintStruct);</div><div class="line">            <span class="comment">// 成功返回</span></div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125; <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> WM_DESTROY: &#123;      <span class="comment">// this message is read when the window is closed</span></div><div class="line">            <span class="comment">// close the application entirely</span></div><div class="line">            PostQuitMessage(<span class="number">0</span>);</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125; <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Handle any messages the switch statement didn't</span></div><div class="line">    <span class="keyword">return</span> DefWindowProc(hWnd, message, wParam, lParam);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行程序，编译器报错（一）：</p>
+<pre><code>c:\program files (x86)\windows kits\8.1\include\um\winnt.h(342): error C2146: syntax error : missing &apos;;&apos; before identifier &apos;PVOID64&apos;
+</code></pre><p>查阅<a href="http://blog.csdn.net/fuquanjun/article/details/9273529" target="_blank" rel="external">相关资料</a>，出现这个错误的原因是，PVOID64 是一个宏，在 64 位编译下起作用，包含在（我本机的是）c:\program files (x86)\windows kits\8.1\include\shared\basetsd.h 中。但因为我们上面在 VC++ Directores 的 Include Directores 里包含了 dx9 的 \Include 目录，里面也有一个 basetsd.h，但这个 basetsd.h 里没有 PVOID64 的定义，且编译时优先使用这个目录的 basetsd.h，所以找不到 PVOID64，故而报错。</p>
+<p>解决办法有：</p>
+<p>办法一：把 dx9 的 \Include 的优先级下移，使编译器优先使用 c:\program files (x86)\windows kits\8.1\include\shared\basetsd.h。</p>
+<p>办法二：改写 winnt.h 代码，在</p>
+<pre><code>typedef  void  *PVOID;  
+typedef  void  *POINTER_64  PVOID64; 
+</code></pre><p>之前增加一行： </p>
+<pre><code>#define  POINTER_64  __ptr64 
+</code></pre><p>不过最好不要轻易改写 winnt.h。</p>
+<p>办法三：移除 dx9 \Include 目录里的 basetsd.h（我使用这个）。</p>
+<hr>
+<p>继续运行程序，编译器报错（二）：</p>
+<pre><code>error C2065: &apos;index&apos; : undeclared identifier
+</code></pre><p>位置出现在 t3dlib1.cpp 的 Load_Animation_BOB 函数，见下图：</p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/index-error.png" alt=""></p>
+<pre><code>// set the end of the list to a -1
+bob-&gt;animations[anim_index][index] = -1;
+</code></pre><p>在这行代码上面的 for 循环，使用 index 作为下标进行遍历，在离开 for 循环后，index 应该是指向 bob-&gt;animations[anim_index] 的末尾元素，所以只要把 index 放在 for 外面即可：</p>
+<pre><code>// load data into
+int index;
+for (index=0; index&lt;num_frames; index++)
+    bob-&gt;animations[anim_index][index] = sequence[index];
+</code></pre><hr>
+<p>继续运行程序，编译器报错（三）：</p>
+<pre><code>t3dlib2.obj : error LNK2019: unresolved external symbol _DirectInput8Create@20 referenced in function &quot;int __cdecl DInput_Init(void)&quot; (?DInput_Init@@YAHXZ)
+</code></pre><p>只要在 Project Properties -&gt; Configuration Properties -&gt; Linker -&gt; Input -&gt; Additional Dependencies 里加上 dinput8.lib 即可。</p>
+<hr>
+<p>继续运行程序，成功显示游戏控制台窗口：</p>
+<p><img src="/images/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter3-notes/t3dconsole-complete.png" alt=""></p>
+<p>由于窗口显示使用 16 色，所以看起来跟常规的 Windows 窗口不太一样。</p>
+<hr>
+<blockquote>
+<p>应确保选择窗口模式时，窗口的客户区域（client-size）为 window_width * window_height</p>
+<p>本章在《Windows 游戏编程大师技巧》和本书之间搭建了一座桥梁。您应该知道，3D 图形学研究的不是 DirectX 和 Windows，而是数学、数学还是数学。为进行 3D 图形编程，只需要一个包含一些函数和两个帧缓存的平台。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/computer-graphics/tricks-of-the-3d-game-programming-gurus/chapter2-notes/">《3D 游戏编程大师技巧》第 2 章学习笔记</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/leetcode/171-excel-sheet-column-number/">Leetcode 题解 - 171. Excel Sheet Column Number</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>

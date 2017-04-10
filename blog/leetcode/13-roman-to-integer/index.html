@@ -1,0 +1,978 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> Leetcode 题解 - 13. Roman to Integer // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              Leetcode 题解 - 13. Roman to Integer
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-07-09
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/Leetcode/">Leetcode</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>#题目</p>
+<p>给定一个罗马数字，转为整型数字。</p>
+<p>输入保证在 0～3999 之间。</p>
+<a id="more"></a>
+<p><strong>难度</strong>：容易</p>
+<p><strong>编程语言</strong>：C++</p>
+<hr>
+<p>#分析</p>
+<p>程序框架为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Solution &#123;</div><div class="line">public:</div><div class="line">    int romanToInt(string s) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>我们先看看罗马数字，找出其中规律：</p>
+<pre><code>I              1
+II             2
+III            3
+IV             4
+V              5
+VI             6
+VII            7
+VIII           8
+IX             9
+X             10
+
+XI            11
+XII           12
+XIII          13
+XIV           14
+XV            15
+XVI           16
+XVII          17
+XVIII         18
+XIX           19
+XX            20
+
+XXX           30
+XL            40
+L             50
+LX            60
+LXX           70
+LXXX          80
+XC            90
+C            100
+
+CC           200
+CCC          300
+CD           400
+D            500
+DC           600
+DCC          700
+DCCC         800
+CM           900
+M           1000
+
+MM          2000
+MMM         3000
+MMMCMXCIX   3999
+</code></pre><p>0～3999 内 7 种不同的符号：</p>
+<pre><code>I      1
+V      5
+X     10
+L     50
+C    100
+D    500
+M   1000
+</code></pre><p>可以看到，从上到下，每种符号表示的数字越来越大。我们再看看 5 的 10 次幂的符号：</p>
+<pre><code>V      5
+L     50
+D    500
+</code></pre><ul>
+<li>对于 V = 5，则 IV = 5 - 1 = 4</li>
+<li>对于 L = 50，则 XL = 50 - 10 = 40</li>
+<li>对于 D = 500，则 CD = 500 - 100 = 400</li>
+</ul>
+<p>romanToInt 我的思路是：</p>
+<ol>
+<li>把罗马数字分隔出表示个／十／百／千位的各个子字符串</li>
+<li>把各个子字符串转为对应的个／十／百／千位的整型数字</li>
+<li>把各个整型数字相加</li>
+</ol>
+<p>##计算个位数</p>
+<p>对于第一步，怎么判断哪些子串代表个位（以个位举例，十／百／千位同理）？</p>
+<pre><code>I       1
+II      2
+III     3
+IV      4
+V       5
+VI      6
+VII     7
+VIII    8
+IX      9
+</code></pre><p>可以看到：</p>
+<ul>
+<li>I 后面可以接 I／V／X</li>
+<li>V 后面可以接 I</li>
+</ul>
+<p>所以，当检查到当前字符是 I／V，都、能是个位数的起始字符。那么：</p>
+<ul>
+<li>如果当前字符是 I，那么一直到最后一个 I，或下一个 V／X，就是个位数的结束字符</li>
+<li>如果当前字符是 V，那么一直到最后一个 I，就是个位数的结束字符</li>
+</ul>
+<p>在保证了子串形成的肯定是个位数后，接下来我们计算这个个位数是多少：</p>
+<ul>
+<li>如果起始字符是 I，如果结束字符是 I，那么把所有 I 相加</li>
+<li>如果起始字符是 I，如果结束字符是 V／X，那么 V／X - I</li>
+<li>如果起始字符是 V，那么结束字符是 I，那么把 V 跟所有 I 相加</li>
+</ul>
+<p>那么我们先编写只能处理个位数的 romanToInt，伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">// 输入范围为 1～9</div><div class="line">int romanToInt(string s) &#123;</div><div class="line">    if (起始字符是 I) &#123;</div><div class="line">        if (结束字符是 I) &#123;</div><div class="line">            return 所有 I 相加;</div><div class="line">        &#125;</div><div class="line">        else if (结束字符是 V) &#123;</div><div class="line">            return V - I;</div><div class="line">        &#125;</div><div class="line">        else &#123;    // 结束字符是 X</div><div class="line">            return X - I;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    else &#123;  // 起始字符是 V</div><div class="line">        return V + 所有 I 相加;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> Roman_Num &#123;</div><div class="line">    <span class="keyword">int</span> I = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> V = <span class="number">5</span>;</div><div class="line">    <span class="keyword">int</span> X = <span class="number">10</span>;</div><div class="line">    <span class="keyword">int</span> L = <span class="number">50</span>;</div><div class="line">    <span class="keyword">int</span> C = <span class="number">100</span>;</div><div class="line">    <span class="keyword">int</span> D = <span class="number">500</span>;</div><div class="line">    <span class="keyword">int</span> M = <span class="number">1000</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Roman_Num romanNum;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">romanToInt</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> len = s.length();</div><div class="line">        <span class="keyword">char</span> headCh = s[<span class="number">0</span>];</div><div class="line">        <span class="keyword">char</span> tailCh = s[len - <span class="number">1</span>];</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (headCh == <span class="string">'I'</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (tailCh == <span class="string">'I'</span>) &#123;</div><div class="line">                <span class="keyword">return</span> len * romanNum.I;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (tailCh == <span class="string">'V'</span>) &#123;</div><div class="line">                <span class="keyword">return</span> romanNum.V - romanNum.I;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;      <span class="comment">// 结束字符是 X</span></div><div class="line">                <span class="keyword">return</span> romanNum.X - romanNum.I;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;      <span class="comment">// 起始字符是 V</span></div><div class="line">            <span class="keyword">return</span> romanNum.V + (len - <span class="number">1</span>) * romanNum.I;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    Solution sol;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"I"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"II"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"III"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"IV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"V"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"VI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"VII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"VIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"IX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="comment">// 1</span></div><div class="line"><span class="comment">// 2</span></div><div class="line"><span class="comment">// 3</span></div><div class="line"><span class="comment">// 4</span></div><div class="line"><span class="comment">// 5</span></div><div class="line"><span class="comment">// 6</span></div><div class="line"><span class="comment">// 7</span></div><div class="line"><span class="comment">// 8</span></div><div class="line"><span class="comment">// 9</span></div></pre></td></tr></table></figure>
+<p>So far so good! 继续添加到十位数的检测。</p>
+<p>##计算十位数</p>
+<p>伪代码先写出框架：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int romanToInt(string s) &#123;</div><div class="line">    int splitIdx = 0;</div><div class="line">    string s10 = splitS10(s, splitIdx);    // 在执行完 splitS10 后，记录当前遍历到哪个 index，方便 splitS1 使用</div><div class="line">    string s1 =  splitS1(s, splitIdx);</div><div class="line"></div><div class="line">    int i10 = convertToInt(s10, 10);    // 第二个参数表示十位数</div><div class="line">    int i1 = convertToInt(s1, 1);       // 第二个参数表示个位数</div><div class="line"></div><div class="line">    return i10 + i1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来就是 splitS10，十位数的起始字符是 X／L，结束字符为 X／L／C，我们把符合这些条件的 char 都保存起来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// 把 romanNum 的十位数分离出来</div><div class="line">// 输入：原罗马数字，index 引用（可理解为用于返回两个数据）</div><div class="line">// 输出：组成十位数的子字符串</div><div class="line">string splitS10(string romanNum, int&amp; splitIdx) &#123;</div><div class="line">    string s10 = &quot;&quot;;</div><div class="line">    int start = splitIdx;</div><div class="line">    for (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">        char c = romanNum[splitIdx];</div><div class="line">        if (c == &apos;X&apos; || c == &apos;L&apos; || c == &apos;C&apos;) &#123;</div><div class="line">            if (romanNum[start] != &apos;C&apos;) &#123;    // C 不能开头，可以结尾，要符合这种情况</div><div class="line">                s10 += c;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return s10;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来就是 splitS1，个位数的起始字符是 I／V，结束字符为 I／V／X，我们把符合这些条件的 char 都保存起来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// 把 romanNum 的个位数分离出来</div><div class="line">// 输入：原罗马数字，index 引用（可理解为用于返回两个数据）</div><div class="line">// 输出：组成个位数的子字符串</div><div class="line">string splitS1(string romanNum, int&amp; splitIdx) &#123;</div><div class="line">    string s1 = &quot;&quot;;</div><div class="line">    int start = splitIdx;</div><div class="line">    for (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">        char c = romanNum[splitIdx];</div><div class="line">        if (c == &apos;I&apos; || c == &apos;V&apos; || c == &apos;X&apos;) &#123;</div><div class="line">            if (romanNum[start] != &apos;X&apos;) &#123;    // X 不能开头，可以结尾，要符合这种情况</div><div class="line">                s1 += c;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return s1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来就是 convertToInt：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">// 把罗马数字转为整型数字</div><div class="line">// 输入：罗马数字，进制</div><div class="line">// 输出：整型数字</div><div class="line">int convertToInt(string romanNum, int scale) &#123;</div><div class="line">    int len = romanNum.length();</div><div class="line">    if (len == 0) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    char headCh = romanNum[0];</div><div class="line">    char tailCh = romanNum[len - 1];</div><div class="line"></div><div class="line">    if (scale == 10) &#123;</div><div class="line">        return convertToInt10(romanNum);</div><div class="line">    &#125;</div><div class="line">    else if (scale == 1) &#123;</div><div class="line">        return convertToInt1(romanNum);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>convertToInt10：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">int convertToInt10(string s) &#123;</div><div class="line">    int len = s.length();</div><div class="line">    if (len == 0) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    char headCh = s[0];</div><div class="line">    char tailCh = s[len - 1];</div><div class="line"></div><div class="line">    if (headCh == &apos;X&apos;) &#123;</div><div class="line">        if (tailCh == &apos;X&apos;) &#123;</div><div class="line">            return len * romanNum.X;</div><div class="line">        &#125;</div><div class="line">        else if (tailCh == &apos;L&apos;) &#123;</div><div class="line">            return romanNum.L - romanNum.X;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // 结束字符是 C</div><div class="line">            return romanNum.C - romanNum.X;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 起始字符是 L</div><div class="line">        return romanNum.L + (len - 1) * romanNum.X;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>convertToInt1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">int convertToInt1(string s) &#123;</div><div class="line">    int len = s.length();</div><div class="line">    if (len == 0) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    char headCh = s[0];</div><div class="line">    char tailCh = s[len - 1];</div><div class="line"></div><div class="line">    if (headCh == &apos;I&apos;) &#123;</div><div class="line">        if (tailCh == &apos;I&apos;) &#123;</div><div class="line">            return len * romanNum.I;</div><div class="line">        &#125;</div><div class="line">        else if (tailCh == &apos;V&apos;) &#123;</div><div class="line">            return romanNum.V - romanNum.I;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // 结束字符是 X</div><div class="line">            return romanNum.X - romanNum.I;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 起始字符是 V</div><div class="line">        return romanNum.V + (len - 1) * romanNum.I;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div><div class="line">357</div><div class="line">358</div><div class="line">359</div><div class="line">360</div><div class="line">361</div><div class="line">362</div><div class="line">363</div><div class="line">364</div><div class="line">365</div><div class="line">366</div><div class="line">367</div><div class="line">368</div><div class="line">369</div><div class="line">370</div><div class="line">371</div><div class="line">372</div><div class="line">373</div><div class="line">374</div><div class="line">375</div><div class="line">376</div><div class="line">377</div><div class="line">378</div><div class="line">379</div><div class="line">380</div><div class="line">381</div><div class="line">382</div><div class="line">383</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> Roman_Num &#123;</div><div class="line">    <span class="keyword">int</span> I = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> V = <span class="number">5</span>;</div><div class="line">    <span class="keyword">int</span> X = <span class="number">10</span>;</div><div class="line">    <span class="keyword">int</span> L = <span class="number">50</span>;</div><div class="line">    <span class="keyword">int</span> C = <span class="number">100</span>;</div><div class="line">    <span class="keyword">int</span> D = <span class="number">500</span>;</div><div class="line">    <span class="keyword">int</span> M = <span class="number">1000</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Roman_Num romanNum;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">romanToInt</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> splitIdx = <span class="number">0</span>;</div><div class="line">        <span class="built_in">string</span> s10 = splitS10(s, splitIdx);    <span class="comment">// 在执行完 splitS10 后，记录当前遍历到哪个 index，方便 splitS1 使用</span></div><div class="line">        <span class="built_in">string</span> s1 = splitS1(s, splitIdx);</div><div class="line"></div><div class="line">        <span class="keyword">int</span> i10 = convertToInt(s10, <span class="number">10</span>);     <span class="comment">// 第二个参数表示十位数</span></div><div class="line">        <span class="keyword">int</span> i1 = convertToInt(s1, <span class="number">1</span>);       <span class="comment">// 第二个参数表示个位数</span></div><div class="line"></div><div class="line">        <span class="keyword">return</span> i10 + i1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 把 romanNum 的十位数分离出来</span></div><div class="line">    <span class="comment">// 输入：原罗马数字，index 引用（可理解为用于返回两个数据）</span></div><div class="line">    <span class="comment">// 输出：组成十位数的子字符串</span></div><div class="line">    <span class="function"><span class="built_in">string</span> <span class="title">splitS10</span><span class="params">(<span class="built_in">string</span> romanNum, <span class="keyword">int</span>&amp; splitIdx)</span> </span>&#123;</div><div class="line">        <span class="built_in">string</span> s10 = <span class="string">""</span>;</div><div class="line">        <span class="keyword">int</span> start = splitIdx;</div><div class="line">        <span class="keyword">for</span> (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">            <span class="keyword">char</span> c = romanNum[splitIdx];</div><div class="line">            <span class="keyword">if</span> (c == <span class="string">'X'</span> || c == <span class="string">'L'</span> || c == <span class="string">'C'</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (romanNum[start] != <span class="string">'C'</span>) &#123;   <span class="comment">// C 不能开头，可以结尾，要符合这种情况</span></div><div class="line">                    s10 += c;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> s10;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 把 romanNum 的个位数分离出来</span></div><div class="line">    <span class="comment">// 输入：原罗马数字，index 引用（可理解为用于返回两个数据）</span></div><div class="line">    <span class="comment">// 输出：组成个位数的子字符串</span></div><div class="line">    <span class="function"><span class="built_in">string</span> <span class="title">splitS1</span><span class="params">(<span class="built_in">string</span> romanNum, <span class="keyword">int</span>&amp; splitIdx)</span> </span>&#123;</div><div class="line">        <span class="built_in">string</span> s1 = <span class="string">""</span>;</div><div class="line">        <span class="keyword">int</span> start = splitIdx;</div><div class="line">        <span class="keyword">for</span> (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">            <span class="keyword">char</span> c = romanNum[splitIdx];</div><div class="line">            <span class="keyword">if</span> (c == <span class="string">'I'</span> || c == <span class="string">'V'</span> || c == <span class="string">'X'</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (romanNum[start] != <span class="string">'X'</span>) &#123;    <span class="comment">// X 不能开头，可以结尾，要符合这种情况</span></div><div class="line">                    s1 += c;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> s1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 把罗马数字转为整型数字</span></div><div class="line">    <span class="comment">// 输入：罗马数字，进制</span></div><div class="line">    <span class="comment">// 输出：整型数字</span></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">convertToInt</span><span class="params">(<span class="built_in">string</span> romanNum, <span class="keyword">int</span> scale)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> len = romanNum.length();</div><div class="line">        <span class="keyword">if</span> (len == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">char</span> headCh = romanNum[<span class="number">0</span>];</div><div class="line">        <span class="keyword">char</span> tailCh = romanNum[len - <span class="number">1</span>];</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (scale == <span class="number">10</span>) &#123;</div><div class="line">            <span class="keyword">return</span> convertToInt10(romanNum);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (scale == <span class="number">1</span>) &#123;</div><div class="line">            <span class="keyword">return</span> convertToInt1(romanNum);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">convertToInt10</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> len = s.length();</div><div class="line">        <span class="keyword">if</span> (len == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">char</span> headCh = s[<span class="number">0</span>];</div><div class="line">        <span class="keyword">char</span> tailCh = s[len - <span class="number">1</span>];</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (headCh == <span class="string">'X'</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (tailCh == <span class="string">'X'</span>) &#123;</div><div class="line">                <span class="keyword">return</span> len * romanNum.X;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (tailCh == <span class="string">'L'</span>) &#123;</div><div class="line">                <span class="keyword">return</span> romanNum.L - romanNum.X;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;      <span class="comment">// 结束字符是 C</span></div><div class="line">                <span class="keyword">return</span> romanNum.C - romanNum.X;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;      <span class="comment">// 起始字符是 L</span></div><div class="line">            <span class="keyword">return</span> romanNum.L + (len - <span class="number">1</span>) * romanNum.X;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">convertToInt1</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> len = s.length();</div><div class="line">        <span class="keyword">if</span> (len == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">char</span> headCh = s[<span class="number">0</span>];</div><div class="line">        <span class="keyword">char</span> tailCh = s[len - <span class="number">1</span>];</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (headCh == <span class="string">'I'</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (tailCh == <span class="string">'I'</span>) &#123;</div><div class="line">                <span class="keyword">return</span> len * romanNum.I;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (tailCh == <span class="string">'V'</span>) &#123;</div><div class="line">                <span class="keyword">return</span> romanNum.V - romanNum.I;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;      <span class="comment">// 结束字符是 X</span></div><div class="line">                <span class="keyword">return</span> romanNum.X - romanNum.I;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;      <span class="comment">// 起始字符是 V</span></div><div class="line">            <span class="keyword">return</span> romanNum.V + (len - <span class="number">1</span>) * romanNum.I;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    Solution sol;</div><div class="line"></div><div class="line">    <span class="comment">// 1-10</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"I"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"II"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"III"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"IV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"V"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"VI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"VII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"VIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"IX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"X"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 10-20</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 20-30</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 30-40</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XXXIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XL"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 40-50</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XLIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"L"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 50-60</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"L"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 60-70</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 70-80</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 80-90</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXXIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"LXXX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 90-99</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCIV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCV"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCVI"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCVII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCVIII"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.romanToInt(<span class="string">"XCIX"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="comment">// 1</span></div><div class="line"><span class="comment">// 2</span></div><div class="line"><span class="comment">// 3</span></div><div class="line"><span class="comment">// 4</span></div><div class="line"><span class="comment">// 5</span></div><div class="line"><span class="comment">// 6</span></div><div class="line"><span class="comment">// 7</span></div><div class="line"><span class="comment">// 8</span></div><div class="line"><span class="comment">// 9</span></div><div class="line"><span class="comment">// 10</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 11</span></div><div class="line"><span class="comment">// 12</span></div><div class="line"><span class="comment">// 13</span></div><div class="line"><span class="comment">// 14</span></div><div class="line"><span class="comment">// 15</span></div><div class="line"><span class="comment">// 16</span></div><div class="line"><span class="comment">// 17</span></div><div class="line"><span class="comment">// 18</span></div><div class="line"><span class="comment">// 19</span></div><div class="line"><span class="comment">// 20</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 21</span></div><div class="line"><span class="comment">// 22</span></div><div class="line"><span class="comment">// 23</span></div><div class="line"><span class="comment">// 24</span></div><div class="line"><span class="comment">// 25</span></div><div class="line"><span class="comment">// 26</span></div><div class="line"><span class="comment">// 27</span></div><div class="line"><span class="comment">// 28</span></div><div class="line"><span class="comment">// 29</span></div><div class="line"><span class="comment">// 30</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 31</span></div><div class="line"><span class="comment">// 32</span></div><div class="line"><span class="comment">// 33</span></div><div class="line"><span class="comment">// 34</span></div><div class="line"><span class="comment">// 35</span></div><div class="line"><span class="comment">// 36</span></div><div class="line"><span class="comment">// 37</span></div><div class="line"><span class="comment">// 38</span></div><div class="line"><span class="comment">// 39</span></div><div class="line"><span class="comment">// 40</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 41</span></div><div class="line"><span class="comment">// 42</span></div><div class="line"><span class="comment">// 43</span></div><div class="line"><span class="comment">// 44</span></div><div class="line"><span class="comment">// 45</span></div><div class="line"><span class="comment">// 46</span></div><div class="line"><span class="comment">// 47</span></div><div class="line"><span class="comment">// 48</span></div><div class="line"><span class="comment">// 49</span></div><div class="line"><span class="comment">// 50</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 51</span></div><div class="line"><span class="comment">// 52</span></div><div class="line"><span class="comment">// 53</span></div><div class="line"><span class="comment">// 54</span></div><div class="line"><span class="comment">// 55</span></div><div class="line"><span class="comment">// 56</span></div><div class="line"><span class="comment">// 57</span></div><div class="line"><span class="comment">// 58</span></div><div class="line"><span class="comment">// 59</span></div><div class="line"><span class="comment">// 50</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 61</span></div><div class="line"><span class="comment">// 62</span></div><div class="line"><span class="comment">// 63</span></div><div class="line"><span class="comment">// 64</span></div><div class="line"><span class="comment">// 65</span></div><div class="line"><span class="comment">// 66</span></div><div class="line"><span class="comment">// 67</span></div><div class="line"><span class="comment">// 68</span></div><div class="line"><span class="comment">// 69</span></div><div class="line"><span class="comment">// 60</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 71</span></div><div class="line"><span class="comment">// 72</span></div><div class="line"><span class="comment">// 73</span></div><div class="line"><span class="comment">// 74</span></div><div class="line"><span class="comment">// 75</span></div><div class="line"><span class="comment">// 76</span></div><div class="line"><span class="comment">// 77</span></div><div class="line"><span class="comment">// 78</span></div><div class="line"><span class="comment">// 79</span></div><div class="line"><span class="comment">// 70</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 81</span></div><div class="line"><span class="comment">// 82</span></div><div class="line"><span class="comment">// 83</span></div><div class="line"><span class="comment">// 84</span></div><div class="line"><span class="comment">// 85</span></div><div class="line"><span class="comment">// 86</span></div><div class="line"><span class="comment">// 87</span></div><div class="line"><span class="comment">// 88</span></div><div class="line"><span class="comment">// 89</span></div><div class="line"><span class="comment">// 80</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 91</span></div><div class="line"><span class="comment">// 92</span></div><div class="line"><span class="comment">// 93</span></div><div class="line"><span class="comment">// 94</span></div><div class="line"><span class="comment">// 95</span></div><div class="line"><span class="comment">// 96</span></div><div class="line"><span class="comment">// 97</span></div><div class="line"><span class="comment">// 98</span></div><div class="line"><span class="comment">// 99</span></div></pre></td></tr></table></figure>
+<p>So far so good! 继续添加到百位数的检测。</p>
+<p>##重构代码</p>
+<p>在计算百位数前，我们先整理一下代码。可以看到，splitS10 和 splitS1 几乎一模一样，convertToInt10 和 convertToInt1 几乎一模一样。有没有办法把 splitS10 和 splitS1 合并为函数签名为 string splitRomanNum(string s, int scale, int&amp; splitIdx) 的函数呢？</p>
+<p>我们先观察一下 splitS10 和 splitS1 的区别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">// 把 romanNum 的十位数分离出来</div><div class="line">// 输入：原罗马数字，index 引用（可理解为用于返回两个数据）</div><div class="line">// 输出：组成十位数的子字符串</div><div class="line">string splitS10(string romanNum, int&amp; splitIdx) &#123;</div><div class="line">    string s10 = &quot;&quot;;</div><div class="line">    int start = splitIdx;</div><div class="line">    for (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">        char c = romanNum[splitIdx];</div><div class="line">        if (c == &apos;X&apos; || c == &apos;L&apos; || c == &apos;C&apos;) &#123;</div><div class="line">            if (romanNum[start] != &apos;C&apos;) &#123;   // C 不能开头，可以结尾，要符合这种情况</div><div class="line">                s10 += c;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return s10;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 把 romanNum 的个位数分离出来</div><div class="line">// 输入：原罗马数字，index 引用（可理解为用于返回两个数据）</div><div class="line">// 输出：组成个位数的子字符串</div><div class="line">string splitS1(string romanNum, int&amp; splitIdx) &#123;</div><div class="line">    string s1 = &quot;&quot;;</div><div class="line">    int start = splitIdx;</div><div class="line">    for (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">        char c = romanNum[splitIdx];</div><div class="line">        if (c == &apos;I&apos; || c == &apos;V&apos; || c == &apos;X&apos;) &#123;</div><div class="line">            if (romanNum[start] != &apos;X&apos;) &#123;    // X 不能开头，可以结尾，要符合这种情况</div><div class="line">                s1 += c;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>区别仅仅是，splitS10 使用 X／L／C，splitS1 使用 I／V／X。那么很简单的思路是，根据位数的不同（十位数或个位数），来配置使用 struct Roman_Num 里不同的值。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">string splitRomanNum(string romanNum, int scale, int&amp; splitIdx) &#123;</div><div class="line">    // 配置</div><div class="line">    char one, five, ten;</div><div class="line">    if (scale == 10) &#123;</div><div class="line">        one = &apos;X&apos;;</div><div class="line">        five = &apos;L&apos;;</div><div class="line">        ten = &apos;C&apos;;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 个位数</div><div class="line">        one = &apos;I&apos;;</div><div class="line">        five = &apos;V&apos;;</div><div class="line">        ten = &apos;X&apos;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // split</div><div class="line">    string s1 = &quot;&quot;;</div><div class="line">    int start = splitIdx;</div><div class="line">    for (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">        char c = romanNum[splitIdx];</div><div class="line">        if (c == one || c == five || c == ten) &#123;</div><div class="line">            if (romanNum[start] != ten) &#123;    // ten 不能开头，可以结尾，要符合这种情况</div><div class="line">                s1 += c;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return s1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再次运行程序，输出结果仍为 1～99。</p>
+<p>接下来使用同样的方法，把 convertToInt10 和 convertToInt1 合并为函数签名为 int convertToInt(string romanNum, int scale) 的函数。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">int convertToInt(string s, int scale) &#123;</div><div class="line">    int len = s.length();</div><div class="line">    if (len == 0) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 配置</div><div class="line">    char one, five, ten;</div><div class="line">    int rOne, rFive, rTen;</div><div class="line">    if (scale == 10) &#123;</div><div class="line">        one = &apos;X&apos;;</div><div class="line">        five = &apos;L&apos;;</div><div class="line">        ten = &apos;C&apos;;</div><div class="line">        rOne = romanNum.X;</div><div class="line">        rFive = romanNum.L;</div><div class="line">        rTen = romanNum.C;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 个位数</div><div class="line">        one = &apos;I&apos;;</div><div class="line">        five = &apos;V&apos;;</div><div class="line">        ten = &apos;X&apos;;</div><div class="line">        rOne = romanNum.I;</div><div class="line">        rFive = romanNum.V;</div><div class="line">        rTen = romanNum.X;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // convert</div><div class="line">    char headCh = s[0];</div><div class="line">    char tailCh = s[len - 1];</div><div class="line"></div><div class="line">    if (headCh == one) &#123;</div><div class="line">        if (tailCh == one) &#123;</div><div class="line">            return len * rOne;</div><div class="line">        &#125;</div><div class="line">        else if (tailCh == five) &#123;</div><div class="line">            return rFive - rOne;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // 结束字符是 ten</div><div class="line">            return rTen - rOne;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 起始字符是 five</div><div class="line">        return rFive + (len - 1) * rOne;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再次运行程序，输出结果仍为 1～99。</p>
+<p>重构后的完整程序：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> Roman_Num &#123;</div><div class="line">    <span class="keyword">int</span> I = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> V = <span class="number">5</span>;</div><div class="line">    <span class="keyword">int</span> X = <span class="number">10</span>;</div><div class="line">    <span class="keyword">int</span> L = <span class="number">50</span>;</div><div class="line">    <span class="keyword">int</span> C = <span class="number">100</span>;</div><div class="line">    <span class="keyword">int</span> D = <span class="number">500</span>;</div><div class="line">    <span class="keyword">int</span> M = <span class="number">1000</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Roman_Num structRomanNum;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">romanToInt</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> splitIdx = <span class="number">0</span>;</div><div class="line">        <span class="built_in">string</span> s10 = splitRomanNum(s, <span class="number">10</span>, splitIdx);    <span class="comment">// 在执行完 splitS10 后，记录当前遍历到哪个 index，方便 splitS1 使用</span></div><div class="line">        <span class="built_in">string</span> s1 = splitRomanNum(s, <span class="number">1</span>, splitIdx);</div><div class="line"></div><div class="line">        <span class="keyword">int</span> i10 = convertToInt(s10, <span class="number">10</span>);     <span class="comment">// 第二个参数表示十位数</span></div><div class="line">        <span class="keyword">int</span> i1 = convertToInt(s1, <span class="number">1</span>);       <span class="comment">// 第二个参数表示个位数</span></div><div class="line"></div><div class="line">        <span class="keyword">return</span> i10 + i1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 把 romanNum 的某位数分离出来</span></div><div class="line">    <span class="comment">// 输入：原罗马数字，千/百/十/个位数，index 引用（可理解为用于返回两个数据）</span></div><div class="line">    <span class="comment">// 输出：组成对应位数的子字符串</span></div><div class="line">    <span class="function"><span class="built_in">string</span> <span class="title">splitRomanNum</span><span class="params">(<span class="built_in">string</span> romanNum, <span class="keyword">int</span> scale, <span class="keyword">int</span>&amp; splitIdx)</span> </span>&#123;</div><div class="line">        <span class="comment">// 配置</span></div><div class="line">        <span class="keyword">char</span> one, five, ten;</div><div class="line">        <span class="keyword">if</span> (scale == <span class="number">10</span>) &#123;</div><div class="line">            one = <span class="string">'X'</span>;</div><div class="line">            five = <span class="string">'L'</span>;</div><div class="line">            ten = <span class="string">'C'</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;      <span class="comment">// 个位数</span></div><div class="line">            one = <span class="string">'I'</span>;</div><div class="line">            five = <span class="string">'V'</span>;</div><div class="line">            ten = <span class="string">'X'</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// split</span></div><div class="line">        <span class="built_in">string</span> s1 = <span class="string">""</span>;</div><div class="line">        <span class="keyword">int</span> start = splitIdx;</div><div class="line">        <span class="keyword">for</span> (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">            <span class="keyword">char</span> c = romanNum[splitIdx];</div><div class="line">            <span class="keyword">if</span> (c == one || c == five || c == ten) &#123;</div><div class="line">                <span class="keyword">if</span> (romanNum[start] != ten) &#123;    <span class="comment">// ten 不能开头，可以结尾，要符合这种情况</span></div><div class="line">                    s1 += c;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> s1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 把罗马数字转为整型数字</span></div><div class="line">    <span class="comment">// 输入：罗马数字，进制</span></div><div class="line">    <span class="comment">// 输出：整型数字</span></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">convertToInt</span><span class="params">(<span class="built_in">string</span> s, <span class="keyword">int</span> scale)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> len = s.length();</div><div class="line">        <span class="keyword">if</span> (len == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 配置</span></div><div class="line">        <span class="keyword">char</span> one, five, ten;</div><div class="line">        <span class="keyword">int</span> rOne, rFive, rTen;</div><div class="line">        <span class="keyword">if</span> (scale == <span class="number">10</span>) &#123;</div><div class="line">            one = <span class="string">'X'</span>;</div><div class="line">            five = <span class="string">'L'</span>;</div><div class="line">            ten = <span class="string">'C'</span>;</div><div class="line">            rOne = structRomanNum.X;</div><div class="line">            rFive = structRomanNum.L;</div><div class="line">            rTen = structRomanNum.C;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;      <span class="comment">// 个位数</span></div><div class="line">            one = <span class="string">'I'</span>;</div><div class="line">            five = <span class="string">'V'</span>;</div><div class="line">            ten = <span class="string">'X'</span>;</div><div class="line">            rOne = structRomanNum.I;</div><div class="line">            rFive = structRomanNum.V;</div><div class="line">            rTen = structRomanNum.X;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// convert</span></div><div class="line">        <span class="keyword">char</span> headCh = s[<span class="number">0</span>];</div><div class="line">        <span class="keyword">char</span> tailCh = s[len - <span class="number">1</span>];</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (headCh == one) &#123;</div><div class="line">            <span class="keyword">if</span> (tailCh == one) &#123;</div><div class="line">                <span class="keyword">return</span> len * rOne;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (tailCh == five) &#123;</div><div class="line">                <span class="keyword">return</span> rFive - rOne;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;      <span class="comment">// 结束字符是 ten</span></div><div class="line">                <span class="keyword">return</span> rTen - rOne;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;      <span class="comment">// 起始字符是 five</span></div><div class="line">            <span class="keyword">return</span> rFive + (len - <span class="number">1</span>) * rOne;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>##计算百位数</p>
+<p>要计算百位数，修改 romanToInt 为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">int romanToInt(string s) &#123;</div><div class="line">    int splitIdx = 0;</div><div class="line"></div><div class="line">    string s100 = splitRomanNum(s, 100, splitIdx);    // 在执行完 splitS100 后，记录当前遍历到哪个 index，方便 splitS10 使用</div><div class="line">    string s10 = splitRomanNum(s, 10, splitIdx);      // 在执行完 splitS10 后，记录当前遍历到哪个 index，方便 splitS1 使用</div><div class="line">    string s1 = splitRomanNum(s, 1, splitIdx);</div><div class="line"></div><div class="line">    int i100 = convertToInt(s100, 100);     // 第二个参数表示百位数</div><div class="line">    int i10 = convertToInt(s10, 10);        // 第二个参数表示十位数</div><div class="line">    int i1 = convertToInt(s1, 1);           // 第二个参数表示个位数</div><div class="line"></div><div class="line">    return i100 + i10 + i1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 splitRomanNum 检测百位数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">// 把 romanNum 的某位数分离出来</div><div class="line">// 输入：原罗马数字，千/百/十/个位数，index 引用（可理解为用于返回两个数据）</div><div class="line">// 输出：组成对应位数的子字符串</div><div class="line">string splitRomanNum(string romanNum, int scale, int&amp; splitIdx) &#123;</div><div class="line">    // 配置</div><div class="line">    char one, five, ten;</div><div class="line">    if (scale == 100) &#123;</div><div class="line">        one = &apos;C&apos;;</div><div class="line">        five = &apos;D&apos;;</div><div class="line">        ten = &apos;M&apos;;</div><div class="line">    &#125;</div><div class="line">    else if (scale == 10) &#123;</div><div class="line">        one = &apos;X&apos;;</div><div class="line">        five = &apos;L&apos;;</div><div class="line">        ten = &apos;C&apos;;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 个位数</div><div class="line">        one = &apos;I&apos;;</div><div class="line">        five = &apos;V&apos;;</div><div class="line">        ten = &apos;X&apos;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // split</div><div class="line">    string scaleSplit = &quot;&quot;;</div><div class="line">    int start = splitIdx;</div><div class="line">    for (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">        char c = romanNum[splitIdx];</div><div class="line">        if (c == one || c == five || c == ten) &#123;</div><div class="line">            if (romanNum[start] != ten) &#123;    // ten 不能开头，可以结尾，要符合这种情况</div><div class="line">                scaleSplit += c;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return scaleSplit;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 convertToInt 转换百位数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">// 把罗马数字转为整型数字</div><div class="line">// 输入：罗马数字，进制</div><div class="line">// 输出：整型数字</div><div class="line">int convertToInt(string s, int scale) &#123;</div><div class="line">    int len = s.length();</div><div class="line">    if (len == 0) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 配置</div><div class="line">    char one, five, ten;</div><div class="line">    int rOne, rFive, rTen;</div><div class="line">    if (scale == 100) &#123;</div><div class="line">        one = &apos;C&apos;;</div><div class="line">        five = &apos;D&apos;;</div><div class="line">        ten = &apos;M&apos;;</div><div class="line">        rOne = structRomanNum.C;</div><div class="line">        rFive = structRomanNum.D;</div><div class="line">        rTen = structRomanNum.M;</div><div class="line">    &#125;</div><div class="line">    else if (scale == 10) &#123;</div><div class="line">        one = &apos;X&apos;;</div><div class="line">        five = &apos;L&apos;;</div><div class="line">        ten = &apos;C&apos;;</div><div class="line">        rOne = structRomanNum.X;</div><div class="line">        rFive = structRomanNum.L;</div><div class="line">        rTen = structRomanNum.C;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 个位数</div><div class="line">        one = &apos;I&apos;;</div><div class="line">        five = &apos;V&apos;;</div><div class="line">        ten = &apos;X&apos;;</div><div class="line">        rOne = structRomanNum.I;</div><div class="line">        rFive = structRomanNum.V;</div><div class="line">        rTen = structRomanNum.X;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // convert</div><div class="line">    char headCh = s[0];</div><div class="line">    char tailCh = s[len - 1];</div><div class="line"></div><div class="line">    if (headCh == one) &#123;</div><div class="line">        if (tailCh == one) &#123;</div><div class="line">            return len * rOne;</div><div class="line">        &#125;</div><div class="line">        else if (tailCh == five) &#123;</div><div class="line">            return rFive - rOne;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // 结束字符是 ten</div><div class="line">            return rTen - rOne;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    else &#123;      // 起始字符是 five</div><div class="line">        return rFive + (len - 1) * rOne;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>##计算千位数</p>
+<p>我们使用 E ＝ 5000，F ＝ 10000。修改方式跟计算百位数时一样。</p>
+<p>##完整程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div><div class="line">357</div><div class="line">358</div><div class="line">359</div><div class="line">360</div><div class="line">361</div><div class="line">362</div><div class="line">363</div><div class="line">364</div><div class="line">365</div><div class="line">366</div><div class="line">367</div><div class="line">368</div><div class="line">369</div><div class="line">370</div><div class="line">371</div><div class="line">372</div><div class="line">373</div><div class="line">374</div><div class="line">375</div><div class="line">376</div><div class="line">377</div><div class="line">378</div><div class="line">379</div><div class="line">380</div><div class="line">381</div><div class="line">382</div><div class="line">383</div><div class="line">384</div><div class="line">385</div><div class="line">386</div><div class="line">387</div><div class="line">388</div><div class="line">389</div><div class="line">390</div><div class="line">391</div><div class="line">392</div><div class="line">393</div><div class="line">394</div><div class="line">395</div><div class="line">396</div><div class="line">397</div><div class="line">398</div><div class="line">399</div><div class="line">400</div><div class="line">401</div><div class="line">402</div><div class="line">403</div><div class="line">404</div><div class="line">405</div><div class="line">406</div><div class="line">407</div><div class="line">408</div><div class="line">409</div><div class="line">410</div><div class="line">411</div><div class="line">412</div><div class="line">413</div><div class="line">414</div><div class="line">415</div><div class="line">416</div><div class="line">417</div><div class="line">418</div><div class="line">419</div><div class="line">420</div><div class="line">421</div><div class="line">422</div><div class="line">423</div></pre></td><td class="code"><pre><div class="line">#include &lt;iostream&gt;</div><div class="line">#include &lt;string&gt;</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">struct Roman_Num &#123;</div><div class="line">    int I = 1;</div><div class="line">    int V = 5;</div><div class="line">    int X = 10;</div><div class="line">    int L = 50;</div><div class="line">    int C = 100;</div><div class="line">    int D = 500;</div><div class="line">    int M = 1000;</div><div class="line">    int E = 5000;</div><div class="line">    int F = 10000;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">class Solution &#123;</div><div class="line">public:</div><div class="line">    Roman_Num structRomanNum;</div><div class="line"></div><div class="line">    int romanToInt(string s) &#123;</div><div class="line">        int splitIdx = 0;</div><div class="line"></div><div class="line">        string s1000 = splitRomanNum(s, 1000, splitIdx);    // 在执行完 splitS1000 后，记录当前遍历到哪个 index，方便 splitS100 使用</div><div class="line">        string s100 = splitRomanNum(s, 100, splitIdx);    // 在执行完 splitS100 后，记录当前遍历到哪个 index，方便 splitS10 使用</div><div class="line">        string s10 = splitRomanNum(s, 10, splitIdx);      // 在执行完 splitS10 后，记录当前遍历到哪个 index，方便 splitS1 使用</div><div class="line">        string s1 = splitRomanNum(s, 1, splitIdx);</div><div class="line"></div><div class="line">        int i1000 = convertToInt(s1000, 1000);     // 第二个参数表示千位数</div><div class="line">        int i100 = convertToInt(s100, 100);        // 第二个参数表示百位数</div><div class="line">        int i10 = convertToInt(s10, 10);           // 第二个参数表示十位数</div><div class="line">        int i1 = convertToInt(s1, 1);              // 第二个参数表示个位数</div><div class="line"></div><div class="line">        return i1000 + i100 + i10 + i1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 把 romanNum 的某位数分离出来</div><div class="line">    // 输入：原罗马数字，千/百/十/个位数，index 引用（可理解为用于返回两个数据）</div><div class="line">    // 输出：组成对应位数的子字符串</div><div class="line">    string splitRomanNum(string romanNum, int scale, int&amp; splitIdx) &#123;</div><div class="line">        // 配置</div><div class="line">        char one, five, ten;</div><div class="line">        if (scale == 1000) &#123;</div><div class="line">            one = &apos;M&apos;;</div><div class="line">            five = &apos;E&apos;;</div><div class="line">            ten = &apos;F&apos;;</div><div class="line">        &#125;</div><div class="line">        else if (scale == 100) &#123;</div><div class="line">            one = &apos;C&apos;;</div><div class="line">            five = &apos;D&apos;;</div><div class="line">            ten = &apos;M&apos;;</div><div class="line">        &#125;</div><div class="line">        else if (scale == 10) &#123;</div><div class="line">            one = &apos;X&apos;;</div><div class="line">            five = &apos;L&apos;;</div><div class="line">            ten = &apos;C&apos;;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // 个位数</div><div class="line">            one = &apos;I&apos;;</div><div class="line">            five = &apos;V&apos;;</div><div class="line">            ten = &apos;X&apos;;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // split</div><div class="line">        string scaleSplit = &quot;&quot;;</div><div class="line">        int start = splitIdx;</div><div class="line">        for (; splitIdx &lt; romanNum.size(); splitIdx++) &#123;</div><div class="line">            char c = romanNum[splitIdx];</div><div class="line">            if (c == one || c == five || c == ten) &#123;</div><div class="line">                if (romanNum[start] != ten) &#123;    // ten 不能开头，可以结尾，要符合这种情况</div><div class="line">                    scaleSplit += c;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            else &#123;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return scaleSplit;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 把罗马数字转为整型数字</div><div class="line">    // 输入：罗马数字，进制</div><div class="line">    // 输出：整型数字</div><div class="line">    int convertToInt(string s, int scale) &#123;</div><div class="line">        int len = s.length();</div><div class="line">        if (len == 0) &#123;</div><div class="line">            return 0;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // 配置</div><div class="line">        char one, five, ten;</div><div class="line">        int rOne, rFive, rTen;</div><div class="line">        if (scale == 1000) &#123;</div><div class="line">            one = &apos;M&apos;;</div><div class="line">            five = &apos;E&apos;;</div><div class="line">            ten = &apos;F&apos;;</div><div class="line">            rOne = structRomanNum.M;</div><div class="line">            rFive = structRomanNum.E;</div><div class="line">            rTen = structRomanNum.F;</div><div class="line">        &#125;</div><div class="line">        else if (scale == 100) &#123;</div><div class="line">            one = &apos;C&apos;;</div><div class="line">            five = &apos;D&apos;;</div><div class="line">            ten = &apos;M&apos;;</div><div class="line">            rOne = structRomanNum.C;</div><div class="line">            rFive = structRomanNum.D;</div><div class="line">            rTen = structRomanNum.M;</div><div class="line">        &#125;</div><div class="line">        else if (scale == 10) &#123;</div><div class="line">            one = &apos;X&apos;;</div><div class="line">            five = &apos;L&apos;;</div><div class="line">            ten = &apos;C&apos;;</div><div class="line">            rOne = structRomanNum.X;</div><div class="line">            rFive = structRomanNum.L;</div><div class="line">            rTen = structRomanNum.C;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // 个位数</div><div class="line">            one = &apos;I&apos;;</div><div class="line">            five = &apos;V&apos;;</div><div class="line">            ten = &apos;X&apos;;</div><div class="line">            rOne = structRomanNum.I;</div><div class="line">            rFive = structRomanNum.V;</div><div class="line">            rTen = structRomanNum.X;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // convert</div><div class="line">        char headCh = s[0];</div><div class="line">        char tailCh = s[len - 1];</div><div class="line"></div><div class="line">        if (headCh == one) &#123;</div><div class="line">            if (tailCh == one) &#123;</div><div class="line">                return len * rOne;</div><div class="line">            &#125;</div><div class="line">            else if (tailCh == five) &#123;</div><div class="line">                return rFive - rOne;</div><div class="line">            &#125;</div><div class="line">            else &#123;      // 结束字符是 ten</div><div class="line">                return rTen - rOne;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // 起始字符是 five</div><div class="line">            return rFive + (len - 1) * rOne;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    Solution sol;</div><div class="line"></div><div class="line">    // 1-10</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;I&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;II&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;III&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;IV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;V&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;VI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;VII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;VIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;IX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;X&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 10-20</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 20-30</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 30-40</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XXXIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XL&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 40-50</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XLIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;L&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 50-60</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;L&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 60-70</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 70-80</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 80-90</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXXIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;LXXX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line"></div><div class="line">    // 90-99</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCIV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCV&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCVI&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCVII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCVIII&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;XCIX&quot;) &lt;&lt; endl;</div><div class="line">    cout &lt;&lt; endl;</div><div class="line">    </div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;C&quot;) &lt;&lt; endl;        // 100</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;CC&quot;) &lt;&lt; endl;       // 200</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;CCC&quot;) &lt;&lt; endl;      // 300</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;CD&quot;) &lt;&lt; endl;       // 400</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;D&quot;) &lt;&lt; endl;        // 500</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;DC&quot;) &lt;&lt; endl;       // 600</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;DCC&quot;) &lt;&lt; endl;      // 700</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;DCCC&quot;) &lt;&lt; endl;     // 800</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;CM&quot;) &lt;&lt; endl;       // 900</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;CMXCIX&quot;) &lt;&lt; endl;   // 999</div><div class="line">    cout &lt;&lt; endl;</div><div class="line">    </div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;M&quot;) &lt;&lt; endl;            // 1000</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;MM&quot;) &lt;&lt; endl;           // 2000</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;MMM&quot;) &lt;&lt; endl;          // 3000</div><div class="line">    cout &lt;&lt; sol.romanToInt(&quot;MMMCMXCIX&quot;) &lt;&lt; endl;    // 3999</div><div class="line">    cout &lt;&lt; endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">// 输出结果：</div><div class="line">// 1</div><div class="line">// 2</div><div class="line">// 3</div><div class="line">// 4</div><div class="line">// 5</div><div class="line">// 6</div><div class="line">// 7</div><div class="line">// 8</div><div class="line">// 9</div><div class="line">// 10</div><div class="line">// </div><div class="line">// 11</div><div class="line">// 12</div><div class="line">// 13</div><div class="line">// 14</div><div class="line">// 15</div><div class="line">// 16</div><div class="line">// 17</div><div class="line">// 18</div><div class="line">// 19</div><div class="line">// 20</div><div class="line">// </div><div class="line">// 21</div><div class="line">// 22</div><div class="line">// 23</div><div class="line">// 24</div><div class="line">// 25</div><div class="line">// 26</div><div class="line">// 27</div><div class="line">// 28</div><div class="line">// 29</div><div class="line">// 30</div><div class="line">// </div><div class="line">// 31</div><div class="line">// 32</div><div class="line">// 33</div><div class="line">// 34</div><div class="line">// 35</div><div class="line">// 36</div><div class="line">// 37</div><div class="line">// 38</div><div class="line">// 39</div><div class="line">// 40</div><div class="line">// </div><div class="line">// 41</div><div class="line">// 42</div><div class="line">// 43</div><div class="line">// 44</div><div class="line">// 45</div><div class="line">// 46</div><div class="line">// 47</div><div class="line">// 48</div><div class="line">// 49</div><div class="line">// 50</div><div class="line">// </div><div class="line">// 51</div><div class="line">// 52</div><div class="line">// 53</div><div class="line">// 54</div><div class="line">// 55</div><div class="line">// 56</div><div class="line">// 57</div><div class="line">// 58</div><div class="line">// 59</div><div class="line">// 50</div><div class="line">// </div><div class="line">// 61</div><div class="line">// 62</div><div class="line">// 63</div><div class="line">// 64</div><div class="line">// 65</div><div class="line">// 66</div><div class="line">// 67</div><div class="line">// 68</div><div class="line">// 69</div><div class="line">// 60</div><div class="line">// </div><div class="line">// 71</div><div class="line">// 72</div><div class="line">// 73</div><div class="line">// 74</div><div class="line">// 75</div><div class="line">// 76</div><div class="line">// 77</div><div class="line">// 78</div><div class="line">// 79</div><div class="line">// 70</div><div class="line">// </div><div class="line">// 81</div><div class="line">// 82</div><div class="line">// 83</div><div class="line">// 84</div><div class="line">// 85</div><div class="line">// 86</div><div class="line">// 87</div><div class="line">// 88</div><div class="line">// 89</div><div class="line">// 80</div><div class="line">// </div><div class="line">// 91</div><div class="line">// 92</div><div class="line">// 93</div><div class="line">// 94</div><div class="line">// 95</div><div class="line">// 96</div><div class="line">// 97</div><div class="line">// 98</div><div class="line">// 99</div><div class="line">// </div><div class="line">// 100</div><div class="line">// 200</div><div class="line">// 300</div><div class="line">// 400</div><div class="line">// 500</div><div class="line">// 600</div><div class="line">// 700</div><div class="line">// 800</div><div class="line">// 900</div><div class="line">// 999</div><div class="line">// </div><div class="line">// 1000</div><div class="line">// 2000</div><div class="line">// 3000</div><div class="line">// 3999</div></pre></td></tr></table></figure>
+<p>提交到 Leetcode，Accepted! :) 运行时间为 44ms。</p>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/leetcode/206-reverse-linked-list/">Leetcode 题解 - 206. Reverse Linked List</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/c++/struct/">C++ struct</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>

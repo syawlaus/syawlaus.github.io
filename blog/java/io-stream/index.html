@@ -1,0 +1,899 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> Java I/O 流 // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              Java I/O 流
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-01-12
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/Java/">Java</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>我们在 Java 编程中经常会用到 I/O 流，如读取文件内容时使用 FileInputStream，向文件写入内容时使用 FileOuputStream。但一直对流理解并不透彻，想通过本文进一步巩固这方面的知识。</p>
+<a id="more"></a>
+<hr>
+<p>#什么是流？</p>
+<p>流（Stream）是指一个数据序列，I/O 流即是输入/输出流。</p>
+<p>以程序为基准，从数据端读入数据到程序，则是输入流，如下图：</p>
+<p><img src="/images/java/io-stream/InputStream.png" alt="输入流"></p>
+<p>从程序输出数据到数据端，则是输出流，如下图：</p>
+<p><img src="/images/java/io-stream/OutputStream.png" alt="输出流"></p>
+<p>数据端可以为多种形式，如磁盘文件、外部设备、网络 socket、其它程序，或内存数组（Memory Array）等。</p>
+<p>流支持多种数据形式，如字节、基本数据类型、字符、对象等。</p>
+<hr>
+<p>#字节流（Byte Streams）</p>
+<p>我们看看下面的 <code>CopyBytes</code> 程序（<a href="https://docs.oracle.com/javase/tutorial/essential/io/bytestreams.html" target="_blank" rel="external">程序及图片来源</a>）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.FileInputStream;</div><div class="line"><span class="keyword">import</span> java.io.FileOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CopyBytes</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        FileInputStream in = <span class="keyword">null</span>;</div><div class="line">        FileOutputStream out = <span class="keyword">null</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            in = <span class="keyword">new</span> FileInputStream(<span class="string">"xanadu.txt"</span>);</div><div class="line">            out = <span class="keyword">new</span> FileOutputStream(<span class="string">"outagain.txt"</span>);</div><div class="line">            <span class="keyword">int</span> c;</div><div class="line">            <span class="keyword">while</span> ((c = in.read()) != -<span class="number">1</span>) &#123;  <span class="comment">// 注意：当没有输入时，read() 会一直阻塞</span></div><div class="line">                out.write(c);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (in != <span class="keyword">null</span>) &#123;</div><div class="line">                in.close();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (out != <span class="keyword">null</span>) &#123;</div><div class="line">                out.close();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>CopyBytes 程序的循环过程如下图：</p>
+<p><img src="/images/java/io-stream/CopyBytes.png" alt="CopyBytes"></p>
+<hr>
+<p>#字符流（Character Streams）</p>
+<p>除了处理字节输入/输出的 <code>Stream</code>，Java 还提供了处理字符输入/输出的 <code>Reader/Writer</code>。Java 默认使用 Unicode 编码来存储字符。字符流会自动把程序内部的格式转换为本地的字符集。</p>
+<p>我们看看下面的 <code>CopyCharacters</code> 程序（<a href="https://docs.oracle.com/javase/tutorial/essential/io/charstreams.html" target="_blank" rel="external">程序来源</a>）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.FileReader;</div><div class="line"><span class="keyword">import</span> java.io.FileWriter;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CopyCharacters</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        FileReader inputStream = <span class="keyword">null</span>;</div><div class="line">        FileWriter outputStream = <span class="keyword">null</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            inputStream = <span class="keyword">new</span> FileReader(<span class="string">"xanadu.txt"</span>);</div><div class="line">            outputStream = <span class="keyword">new</span> FileWriter(<span class="string">"characteroutput.txt"</span>);</div><div class="line">            </div><div class="line">            <span class="keyword">int</span> c;</div><div class="line">            <span class="keyword">while</span> ((c = inputStream.read()) != -<span class="number">1</span>) &#123;</div><div class="line">                outputStream.write(c);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (inputStream != <span class="keyword">null</span>) &#123;</div><div class="line">                inputStream.close();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (outputStream != <span class="keyword">null</span>) &#123;</div><div class="line">                outputStream.close();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>值得注意的是，<code>int c = FileReader.read()</code> 保存字符的后 16 位，而 <code>CopyBytes</code> 程序的 <code>int c = in.read()</code> 保存字符的后 8 位（为什么？）。</p>
+<hr>
+<p>#缓冲流（Buffered Streams）</p>
+<p>上面的字节流和字符流都是没有缓冲的 I/O 流，即是说所有读写的数据都直接由系统处理。这样程序的效率不高，因为数据端经常是磁盘、网络等，程序需要等待数据的读写而不能处理数据。如果有一个缓冲区，从数据端读入一大段数据，再由程序处理，效率会高很多。</p>
+<p>所谓的缓冲区（buffer），其实就是一块内存区域。但读到 <a href="https://docs.oracle.com/javase/tutorial/essential/io/buffers.html" target="_blank" rel="external">Buffered Streams - The Java Tutorials</a> 的以下内容，就有点不明白了：</p>
+<blockquote>
+<blockquote>
+<p>To reduce this kind of overhead, the Java platform implements buffered I/O streams. Buffered input streams read data from a memory area known as a buffer; the native input API is called only when the buffer is empty. Similarly, buffered output streams write data to a buffer, and the native output API is called only when the buffer is full.</p>
+</blockquote>
+</blockquote>
+<p>我的问题是：</p>
+<ol>
+<li>什么是“native input/output API”？</li>
+<li>为什么“the native input API is called only when the buffer is empty”？</li>
+<li>为什么“the native output API is called only when the buffer is full”？</li>
+</ol>
+<p>在 StackOverflow 找到<a href="http://stackoverflow.com/questions/17873205/why-native-api-is-called-when-i-o-buffer-gets-empty/17873388#17873388" target="_blank" rel="external">这个回答</a>。</p>
+<p><code>native input/output API</code> 是由操作系统提供的执行 I/O 任务的 API。我的理解是，不管 buffer 是由 Java 缓冲流 API 申请得到，还是由 Java 缓冲流调用 Native API 申请得到的，buffer 对于我们写的程序来说都是黑盒。所以当 buffer 为空时，才把数据端数据读取到 buffer。当 buffer 为满时，才把 buffer 数据写入到数据端。那么 Buffered InputStream 读取数据时，如果 buffer 非空，就不调用 Native API，应该是直接获取到 buffer 的数据了。同理，Buffered OutputStream 写入数据时，先往 buffer 写入，直到 buffer 满了之后才调用 Native API 把 buffer 数据写入到数据端。那么应该要先等 Native API 执行完成并清空 buffer 后，Buffered OutputStream 才能继续往 buffer 写数据（暂不深究）。</p>
+<p>把一个非缓冲流转换为缓冲流很容易：</p>
+<pre><code>inputStream = new BufferedReader(new FileReader(&quot;filename.txt&quot;));
+outputStream = new BufferedWriter(new FileWriter(&quot;filename.txt&quot;));
+</code></pre><p><code>BufferedInputStream</code> 和 <code>BufferedOutputStream</code> 用来创建缓冲字节流，<code>BufferedReader</code> 和 <code>BufferedWriter</code> 用来创建缓冲字符流。</p>
+<p>最后，我们可以通过调用 <code>BufferedOutputStream.flush()</code> 把 buffer 数据强制写入到数据端，而无需等待 buffer 满了之后才写入。</p>
+<hr>
+<p>#数据流（Data Streams)</p>
+<p>数据流支持基本数据类型（<code>boolean</code>, <code>char</code>, <code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>and</code> <code>double</code>）及 <code>String</code> 值的二进制输入/输出。见下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.BufferedInputStream;</div><div class="line"><span class="keyword">import</span> java.io.BufferedOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.DataInputStream;</div><div class="line"><span class="keyword">import</span> java.io.DataOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.FileInputStream;</div><div class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</div><div class="line"><span class="keyword">import</span> java.io.FileOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.nio.channels.FileLockInterruptionException;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        String fileName = <span class="string">"out.txt"</span>;</div><div class="line">        writeDataToFile(fileName);</div><div class="line">        readDataFromFileAndPrint(fileName);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeDataToFile</span><span class="params">(String fileName)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            DataOutputStream dos = <span class="keyword">new</span> DataOutputStream(</div><div class="line">                    <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(fileName)));</div><div class="line">            dos.writeBoolean(<span class="keyword">true</span>);</div><div class="line">            dos.writeChar(<span class="string">'a'</span>);</div><div class="line">            dos.writeByte(<span class="string">'b'</span>);</div><div class="line">            dos.writeInt(<span class="number">1024</span>);</div><div class="line">            dos.writeDouble(<span class="number">3.1415926</span>);</div><div class="line">            dos.writeUTF(<span class="string">"I'm syawlaus."</span>);</div><div class="line">            dos.flush();  <span class="comment">// 因为使用了 BufferedOutputStream，上面数据未满 buffer，所以要 flush() 强制写入文件</span></div><div class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">readDataFromFileAndPrint</span><span class="params">(String fileName)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            DataInputStream dis = <span class="keyword">new</span> DataInputStream(</div><div class="line">                    <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(fileName)));</div><div class="line">           System.out.println(dis.readBoolean());  <span class="comment">// read() 顺序需要跟 write() 相同</span></div><div class="line">           System.out.println(dis.readChar());</div><div class="line">           System.out.println(dis.readByte());</div><div class="line">           System.out.println(dis.readInt());</div><div class="line">           System.out.println(dis.readDouble());</div><div class="line">           System.out.println(dis.readUTF());</div><div class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="keyword">true</span></div><div class="line">a</div><div class="line"><span class="number">98</span></div><div class="line"><span class="number">1024</span></div><div class="line"><span class="number">3.1415926</span></div><div class="line">I<span class="string">'m syawlaus.</span></div></pre></td></tr></table></figure>
+<hr>
+<p>#对象流（Object Streams）</p>
+<p>对象流支持对象的输入/输出，对象流的类是 <code>ObjectInputStream</code> 和 <code>ObjectOutputStream</code>。</p>
+<p>我们知道，对象里的成员变量通常是基本类型数据和其它类的对象。那么对象流的处理，是否对对象里的每个基本类型数据使用 DataInputStream／DataOutputStream 处理，其它类的对象继续使用 ObjectInputStream／ObjectOutputStream 递归处理呢？我们继续查阅 <a href="http://docs.oracle.com/javase/tutorial/essential/io/objectstreams.html" target="_blank" rel="external">Oracle 相关文档</a>。以下是<a href="http://docs.oracle.com/javase/tutorial/essential/io/examples/ObjectStreams.java" target="_blank" rel="external">示例代码</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.*;</div><div class="line"><span class="keyword">import</span> java.math.BigDecimal;</div><div class="line"><span class="keyword">import</span> java.util.Calendar;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectStreams</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> String dataFile = <span class="string">"invoicedata"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> BigDecimal[] prices = &#123; </div><div class="line">        <span class="keyword">new</span> BigDecimal(<span class="string">"19.99"</span>), </div><div class="line">        <span class="keyword">new</span> BigDecimal(<span class="string">"9.99"</span>),</div><div class="line">        <span class="keyword">new</span> BigDecimal(<span class="string">"15.99"</span>),</div><div class="line">        <span class="keyword">new</span> BigDecimal(<span class="string">"3.99"</span>),</div><div class="line">        <span class="keyword">new</span> BigDecimal(<span class="string">"4.99"</span>) &#125;;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span>[] units = &#123; <span class="number">12</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">29</span>, <span class="number">50</span> &#125;;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> String[] descs = &#123;</div><div class="line">        <span class="string">"Java T-shirt"</span>,</div><div class="line">        <span class="string">"Java Mug"</span>,</div><div class="line">        <span class="string">"Duke Juggling Dolls"</span>,</div><div class="line">        <span class="string">"Java Pin"</span>,</div><div class="line">        <span class="string">"Java Key Chain"</span> &#125;;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</div><div class="line">        <span class="comment">// write data</span></div><div class="line">        ObjectOutputStream out = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            out = <span class="keyword">new</span> ObjectOutputStream(</div><div class="line">                    <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(dataFile)));</div><div class="line">            out.writeObject(Calendar.getInstance());</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; prices.length; i ++) &#123;</div><div class="line">                out.writeObject(prices[i]);</div><div class="line">                out.writeInt(units[i]);</div><div class="line">                out.writeUTF(descs[i]);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            out.close();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// read data</span></div><div class="line">        ObjectInputStream in = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            in = <span class="keyword">new</span> ObjectInputStream(</div><div class="line">                    <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(dataFile)));</div><div class="line"></div><div class="line">            Calendar date = <span class="keyword">null</span>;</div><div class="line">            BigDecimal price;</div><div class="line">            <span class="keyword">int</span> unit;</div><div class="line">            String desc;</div><div class="line">            BigDecimal total = <span class="keyword">new</span> BigDecimal(<span class="number">0</span>);</div><div class="line"></div><div class="line">            date = (Calendar) in.readObject();</div><div class="line">            System.out.format (<span class="string">"On %tA, %&lt;tB %&lt;te, %&lt;tY:%n"</span>, date);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">                    price = (BigDecimal) in.readObject();</div><div class="line">                    unit = in.readInt();</div><div class="line">                    desc = in.readUTF();</div><div class="line">                    System.out.format(<span class="string">"You ordered %d units of %s at $%.2f%n"</span>, unit, desc, price);</div><div class="line">                    total = total.add(price.multiply(<span class="keyword">new</span> BigDecimal(unit)));</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">catch</span> (EOFException e) &#123;&#125;</div><div class="line">            System.out.format(<span class="string">"For a TOTAL of: $%.2f%n"</span>, total);</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            in.close();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line">On Wednesday, January <span class="number">20</span>, <span class="number">2016</span>:</div><div class="line">You ordered <span class="number">12</span> units of Java T-shirt at $<span class="number">19.99</span></div><div class="line">You ordered <span class="number">8</span> units of Java Mug at $<span class="number">9.99</span></div><div class="line">You ordered <span class="number">13</span> units of Duke Juggling Dolls at $<span class="number">15.99</span></div><div class="line">You ordered <span class="number">29</span> units of Java Pin at $<span class="number">3.99</span></div><div class="line">You ordered <span class="number">50</span> units of Java Key Chain at $<span class="number">4.99</span></div><div class="line">For a TOTAL of: $<span class="number">892.88</span></div></pre></td></tr></table></figure>
+<p>调用 <code>writeObject(Object)</code> 时，该对象需要实现 <code>Serializable</code> 接口，否则会抛出 <code>java.io.NotSerializableException</code> 异常。上面的 <code>BigDecimal</code> 和 <code>Calendar</code> 都实现了 <code>Serializable</code> 接口。</p>
+<p>当对象 A 里引用了其它对象 B、C，那么对象流 <code>writeObject()</code> 保存 A 的状态时，也需要保存 B、C 的状态。如果 B 里也引用了其它对象，则同理处理，见下图：</p>
+<p><img src="/images/java/io-stream/ObjectStream.png" alt="对象流"></p>
+<hr>
+<p>#I/O 流的层次结构</p>
+<p>InputStream 层次结构：</p>
+<p><img src="/images/java/io-stream/InputStream-hierarchy.png" alt="输入流的层次结构"></p>
+<p>OutputStream 层次结构：</p>
+<p><img src="/images/java/io-stream/OutputStream-hierarchy.png" alt="输出流的层次结构"></p>
+<hr>
+<p>#参考资料</p>
+<ul>
+<li><a href="https://docs.oracle.com/javase/tutorial/essential/io/streams.html" target="_blank" rel="external">I/O Streams - The Java Tutorials</a></li>
+<li><a href="http://stackoverflow.com/questions/15984789/what-exactly-does-stream-and-buffer-mean-in-java-i-o" target="_blank" rel="external">What exactly does “Stream” and “Buffer” mean in Java I/O?</a></li>
+<li><a href="http://stackoverflow.com/questions/1721387/how-java-io-buffer-stream-differs-from-normal-streams" target="_blank" rel="external">How java.io.Buffer* stream differs from normal streams?</a></li>
+<li><a href="http://syawlaus.github.io/blog/java/serialization/" target="_blank" rel="external">Java 对象序列化</a></li>
+</ul>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/regular-expression/introduction-to-regular-expression/">正则表达式入门</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/version-control/git-commands/">Git 常用命令</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>

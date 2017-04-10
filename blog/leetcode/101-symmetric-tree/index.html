@@ -1,0 +1,924 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> Leetcode 题解 - 101. Symmetric Tree // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              Leetcode 题解 - 101. Symmetric Tree
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-10-15
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/Leetcode/">Leetcode</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>#题目</p>
+<p>给定一棵二叉树，检查它是否左右镜像对称。</p>
+<a id="more"></a>
+<p><strong>示例</strong>：</p>
+<p>例如，二叉树 [1, 2, 2, 3, 4, 4, 3] 是对称的：</p>
+<pre><code>    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+</code></pre><p>而二叉树 [1, 2, 2, null, 3, null, 3] 不对称：</p>
+<pre><code>  1
+ / \
+2   2
+ \   \
+ 3    3
+</code></pre><p><strong>后续</strong>：</p>
+<p>尝试分别用递归和迭代两种方式解决。</p>
+<p><strong>难度</strong>：容易</p>
+<p><strong>编程语言</strong>：C++</p>
+<hr>
+<p>#分析</p>
+<p>程序框架为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Definition for a binary tree node.</div><div class="line"> * struct TreeNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     TreeNode *left;</div><div class="line"> *     TreeNode *right;</div><div class="line"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</div><div class="line"> * &#125;;</div><div class="line"> */</div><div class="line"></div><div class="line">class Solution &#123;</div><div class="line">public:</div><div class="line">    bool isSymmetric(TreeNode *root) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>思路可以借鉴 <a href="http://syawlaus.github.io/blog/leetcode/107-binary-tree-level-order-traversal-ii/" target="_blank" rel="external">Leetcode 题解 - 107. Binary Tree Level Order Traversal II</a>，先把二叉树转换为 <code>vector&lt;vector&lt;TreeNode*&gt;&gt;</code>，每个元素是一个 <code>vector&lt;TreeNode*&gt;</code>，里面是第 i 层的所有 TreeNode 指针。然后根据 vector 下标能比较方便地判断二叉树是否对称。</p>
+<p>我们先算出 <code>vector&lt;vector&lt;TreeNode*&gt;&gt;</code>，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; levelTopDown(TreeNode *root) &#123;</div><div class="line">    <span class="comment">// 初始化</span></div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; vv;</div><div class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> vv;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="built_in">vector</span>&lt;TreeNode*&gt; <span class="built_in">queue</span>;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; qLevel;</div><div class="line"></div><div class="line">    <span class="built_in">queue</span>.push_back(root);</div><div class="line">    qLevel.push_back(<span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 循环构造 queue 和 qLevel</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">queue</span>.size(); i++) &#123;</div><div class="line">        TreeNode *node = <span class="built_in">queue</span>[i];</div><div class="line">        <span class="keyword">if</span> (node == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="built_in">queue</span>.push_back(node-&gt;left);</div><div class="line">        qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line"></div><div class="line">        <span class="built_in">queue</span>.push_back(node-&gt;right);</div><div class="line">        qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 基于 queue 和 qLevel 正向构造 vv</span></div><div class="line">    qLevel.insert(qLevel.begin(), <span class="number">0</span>);       <span class="comment">// 头插入 sentinel 元素，方便统一循环</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">queue</span>.size(); i++) &#123;</div><div class="line">        <span class="keyword">if</span> (qLevel[i] &lt; qLevel[i + <span class="number">1</span>]) &#123;    <span class="comment">// 有 sentinel 元素后这个判断就可以统一</span></div><div class="line">            <span class="built_in">vector</span>&lt;TreeNode*&gt; vNewLevel;</div><div class="line">            vv.push_back(vNewLevel);</div><div class="line">        &#125;</div><div class="line">        vv[vv.size() - <span class="number">1</span>].push_back(<span class="built_in">queue</span>[i]);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// vv 最后一层肯定全部是 NULL，整层去掉</span></div><div class="line">    vv.erase(vv.end() - <span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> vv;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上面代码的第 21、24 行，把 node-&gt;left 和 node-&gt;right（不管是否为 NULL）都添加到 queue 中。这样会导致一个问题，示例的第一棵二叉树层数为 3，上面的代码运行后生成的 <code>vector&lt;vector&lt;TreeNode*&gt;&gt;</code> 为：</p>
+<pre><code>[
+    [1],
+    [2, 2],
+    [3, 4, 4, 3],
+    [null, null, null, null, null, null, null, null]
+]
+</code></pre><p>即是多出来的最底一层全为 NULL。所以在 return vv 前把 vv 最后一个 <code>vector&lt;TreeNode*&gt;</code> 去掉。</p>
+<p>在根据 vv 判断二叉树是否对称前，我们先整理一下完全二叉树各节点的下标：</p>
+<pre><code>    0
+   / \
+  1   2
+ / \ / \
+3  4 5  6
+</code></pre><p>第 i 层有 2^(i-1) 个节点：</p>
+<ul>
+<li>第 1 层有 1 个节点</li>
+<li>第 2 层有 2 个节点</li>
+<li>第 3 层有 4 个节点</li>
+<li>第 4 层有 8 个节点</li>
+</ul>
+<p>所以第 i 层的最左节点下标，即是前 i-1 层所有节点个数之和 + 1 - 1（-1 是因为下标从 0 开始），即 2^0 + 2^1 + … + 2^(i-2) = 2^(i-1) - 1，详见<a href="https://zh.wikipedia.org/wiki/%E7%AD%89%E6%AF%94%E6%95%B0%E5%88%97#.E6.B1.82.E5.92.8C.E5.85.AC.E5.BC.8F" target="_blank" rel="external">等比数列求和公式</a>。</p>
+<p>那么第 i 层的最右节点下标，即是最左节点下标 + 第 i 层节点个数 - 1，即 2^(i-1) - 1 + 2^(i-1) - 1 = 2^i - 2。</p>
+<p>我们用一个表格来整理清楚各个数据：</p>
+<pre><code>层数    该层节点个数    最左节点下标    最右节点下标
+  1          1               0               0
+  2          2               1               2
+  3          4               3               6
+  4          8               7              14
+  ...
+  i       2^(i-1)        2^(i-1) - 1      2^i - 2
+</code></pre><p>接下来就可以利用这些数据来判断二叉树是否对称了，思路是：</p>
+<ol>
+<li>对于每一层，使用 leftIndex 和 rightIndex 记录该层的 <code>vector&lt;TreeNode*&gt;</code> 最左和最右节点下标<ul>
+<li>如果 leftIndex 和 rightIndex 节点都为 NULL，则它们相同，leftIndex++，rightIndex–</li>
+<li>如果 leftIndex 和 rightIndex 只有一个为 NULL，则它们不相同，则整棵二叉树不对称，return false</li>
+<li>如果 leftIndex 和 rightIndex 节点都不为 NULL，则判断 leftVal == rightVal，相同则 leftIndex++，rightIndex–，否则整棵二叉树不对称，return false</li>
+</ul>
+</li>
+<li>对于二叉树每一层，重复第 1 步。</li>
+</ol>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; vv = levelTopDown(root);</div><div class="line">        <span class="keyword">bool</span> isSym = checkSymmetric(vv);</div><div class="line">        <span class="keyword">return</span> isSym;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; levelTopDown(TreeNode *root) &#123;</div><div class="line">        <span class="comment">// 初始化</span></div><div class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; vv;</div><div class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> vv;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">vector</span>&lt;TreeNode*&gt; <span class="built_in">queue</span>;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; qLevel;</div><div class="line"></div><div class="line">        <span class="built_in">queue</span>.push_back(root);</div><div class="line">        qLevel.push_back(<span class="number">1</span>);</div><div class="line"></div><div class="line">        <span class="comment">// 循环构造 queue 和 qLevel</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">queue</span>.size(); i++) &#123;</div><div class="line">            TreeNode *node = <span class="built_in">queue</span>[i];</div><div class="line">            <span class="keyword">if</span> (node == <span class="literal">NULL</span>) &#123;</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="built_in">queue</span>.push_back(node-&gt;left);</div><div class="line">            qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line"></div><div class="line">            <span class="built_in">queue</span>.push_back(node-&gt;right);</div><div class="line">            qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 基于 queue 和 qLevel 正向构造 vv</span></div><div class="line">        qLevel.insert(qLevel.begin(), <span class="number">0</span>);       <span class="comment">// 头插入 sentinel 元素，方便统一循环</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">queue</span>.size(); i++) &#123;</div><div class="line">            <span class="keyword">if</span> (qLevel[i] &lt; qLevel[i + <span class="number">1</span>]) &#123;    <span class="comment">// 有 sentinel 元素后这个判断就可以统一</span></div><div class="line">                <span class="built_in">vector</span>&lt;TreeNode*&gt; vNewLevel;</div><div class="line">                vv.push_back(vNewLevel);</div><div class="line">            &#125;</div><div class="line">            vv[vv.size() - <span class="number">1</span>].push_back(<span class="built_in">queue</span>[i]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// vv 最后一层肯定全部是 NULL，整层去掉</span></div><div class="line">        vv.erase(vv.end() - <span class="number">1</span>);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> vv;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">checkSymmetric</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt;&amp; vv)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> level = vv.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= level; i++) &#123;</div><div class="line">            <span class="comment">// 每层的初始 leftIndex, rightIndex</span></div><div class="line">            <span class="keyword">int</span> leftIndex = <span class="number">0</span>;</div><div class="line">            <span class="keyword">int</span> rightIndex = <span class="built_in">pow</span>(<span class="number">2</span>, i - <span class="number">1</span>) - <span class="number">1</span>;</div><div class="line"></div><div class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex) &#123;</div><div class="line">                <span class="comment">// 取左右两个节点</span></div><div class="line">                TreeNode *leftNode = vv[i - <span class="number">1</span>][leftIndex];</div><div class="line">                TreeNode *rightNode = vv[i - <span class="number">1</span>][rightIndex];</div><div class="line"></div><div class="line">                <span class="comment">// 两个都为 NULL</span></div><div class="line">                <span class="keyword">if</span> (leftNode == <span class="literal">NULL</span> &amp;&amp; rightNode == <span class="literal">NULL</span>) &#123;</div><div class="line">                    leftIndex++;</div><div class="line">                    rightIndex--;</div><div class="line">                    <span class="keyword">continue</span>;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">// 有一个为 NULL</span></div><div class="line">                <span class="keyword">if</span> (leftNode == <span class="literal">NULL</span> || rightNode == <span class="literal">NULL</span>) &#123;</div><div class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">// 两个都不为 NULL</span></div><div class="line">                <span class="keyword">if</span> (leftNode != <span class="literal">NULL</span> &amp;&amp; rightNode != <span class="literal">NULL</span>) &#123;</div><div class="line">                    <span class="keyword">if</span> (leftNode-&gt;val == rightNode-&gt;val) &#123;</div><div class="line">                        leftIndex++;</div><div class="line">                        rightIndex--;</div><div class="line">                        <span class="keyword">continue</span>;</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">else</span> &#123;</div><div class="line">                        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>提交到 Leetcode，Runtime Error! 导致错误的输入是 [9, 71, 71, null, 79, 79, null, -76, -43, -43, -76, null, -52, 21, null, null, 84, -52]，即下面的二叉树：</p>
+<p><img src="/images/leetcode/101-symmetric-tree/runtime-error-input.png" alt=""></p>
+<p>经 debug 后，我发现上面算法的问题出在 levelTopDown，因为 checkSymmetric 时最左节点下标都是从 0 开始，所以如果二叉树某一层的最左节点下标，不是完全二叉树意义上的最左节点（如第 3 层的第一个 79，第 5 层的第一个 -52），就会导致该层的下标不准确，导致访问 rightIndex 元素时 out of range，导致 Runtime Error。</p>
+<p>简单来讲，即是 checkSymmetric 需要形参 vv 在第 i 层有 2^(i-1) 个元素，而 levelTopDown 返回的 vv 不满足。</p>
+<p>如果把第 44~52 行的 for 循环修改为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">queue</span>.size(); i++) &#123;</div><div class="line">    TreeNode *node = <span class="built_in">queue</span>[i];</div><div class="line"></div><div class="line">    <span class="built_in">queue</span>.push_back(node == <span class="literal">NULL</span> ? <span class="literal">NULL</span> : node-&gt;left);</div><div class="line">    qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="built_in">queue</span>.push_back(node == <span class="literal">NULL</span> ? <span class="literal">NULL</span> : node-&gt;right);</div><div class="line">    qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>则满足第 i 层节点个数为 2^(i-1)，但会导致死循环。以上图二叉树为例，在第 5 层叶子节点下面层的节点全为 NULL，一层一层生成，无法停止。现在我还没想到办法如何判断出第 6 层全为 NULL 后则停止 for 循环，并把第 6 层删除。</p>
+<p>想到办法了，在每次遍历 i 时，先判断是否 qLevel[i-1] &lt; qLevel[i]，若是，则说是 queue[i] 是下一层的第一个节点。然后遍历上一层，如果全是 NULL，则 break 出 for 循环。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;frequently-used-code-snippets.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; vv = levelTopDown(root);</div><div class="line">        <span class="keyword">bool</span> isSym = checkSymmetric(vv);</div><div class="line">        <span class="keyword">return</span> isSym;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; levelTopDown(TreeNode *root) &#123;</div><div class="line">        <span class="comment">// 初始化</span></div><div class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt; vv;</div><div class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> vv;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">vector</span>&lt;TreeNode*&gt; <span class="built_in">queue</span>;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; qLevel;</div><div class="line"></div><div class="line">        <span class="built_in">queue</span>.push_back(root);</div><div class="line">        qLevel.push_back(<span class="number">1</span>);</div><div class="line"></div><div class="line">        <span class="comment">// 循环构造 queue 和 qLevel</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">queue</span>.size(); i++) &#123;</div><div class="line">            <span class="comment">// 检查是否该停止 for 死循环</span></div><div class="line">            <span class="keyword">if</span> (i &gt; <span class="number">0</span> &amp;&amp; qLevel[i - <span class="number">1</span>] &lt; qLevel[i]) &#123;   <span class="comment">// i 是新的一层的最左节点下标</span></div><div class="line">                <span class="keyword">bool</span> continueFor = <span class="literal">false</span>;</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; qLevel[j] == qLevel[i - <span class="number">1</span>]; j--) &#123;</div><div class="line">                    <span class="keyword">if</span> (<span class="built_in">queue</span>[j] != <span class="literal">NULL</span>)   <span class="comment">// 上一层有真实节点 &#123;</span></div><div class="line">                        continueFor = <span class="literal">true</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (! continueFor) &#123;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="comment">// 继续循环</span></div><div class="line">            TreeNode *node = <span class="built_in">queue</span>[i];</div><div class="line"></div><div class="line">            <span class="built_in">queue</span>.push_back(node == <span class="literal">NULL</span> ? <span class="literal">NULL</span> : node-&gt;left);</div><div class="line">            qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line"></div><div class="line">            <span class="built_in">queue</span>.push_back(node == <span class="literal">NULL</span> ? <span class="literal">NULL</span> : node-&gt;right);</div><div class="line">            qLevel.push_back(qLevel[i] + <span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 基于 queue 和 qLevel 正向构造 vv</span></div><div class="line">        qLevel.insert(qLevel.begin(), <span class="number">0</span>);       <span class="comment">// 头插入 sentinel 元素，方便统一循环</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">queue</span>.size(); i++) &#123;</div><div class="line">            <span class="keyword">if</span> (qLevel[i] &lt; qLevel[i + <span class="number">1</span>]) &#123;    <span class="comment">// 有 sentinel 元素后这个判断就可以统一</span></div><div class="line">                <span class="built_in">vector</span>&lt;TreeNode*&gt; vNewLevel;</div><div class="line">                vv.push_back(vNewLevel);</div><div class="line">            &#125;</div><div class="line">            vv[vv.size() - <span class="number">1</span>].push_back(<span class="built_in">queue</span>[i]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// vv 最后两层肯定全部是 NULL，全部去掉</span></div><div class="line">        vv.erase(vv.end() - <span class="number">1</span>);</div><div class="line">        vv.erase(vv.end() - <span class="number">1</span>);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> vv;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">checkSymmetric</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;TreeNode*&gt;&gt;&amp; vv)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> level = vv.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= level; i++) &#123;</div><div class="line">            <span class="comment">// 每层的初始 leftIndex, rightIndex</span></div><div class="line">            <span class="keyword">int</span> leftIndex = <span class="number">0</span>;</div><div class="line">            <span class="keyword">int</span> rightIndex = <span class="built_in">pow</span>(<span class="number">2</span>, i - <span class="number">1</span>) - <span class="number">1</span>;</div><div class="line"></div><div class="line">            <span class="keyword">while</span> (leftIndex &lt;= rightIndex) &#123;</div><div class="line">                <span class="comment">// 取左右两个节点</span></div><div class="line">                TreeNode *leftNode = vv[i - <span class="number">1</span>][leftIndex];</div><div class="line">                TreeNode *rightNode = vv[i - <span class="number">1</span>][rightIndex];</div><div class="line"></div><div class="line">                <span class="comment">// 两个都为 NULL</span></div><div class="line">                <span class="keyword">if</span> (leftNode == <span class="literal">NULL</span> &amp;&amp; rightNode == <span class="literal">NULL</span>) &#123;</div><div class="line">                    leftIndex++;</div><div class="line">                    rightIndex--;</div><div class="line">                    <span class="keyword">continue</span>;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">// 有一个为 NULL</span></div><div class="line">                <span class="keyword">if</span> (leftNode == <span class="literal">NULL</span> || rightNode == <span class="literal">NULL</span>) &#123;</div><div class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">// 两个都不为 NULL</span></div><div class="line">                <span class="keyword">if</span> (leftNode != <span class="literal">NULL</span> &amp;&amp; rightNode != <span class="literal">NULL</span>) &#123;</div><div class="line">                    <span class="keyword">if</span> (leftNode-&gt;val == rightNode-&gt;val) &#123;</div><div class="line">                        leftIndex++;</div><div class="line">                        rightIndex--;</div><div class="line">                        <span class="keyword">continue</span>;</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">else</span> &#123;</div><div class="line">                        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>提交到 Leetcode，Time Limit Exceeded! 导致超时的输入为 [6, 82, 82, null, 53, 53, null, -58, null, null, -58, null, -85, -85, null, -9, null, null, -9, null, 48, 48, null, 33, null, null, 33, 81, null, null, 81, 5, null, null, 5, 61, null, null, 61, null, 9, 9, null, 91, null, null, 91, 72, 7, 7, 72, 89, null, 94, null, null, 94, null, 89, -27, null, -30, 36, 36, -30, null, -27, 50, 36, null, -80, 34, null, null, 34, -80, null, 36, 50, 18, null, null, 91, 77, null, null, 95, 95, null, null, 77, 91, null, null, 18, -19, 65, null, 94, null, -53, null, -29, -29, null, -53, null, 94, null, 65, -19, -62, -15, -35, null, null, -19, 43, null, -21, null, null, -21, null, 43, -19, null, null, -35, -15, -62, 86, null, null, -70, null, 19, null, 55, -79, null, null, -96, -96, null, null, -79, 55, null, 19, null, -70, null, null, 86, 49, null, 25, null, -19, null, null, 8, 30, null, 82, -47, -47, 82, null, 30, 8, null, null, -19, null, 25, null, 49]</p>
+<p>上面代码的时间复杂度是 O(2^n)，因为最坏情况是二叉树每层只有一个节点，但为了保证 leftIndex 和 rightIndex 的正确性，要把该层所有 2^(i-1)-1 个节点全部都用 NULL 填充占位。所以当有 n 个节点，每个节点占一层时，n 层完全二叉树共有 2^0 + 2^1 + 2^2 + … + 2^(n-1) = 2^n - 1 个节点，所以时间复杂度为 O(2^n)。</p>
+<hr>
+<p>#思路二</p>
+<p>上面的思路好像走不通，那么就换个思路。要判断一棵二叉树是否对称，一个比较直观的思路是，对源二叉树生成一棵左右交换（即垂直旋转）的二叉树，如果两棵二叉树完全相同，那么源二叉树就是对称的。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">    TreeNode *invertRoot = invertTree(root);</div><div class="line">    <span class="keyword">bool</span> isSym = isSameTree(root, invertRoot);</div><div class="line">    <span class="keyword">return</span> isSym;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>invertTree 可直接使用 <a href="http://syawlaus.github.io/blog/leetcode/226-invert-binary-tree/" target="_blank" rel="external">Leetcode 题解 - 226. Invert Binary Tree</a> 的代码。注意那是使用原地反转二叉树，在本题套用前，要先对二叉树作一份拷贝。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="function">TreeNode* <span class="title">invertTree</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">    TreeNode *copyRoot = copyTree(root);</div><div class="line">    copyRoot = invertTreeInPlace(copyRoot);</div><div class="line">    <span class="keyword">return</span> copyRoot;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">TreeNode* <span class="title">copyTree</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">    &#125;</div><div class="line">    TreeNode *copyRoot = <span class="keyword">new</span> TreeNode(root-&gt;val);</div><div class="line">    copyRoot-&gt;left = copyTree(root-&gt;left);</div><div class="line">    copyRoot-&gt;right = copyTree(root-&gt;right);</div><div class="line">    <span class="keyword">return</span> copyRoot;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">TreeNode* <span class="title">invertTreeInPlace</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">    <span class="comment">// root 为空结点</span></div><div class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// root 是叶子节点</span></div><div class="line">    <span class="keyword">if</span> (root-&gt;left == <span class="literal">NULL</span> &amp;&amp;</div><div class="line">        root-&gt;right == <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> root;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 反转左子树</span></div><div class="line">    TreeNode *left = invertTreeInPlace(root-&gt;left);</div><div class="line"></div><div class="line">    <span class="comment">// 反转右子树</span></div><div class="line">    TreeNode *right = invertTreeInPlace(root-&gt;right);</div><div class="line"></div><div class="line">    <span class="comment">// 交换左右子结点</span></div><div class="line">    TreeNode *temp = root-&gt;left;</div><div class="line">    root-&gt;left = root-&gt;right;</div><div class="line">    root-&gt;right = temp;</div><div class="line"></div><div class="line">    <span class="comment">// 返回根结点</span></div><div class="line">    <span class="keyword">return</span> root;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>isSameTree 可直接使用 <a href="http://syawlaus.github.io/blog/leetcode/100-same-tree/" target="_blank" rel="external">Leetcode 题解 - 100. Same Tree</a> 的代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSameTree</span><span class="params">(TreeNode *p, TreeNode *q)</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (p == <span class="literal">NULL</span> &amp;&amp; q == <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 结构不同</span></div><div class="line">    <span class="keyword">if</span> (p != <span class="literal">NULL</span> &amp;&amp; q == <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 结构不同</span></div><div class="line">    <span class="keyword">if</span> (p == <span class="literal">NULL</span> &amp;&amp; q != <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 结构相同</span></div><div class="line">    <span class="keyword">else</span> &#123;      <span class="comment">// 即 p != NULL &amp;&amp; q != NULL</span></div><div class="line">        <span class="comment">// 值不同</span></div><div class="line">        <span class="keyword">if</span> (p-&gt;val != q-&gt;val) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">bool</span> isSameLeft = isSameTree(p-&gt;left, q-&gt;left);</div><div class="line">        <span class="keyword">bool</span> isSameRight = isSameTree(p-&gt;right, q-&gt;right);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (isSameLeft &amp;&amp; isSameRight) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>整个程序的代码如下（测试数据仍是下图的二叉树）：</p>
+<p><img src="/images/leetcode/101-symmetric-tree/runtime-error-input.png" alt=""></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;frequently-used-code-snippets.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        TreeNode *invertRoot = invertTree(root);</div><div class="line">        <span class="keyword">bool</span> isSym = isSameTree(root, invertRoot);</div><div class="line">        <span class="keyword">return</span> isSym;</div><div class="line">    &#125;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="function">TreeNode* <span class="title">invertTree</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        TreeNode *copyRoot = copyTree(root);</div><div class="line">        copyRoot = invertTreeInPlace(copyRoot);</div><div class="line">        <span class="keyword">return</span> copyRoot;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function">TreeNode* <span class="title">copyTree</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">        &#125;</div><div class="line">        TreeNode *copyRoot = <span class="keyword">new</span> TreeNode(root-&gt;val);</div><div class="line">        copyRoot-&gt;left = copyTree(root-&gt;left);</div><div class="line">        copyRoot-&gt;right = copyTree(root-&gt;right);</div><div class="line">        <span class="keyword">return</span> copyRoot;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function">TreeNode* <span class="title">invertTreeInPlace</span><span class="params">(TreeNode *root)</span> </span>&#123;</div><div class="line">        <span class="comment">// root 为空结点</span></div><div class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// root 是叶子节点</span></div><div class="line">        <span class="keyword">if</span> (root-&gt;left == <span class="literal">NULL</span> &amp;&amp;</div><div class="line">            root-&gt;right == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> root;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 反转左子树</span></div><div class="line">        TreeNode *left = invertTreeInPlace(root-&gt;left);</div><div class="line"></div><div class="line">        <span class="comment">// 反转右子树</span></div><div class="line">        TreeNode *right = invertTreeInPlace(root-&gt;right);</div><div class="line"></div><div class="line">        <span class="comment">// 交换左右子结点</span></div><div class="line">        TreeNode *temp = root-&gt;left;</div><div class="line">        root-&gt;left = root-&gt;right;</div><div class="line">        root-&gt;right = temp;</div><div class="line"></div><div class="line">        <span class="comment">// 返回根结点</span></div><div class="line">        <span class="keyword">return</span> root;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">     <span class="function"><span class="keyword">bool</span> <span class="title">isSameTree</span><span class="params">(TreeNode *p, TreeNode *q)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (p == <span class="literal">NULL</span> &amp;&amp; q == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 结构不同</span></div><div class="line">        <span class="keyword">if</span> (p != <span class="literal">NULL</span> &amp;&amp; q == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 结构不同</span></div><div class="line">        <span class="keyword">if</span> (p == <span class="literal">NULL</span> &amp;&amp; q != <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 结构相同</span></div><div class="line">        <span class="keyword">else</span> &#123;      <span class="comment">// 即 p != NULL &amp;&amp; q != NULL</span></div><div class="line">            <span class="comment">// 值不同</span></div><div class="line">            <span class="keyword">if</span> (p-&gt;val != q-&gt;val) &#123;</div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// 值相同</span></div><div class="line">            <span class="keyword">bool</span> isSameLeft = isSameTree(p-&gt;left, q-&gt;left);</div><div class="line">            <span class="keyword">bool</span> isSameRight = isSameTree(p-&gt;right, q-&gt;right);</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (isSameLeft &amp;&amp; isSameRight) &#123;</div><div class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// 设置二叉树</span></div><div class="line">    <span class="function">TreeNode <span class="title">A</span><span class="params">(<span class="number">9</span>)</span></span>;</div><div class="line"></div><div class="line">    <span class="function">TreeNode <span class="title">B</span><span class="params">(<span class="number">71</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">C</span><span class="params">(<span class="number">71</span>)</span></span>;</div><div class="line"></div><div class="line">    <span class="function">TreeNode <span class="title">D</span><span class="params">(<span class="number">79</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">E</span><span class="params">(<span class="number">79</span>)</span></span>;</div><div class="line"></div><div class="line">    <span class="function">TreeNode <span class="title">F</span><span class="params">(<span class="number">-76</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">G</span><span class="params">(<span class="number">-43</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">H</span><span class="params">(<span class="number">-43</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">I</span><span class="params">(<span class="number">-76</span>)</span></span>;</div><div class="line"></div><div class="line">    <span class="function">TreeNode <span class="title">J</span><span class="params">(<span class="number">-52</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">K</span><span class="params">(<span class="number">21</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">L</span><span class="params">(<span class="number">84</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">M</span><span class="params">(<span class="number">-52</span>)</span></span>;</div><div class="line"></div><div class="line"></div><div class="line">    A.left = &amp;B;</div><div class="line">    A.right = &amp;C;</div><div class="line"></div><div class="line">    B.right = &amp;D;</div><div class="line">    C.left = &amp;E;</div><div class="line"></div><div class="line">    D.left = &amp;F;</div><div class="line">    D.right = &amp;G;</div><div class="line">    E.left = &amp;H;</div><div class="line">    E.right = &amp;I;</div><div class="line"></div><div class="line">    F.right = &amp;J;</div><div class="line">    G.left = &amp;K;</div><div class="line">    H.right = &amp;L;</div><div class="line">    I.left = &amp;M;</div><div class="line"></div><div class="line">    <span class="comment">// Solution</span></div><div class="line">    Solution sol;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; sol.isSymmetric(&amp;A) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="comment">// 0</span></div></pre></td></tr></table></figure>
+<p>提交到 Leetcode，Accepted! :) 运行时间为 9ms。</p>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/leetcode/107-binary-tree-level-order-traversal-ii/">Leetcode 题解 - 107. Binary Tree Level Order Traversal II</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/leetcode/27-remove-element/">Leetcode 题解 - 27. Remove Element</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>

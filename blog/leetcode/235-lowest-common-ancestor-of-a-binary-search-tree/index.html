@@ -1,0 +1,917 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> Leetcode 题解 - 235. Lowest Common Ancestor of a Binary Search Tree // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              Leetcode 题解 - 235. Lowest Common Ancestor of a Binary Search Tree
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-07-20
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/Leetcode/">Leetcode</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>#题目</p>
+<p>给定一棵二叉搜索树（Binary Search Tree，简称 BST），找出两个给定节点的最近公共祖先（Lowest Common Ancestor，简称 LCA）。</p>
+<a id="more"></a>
+<p>根据 <a href="https://en.wikipedia.org/wiki/Lowest_common_ancestor" target="_blank" rel="external">LCA 的维基百科定义</a>：“在一个树中同时拥有 v, w 作为后代的最深的节点，我们定义一个节点也是其自己的后代。”</p>
+<pre><code>     _______6______
+    /              \
+ ___2__          ___8__
+/      \        /      \
+0      _4       7       9
+      /  \
+      3   5
+</code></pre><p><strong>示例</strong>：</p>
+<p>节点 2、8 的 LCA 是 6。</p>
+<p>节点 2、4 的 LCA 是 2，因为根据定义，一个节点也可以是自己的后代。</p>
+<p><strong>难度</strong>：容易</p>
+<p><strong>编程语言</strong>：C++</p>
+<hr>
+<p>#分析</p>
+<p>程序框架为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Definition for a binary tree node.</span></div><div class="line"><span class="keyword">struct</span> TreeNode &#123;</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    TreeNode* left;</div><div class="line">    TreeNode* right;</div><div class="line">    TreeNode(<span class="keyword">int</span> x) : val(x), left(<span class="literal">NULL</span>), right(<span class="literal">NULL</span>) &#123;&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* v, TreeNode* w)</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>我的思路是：</p>
+<ol>
+<li>如果 v, w 是相同，那么 LCA 就是 v，否则到第 2 步</li>
+<li>判断 v 是否 w 的祖先节点（或相反），具体做法是：<br> 2.1. 求出 v, w 的深度<br> 2.2. 假设求出的 v 深度为 2，w 深度为 4<br> 2.3. 沿 w 往上走 (4-2) 层，到达 w 的父节点的父节点 w’<br> 2.4. 此时 v, w’ 深度相同，判断 v, w’ 是否相同，如果是，那么 v, w 的 LCA 就是 v，否则到第 3 步</li>
+<li>v, w’ 的深度相同（这里假设 v 的深度比 w 小），v, w’ 每往上走一步（即回溯到父节点），判断两个父节点是否相同，相同则返回，不相同则继续往上走，直到相同则返回。</li>
+</ol>
+<p>伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">TreeNode* lowestCommonAncestor(TreeNode* root,</div><div class="line">                               TreeNode* v,</div><div class="line">                               TreeNode* w) &#123;</div><div class="line">    if (v == NULL || w == NULL) &#123;</div><div class="line">        return NULL;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 第 1 步</div><div class="line">    if (v == w) &#123;</div><div class="line">        return v;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 第 2 步</div><div class="line">    // 第 2.1 步</div><div class="line">    int depthV = depth(root, v);</div><div class="line">    int depthW = depth(root, w);</div><div class="line"></div><div class="line">    // 第 2.2 步</div><div class="line">    TreeNode* highNode;     // highNode 是深度较小的节点，在树中的位置较高</div><div class="line">    TreeNode* lowNode;      //  lowNode 是深度较大的节点，在树中的位置较低</div><div class="line">    int depthDiff;</div><div class="line"></div><div class="line">    if (depthV &lt; depthW) &#123;</div><div class="line">        highNode = v;</div><div class="line">        lowNode = w;</div><div class="line">        depthDiff = depthW - depthV;</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        highNode = w;</div><div class="line">        lowNode = v;</div><div class="line">        depthDiff = depthV - depthW;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 第 2.3 步</div><div class="line">    traverseUpward(lowNode, depthDiff);</div><div class="line"></div><div class="line">    // 第 2.4 步</div><div class="line">    if (highNode == lowNode) &#123;</div><div class="line">        return highNode;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 第 3 步</div><div class="line">    while (highNode != lowNode) &#123;</div><div class="line">        traverseUpward(highNode, 1);</div><div class="line">        traverseUpward(lowNode, 1);</div><div class="line">    &#125;</div><div class="line">    return highNode;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 返回 node 在树中的深度</div><div class="line">int depth(TreeNode* root,</div><div class="line">          TreeNode* node) &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">// node 在树上往上回溯 n 层，保证 n &gt; 0</div><div class="line">void traverseUpward(TreeNode* node,</div><div class="line">                    int n)&#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了，接下来 depth 函数要怎么写？我的思路是，使用一个 <code>map&lt;TreeNode*, TreeNode*&gt;</code>，key 为节点，value 为父节点，保存每个节点的父结点，那么往上回溯就方便了。然后从 root 开始，把 left, right 的父节点保存到 map 中，一直往下递归。在生成 map 后，往上回溯就能求出 depth。因为每个节点只能有一个父节点，所以满足 map 一一映射的属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">int depth(TreeNode* root,</div><div class="line">          TreeNode* node,</div><div class="line">          map&lt;TreeNode*, TreeNode*&gt;&amp; mapParents) &#123;</div><div class="line">    // 生成 map</div><div class="line">    fillMapParents(root, mapParents);</div><div class="line"></div><div class="line">    // 利用 map 往上回溯，求出 node 的深度</div><div class="line">    int depth = 1;  // root 深度为 1</div><div class="line">    while (node != root) &#123;</div><div class="line">        node = mapParents.getVal(node);</div><div class="line">        depth++;</div><div class="line">    &#125;</div><div class="line">    return depth;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void fillMapParents(TreeNode* root,</div><div class="line">                    map&lt;TreeNode*, TreeNode*&gt;&amp; mapParents) &#123;</div><div class="line">    if (root == NULL) &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    addToMap(root-&gt;left, root, mapParents);</div><div class="line">    addToMap(root-&gt;right, root, mapParents);</div><div class="line"></div><div class="line">    fillMapParents(root-&gt;left, mapParents);</div><div class="line">    fillMapParents(root-&gt;right, mapParents);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void addToMap(TreeNode* keyNode,</div><div class="line">              TreeNode* valNode,</div><div class="line">              map&lt;TreeNode*, TreeNode*&gt;&amp; map) &#123;</div><div class="line">    if (containsKey(key, map) &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    map.put(keyNode, valNode);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了， 接下来 traverseUpward 函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">void traverseUpward(TreeNode* node,</div><div class="line">                    int n,</div><div class="line">                    map&lt;TreeNode*, TreeNode*&gt;&amp; mapParents)&#123;</div><div class="line">    for (int i = 0; i &lt; n; i++) &#123;</div><div class="line">        node = map.getVal(node);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="comment">// Definition for a binary tree node.</span></div><div class="line"><span class="keyword">struct</span> TreeNode &#123;</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    TreeNode* left;</div><div class="line">    TreeNode* right;</div><div class="line">    TreeNode(<span class="keyword">int</span> x) : val(x), left(<span class="literal">NULL</span>), right(<span class="literal">NULL</span>) &#123;&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">// 求 v, w 在以 root 为根节点的二叉树的最近公共祖先</span></div><div class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root,</span></span></div><div class="line">                                   TreeNode* v,</div><div class="line">                                   TreeNode* w) &#123;</div><div class="line">        <span class="keyword">if</span> (v == <span class="literal">NULL</span> || w == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 第 1 步</span></div><div class="line">        <span class="keyword">if</span> (v == w) &#123;</div><div class="line">            <span class="keyword">return</span> v;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 第 2 步</span></div><div class="line">        <span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt; mapParents;</div><div class="line">        fillMapParents(root, mapParents);   <span class="comment">// 填充 map，不在 depth 函数里填充，避免重复计算</span></div><div class="line"></div><div class="line">        <span class="comment">// 第 2.1 步</span></div><div class="line">        <span class="keyword">int</span> depthV = depth(root, v, mapParents);</div><div class="line">        <span class="keyword">int</span> depthW = depth(root, w, mapParents);</div><div class="line"></div><div class="line">        <span class="comment">// 第 2.2 步</span></div><div class="line">        TreeNode* highNode;     <span class="comment">// highNode 是深度较小的节点，在树中的位置较高</span></div><div class="line">        TreeNode* lowNode;      <span class="comment">//  lowNode 是深度较大的节点，在树中的位置较低</span></div><div class="line">        <span class="keyword">int</span> depthDiff;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (depthV &lt; depthW) &#123;</div><div class="line">            highNode = v;</div><div class="line">            lowNode = w;</div><div class="line">            depthDiff = depthW - depthV;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            highNode = w;</div><div class="line">            lowNode = v;</div><div class="line">            depthDiff = depthV - depthW;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 第 2.3 步</span></div><div class="line">        traverseUpward(lowNode, depthDiff, mapParents);</div><div class="line"></div><div class="line">        <span class="comment">// 第 2.4 步</span></div><div class="line">        <span class="keyword">if</span> (highNode == lowNode) &#123;</div><div class="line">            <span class="keyword">return</span> highNode;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 第 3 步</span></div><div class="line">        <span class="keyword">while</span> (highNode != lowNode) &#123;</div><div class="line">            traverseUpward(highNode, <span class="number">1</span>, mapParents);</div><div class="line">            traverseUpward(lowNode, <span class="number">1</span>, mapParents);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> highNode;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 填充 map，包含 root</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fillMapParents</span><span class="params">(TreeNode* root,</span></span></div><div class="line">                        <span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;&amp; mapParents) &#123;</div><div class="line">        fillMapParentsWithoutRoot(root, mapParents);</div><div class="line">        addToMap(root, <span class="literal">NULL</span>, mapParents);   <span class="comment">// 给根节点加上父节点 NULL</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 遍历填充 map 没有包含 root</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fillMapParentsWithoutRoot</span><span class="params">(TreeNode* root,</span></span></div><div class="line">                                   <span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;&amp; mapParents) &#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        addToMap(root-&gt;left, root, mapParents);</div><div class="line">        addToMap(root-&gt;right, root, mapParents);</div><div class="line"></div><div class="line">        fillMapParentsWithoutRoot(root-&gt;left, mapParents);</div><div class="line">        fillMapParentsWithoutRoot(root-&gt;right, mapParents);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 往 mapParents 添加 pair&lt;childNode, parentNode&gt;</span></div><div class="line">    <span class="comment">// 保证 childNode 唯一</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addToMap</span><span class="params">(TreeNode* keyNode,</span></span></div><div class="line">                  TreeNode* valNode,</div><div class="line">                  <span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;&amp; mapParents) &#123;</div><div class="line">        <span class="keyword">if</span> (keyNode == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 保证 key 唯一</span></div><div class="line">        <span class="keyword">if</span> (mapParents.find(keyNode) == mapParents.end()) &#123;</div><div class="line">            mapParents.insert(pair&lt;TreeNode*, TreeNode*&gt;(keyNode, valNode));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 利用 map 往上回溯，求出 node 的深度</span></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">depth</span><span class="params">(TreeNode* root,</span></span></div><div class="line">              TreeNode* node,</div><div class="line">              <span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;&amp; mapParents) &#123;</div><div class="line">        <span class="keyword">int</span> depth = <span class="number">1</span>;  <span class="comment">// root 深度为 1</span></div><div class="line">        <span class="keyword">while</span> (node != root) &#123;</div><div class="line">            node = mapParents.find(node)-&gt;second;</div><div class="line">            depth++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> depth;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 利用 map，node 往上回溯 n 层</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">traverseUpward</span><span class="params">(TreeNode*&amp; node,    <span class="comment">// 注意这里使用 TreeNode*&amp; 指针引用，如果使用 TreeNode*，只操作了形参，实参是不变的</span></span></span></div><div class="line">                        <span class="keyword">int</span> n,</div><div class="line">                        <span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;&amp; mapParents)&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; node-&gt;val &lt;&lt; <span class="string">" 往上 "</span> &lt;&lt; n &lt;&lt; <span class="string">" 层到达 "</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</div><div class="line">            node = mapParents.find(node)-&gt;second;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; node-&gt;val &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 打印 mapParents</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printMapParents</span><span class="params">(<span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;&amp; mapParents)</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;::iterator iter = mapParents.begin(); iter != mapParents.end(); iter++) &#123;</div><div class="line">            TreeNode* node = iter-&gt;first;</div><div class="line">            TreeNode* parent = iter-&gt;second;</div><div class="line">            <span class="keyword">if</span> (parent == <span class="literal">NULL</span>) &#123;</div><div class="line">                <span class="built_in">cout</span> &lt;&lt; node-&gt;val &lt;&lt; <span class="string">" 的父节点是 NULL"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                <span class="built_in">cout</span> &lt;&lt; node-&gt;val &lt;&lt; <span class="string">" 的父节点是 "</span> &lt;&lt; parent-&gt;val &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 打印所有节点深度</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printAllNodesDepth</span><span class="params">(<span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;&amp; mapParents,</span></span></div><div class="line">                            TreeNode* root) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt;::iterator iter = mapParents.begin(); iter != mapParents.end(); iter++) &#123;</div><div class="line">            TreeNode* node = iter-&gt;first;</div><div class="line">            <span class="keyword">int</span> dep = depth(root, node, mapParents);</div><div class="line">            <span class="built_in">cout</span> &lt;&lt; node-&gt;val &lt;&lt; <span class="string">" 的深度为 "</span> &lt;&lt; dep &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// init data</span></div><div class="line">    <span class="function">TreeNode <span class="title">n6</span><span class="params">(<span class="number">6</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n2</span><span class="params">(<span class="number">2</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n8</span><span class="params">(<span class="number">8</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n0</span><span class="params">(<span class="number">0</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n4</span><span class="params">(<span class="number">4</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n7</span><span class="params">(<span class="number">7</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n9</span><span class="params">(<span class="number">9</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n3</span><span class="params">(<span class="number">3</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n5</span><span class="params">(<span class="number">5</span>)</span></span>;</div><div class="line"></div><div class="line">    n6.left  = &amp;n2;</div><div class="line">    n6.right = &amp;n8;</div><div class="line"></div><div class="line">    n2.left  = &amp;n0;</div><div class="line">    n2.right = &amp;n4;</div><div class="line"></div><div class="line">    n8.left  = &amp;n7;</div><div class="line">    n8.right = &amp;n9;</div><div class="line"></div><div class="line">    n4.left  = &amp;n3;</div><div class="line">    n4.right = &amp;n5;</div><div class="line"></div><div class="line">    <span class="comment">// 测试 fillMapParents</span></div><div class="line">    Solution sol;</div><div class="line">    <span class="built_in">map</span>&lt;TreeNode*, TreeNode*&gt; mapParents;</div><div class="line">    sol.fillMapParents(&amp;n6, mapParents);</div><div class="line">    sol.printMapParents(mapParents);</div><div class="line"></div><div class="line">    <span class="comment">// 测试 depth</span></div><div class="line">    sol.printAllNodesDepth(mapParents, &amp;n6);</div><div class="line">    </div><div class="line">    <span class="comment">// 测试 traverseUpward</span></div><div class="line">    TreeNode* tempNode = &amp;n2;</div><div class="line">    sol.traverseUpward(tempNode, <span class="number">1</span>, mapParents);</div><div class="line">    </div><div class="line">    <span class="comment">// 测试 lowestCommonAncestor</span></div><div class="line">    TreeNode* v = &amp;n2;</div><div class="line">    TreeNode* w = &amp;n4;</div><div class="line">    TreeNode* lca = sol.lowestCommonAncestor(&amp;n6, v, w);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; v-&gt;val &lt;&lt; <span class="string">", "</span> &lt;&lt; w-&gt;val &lt;&lt; <span class="string">" 的 LCA 是 "</span> &lt;&lt; lca-&gt;val &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    v = &amp;n2;</div><div class="line">    w = &amp;n8;</div><div class="line">    lca = sol.lowestCommonAncestor(&amp;n6, v, w);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; v-&gt;val &lt;&lt; <span class="string">", "</span> &lt;&lt; w-&gt;val &lt;&lt; <span class="string">" 的 LCA 是 "</span> &lt;&lt; lca-&gt;val &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="comment">// 5 的父节点是 4</span></div><div class="line"><span class="comment">// 3 的父节点是 4</span></div><div class="line"><span class="comment">// 9 的父节点是 8</span></div><div class="line"><span class="comment">// 7 的父节点是 8</span></div><div class="line"><span class="comment">// 4 的父节点是 2</span></div><div class="line"><span class="comment">// 0 的父节点是 2</span></div><div class="line"><span class="comment">// 8 的父节点是 6</span></div><div class="line"><span class="comment">// 2 的父节点是 6</span></div><div class="line"><span class="comment">// 6 的父节点是 NULL</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 5 的深度为 4</span></div><div class="line"><span class="comment">// 3 的深度为 4</span></div><div class="line"><span class="comment">// 9 的深度为 3</span></div><div class="line"><span class="comment">// 7 的深度为 3</span></div><div class="line"><span class="comment">// 4 的深度为 3</span></div><div class="line"><span class="comment">// 0 的深度为 3</span></div><div class="line"><span class="comment">// 8 的深度为 2</span></div><div class="line"><span class="comment">// 2 的深度为 2</span></div><div class="line"><span class="comment">// 6 的深度为 1</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 2 往上 1 层到达 6</span></div><div class="line"><span class="comment">// 4 往上 1 层到达 2</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 2, 4 的 LCA 是 2</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 2 往上 0 层到达 2</span></div><div class="line"><span class="comment">// 8 往上 1 层到达 6</span></div><div class="line"><span class="comment">// 2 往上 1 层到达 6</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">// 2, 8 的 LCA 是 6</span></div></pre></td></tr></table></figure>
+<p>提交到 Leetcode，Accepted! :)，运行时间为 112ms。</p>
+<hr>
+<p>#后续</p>
+<p>再重新看了一遍题目，才发现求二叉搜索树（BST）而不是二叉树（BT）的 LCA。我们看看<a href="https://zh.wikipedia.org/zh-cn/%E4%BA%8C%E5%85%83%E6%90%9C%E5%B0%8B%E6%A8%B9" target="_blank" rel="external">二叉搜索树的维基百科定义</a>：</p>
+<blockquote>
+<ol>
+<li>任意节点的左子树不空，则左子树上<strong>所有</strong>结点的值均小于它的根结点的值；</li>
+<li>任意节点的右子树不空，则右子树上<strong>所有</strong>结点的值均大于它的根结点的值；</li>
+<li>任意节点的左、右子树也分别为二叉查找树；</li>
+<li>没有键值相等的节点。</li>
+</ol>
+</blockquote>
+<p>根据 BST 的定义，计算 LCA(v, w) 的算法就简单多了。LCA(v, w) 是从根节点开始（包括根节点）往下的第一个满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间的节点。</p>
+<p>我们回看示例给出的 BST：</p>
+<pre><code>     _______6______
+    /              \
+ ___2__          ___8__
+/      \        /      \
+0      _4       7       9
+      /  \
+      3   5
+</code></pre><p>##示例一</p>
+<p>3、5 的最近公共祖先是 4，再往上的公共祖先是 2、6（一直到根节点）。那我们分析一下整条公共祖先链 6 -&gt; 2 -&gt; 4。</p>
+<ul>
+<li>以 6 为根节点，3、5 都是在左子树，左子树所有节点值都小于根节点值，不满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间</li>
+<li>以 2 为根节点，3、5 都是在右子树，右子树所有节点值都大于根节点值，不满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间</li>
+<li>以 4 为根节点，3、5 分别是左、右子树，满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间</li>
+<li>所以 4 是 3、5 的 LCA</li>
+</ul>
+<p>##示例二</p>
+<p>我们再看看 LCA(4, 7)，4、7 的最近公共祖先是 6，满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间。</p>
+<p>##示例三</p>
+<p>我们再看看 LCA(2, 4)，2、4 的最近公共祖先是 2，再往上的公共祖先是 6（一直到根节点）。那我们分析一下整条公共祖先链 6 -&gt; 2。</p>
+<ul>
+<li>以 6 为根节点，2、4 都是在左子树，左子树所有节点值都小于根节点值，不满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间</li>
+<li>以 2 为根节点，满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间</li>
+</ul>
+<p>抽象一点来说，v, w 可以分为三种情况：</p>
+<ol>
+<li>v == w，同一个节点，满足 v-&gt;val 和 w-&gt;val 在 [v-&gt;val, w-&gt;val] 区间</li>
+<li>v 是 w 的父节点，满足 v-&gt;val 在 [v-&gt;val, w-&gt;val] 区间<br>w 是 v 的父节点，满足 w-&gt;val 在 [v-&gt;val, w-&gt;val] 区间</li>
+<li>v, w 分别在最近公共祖先 lca 的左、右子树中，满足 lca-&gt;val 在 [v-&gt;val, w-&gt;val] 区间<ul>
+<li>从 lca 往上回溯，得到其父节点 lcaParent，那么 lca 就是 lcaParent 的左／右子节点。</li>
+<li>如果 lca 是 lcaParent 的左子节点，那么 lcaParent-&gt;val 大于 lca-&gt;val，也大于 v-&gt;val 和 w-&gt;val，不满足 lcaParent-&gt;val 在 [v-&gt;val, w-&gt;val] 区间，所以 lcaParent 不是 LCA(v, w)，lcaParent 再往上回溯同理。</li>
+<li>如果 lca 是 lcaParent 的右子节点，那么 lcaParent-&gt;val 小于 lca-&gt;val，也小于 v-&gt;val 和 w-&gt;val，不满足 lcaParent-&gt;val 在 [v-&gt;val, w-&gt;val] 区间，所以 lcaParent 不是 LCA(v, w)，lcaParent 再往上回溯同理。</li>
+</ul>
+</li>
+</ol>
+<p>##代码</p>
+<p>综上：LCA(v, w) 是从根节点开始（包括根节点）往下的第一个满足 node-&gt;val 在 [v-&gt;val, w-&gt;val] 区间的节点。</p>
+<p>伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">TreeNode* lowestCommonAncestor(TreeNode* root,</div><div class="line">                               TreeNode* v,</div><div class="line">                               TreeNode* w) &#123;</div><div class="line">    if (v == NULL || w == NULL) &#123;</div><div class="line">        return NULL;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 第 1 步</div><div class="line">    if (v == w) &#123;</div><div class="line">        return v;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 第 2、3 步</div><div class="line">    while (true) &#123;</div><div class="line">        int result = foo(root, v, w);</div><div class="line">        if (result == 1) &#123;</div><div class="line">            root = root-&gt;left;</div><div class="line">        &#125;</div><div class="line">        else if (result == 2) &#123;</div><div class="line">            root = root-&gt;right;</div><div class="line">        &#125;</div><div class="line">        else &#123;      // result == 3</div><div class="line">            return root;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 判断是下列哪种情况</div><div class="line">int foo(TreeNode* root,</div><div class="line">        TreeNode* v,</div><div class="line">        TreeNode* w) &#123;</div><div class="line"></div><div class="line">    //  v, w 都在 root 左子树</div><div class="line">    if (root-&gt;val &gt; v-&gt;val &amp;&amp;</div><div class="line">        root-&gt;val &gt; w-&gt;val) &#123;</div><div class="line">        return 1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // v, w 都在 root 右子树</div><div class="line">    if (root-&gt;val &lt; v-&gt;val &amp;&amp;</div><div class="line">        root-&gt;val &lt; w-&gt;val) &#123;</div><div class="line">        return 2;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // v, w 分别在 root 左、右子树</div><div class="line">    return 3;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="comment">// Definition for a binary tree node.</span></div><div class="line"><span class="keyword">struct</span> TreeNode &#123;</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    TreeNode* left;</div><div class="line">    TreeNode* right;</div><div class="line">    TreeNode(<span class="keyword">int</span> x) : val(x), left(<span class="literal">NULL</span>), right(<span class="literal">NULL</span>) &#123;&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Solution &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">// 求 v, w 在以 root 为根节点的二叉搜索树的最近公共祖先</span></div><div class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root,</span></span></div><div class="line">                                   TreeNode* v,</div><div class="line">                                   TreeNode* w) &#123;</div><div class="line">        <span class="keyword">if</span> (v == <span class="literal">NULL</span> || w == <span class="literal">NULL</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 第 1 步</span></div><div class="line">        <span class="keyword">if</span> (v == w) &#123;</div><div class="line">            <span class="keyword">return</span> v;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 第 2、3 步</span></div><div class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">            <span class="keyword">int</span> result = subtree(root, v, w);</div><div class="line">            <span class="keyword">if</span> (result == TWO_LEFT) &#123;</div><div class="line">                root = root-&gt;left;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (result == TWO_RIGHT) &#123;</div><div class="line">                root = root-&gt;right;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;      <span class="comment">// result == ONE_LEFT_ONE_RIGHT</span></div><div class="line">                <span class="keyword">return</span> root;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 判断 v, w 在 root 的哪棵子树下</span></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">subtree</span><span class="params">(TreeNode* root,</span></span></div><div class="line">        TreeNode* v,</div><div class="line">        TreeNode* w) &#123;</div><div class="line"></div><div class="line">        <span class="comment">//  v, w 都在 root 左子树</span></div><div class="line">        <span class="keyword">if</span> (root-&gt;val &gt; v-&gt;val &amp;&amp;</div><div class="line">            root-&gt;val &gt; w-&gt;val) &#123;</div><div class="line">            <span class="keyword">return</span> TWO_LEFT;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// v, w 都在 root 右子树</span></div><div class="line">        <span class="keyword">if</span> (root-&gt;val &lt; v-&gt;val &amp;&amp;</div><div class="line">            root-&gt;val &lt; w-&gt;val) &#123;</div><div class="line">            <span class="keyword">return</span> TWO_RIGHT;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// v, w 分别在 root 左、右子树</span></div><div class="line">        <span class="keyword">return</span> ONE_LEFT_ONE_RIGHT;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">const</span> <span class="keyword">int</span> TWO_LEFT = <span class="number">1</span>;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">int</span> TWO_RIGHT = <span class="number">2</span>;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">int</span> ONE_LEFT_ONE_RIGHT = <span class="number">3</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// init data</span></div><div class="line">    <span class="function">TreeNode <span class="title">n6</span><span class="params">(<span class="number">6</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n2</span><span class="params">(<span class="number">2</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n8</span><span class="params">(<span class="number">8</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n0</span><span class="params">(<span class="number">0</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n4</span><span class="params">(<span class="number">4</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n7</span><span class="params">(<span class="number">7</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n9</span><span class="params">(<span class="number">9</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n3</span><span class="params">(<span class="number">3</span>)</span></span>;</div><div class="line">    <span class="function">TreeNode <span class="title">n5</span><span class="params">(<span class="number">5</span>)</span></span>;</div><div class="line"></div><div class="line">    n6.left  = &amp;n2;</div><div class="line">    n6.right = &amp;n8;</div><div class="line"></div><div class="line">    n2.left  = &amp;n0;</div><div class="line">    n2.right = &amp;n4;</div><div class="line"></div><div class="line">    n8.left  = &amp;n7;</div><div class="line">    n8.right = &amp;n9;</div><div class="line"></div><div class="line">    n4.left  = &amp;n3;</div><div class="line">    n4.right = &amp;n5;</div><div class="line"></div><div class="line">    <span class="comment">// LCA</span></div><div class="line">    Solution sol;</div><div class="line">    TreeNode* root = &amp;n6;</div><div class="line">    TreeNode* v = &amp;n2;</div><div class="line">    TreeNode* w = &amp;n4;</div><div class="line">    TreeNode* lca = sol.lowestCommonAncestor(root, v, w);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; v-&gt;val &lt;&lt; <span class="string">", "</span> &lt;&lt; w-&gt;val &lt;&lt; <span class="string">" 的 LCA 是 "</span> &lt;&lt; lca-&gt;val &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    v = &amp;n2;</div><div class="line">    w = &amp;n8;</div><div class="line">    lca = sol.lowestCommonAncestor(root, v, w);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; v-&gt;val &lt;&lt; <span class="string">", "</span> &lt;&lt; w-&gt;val &lt;&lt; <span class="string">" 的 LCA 是 "</span> &lt;&lt; lca-&gt;val &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="comment">// 2, 4 的 LCA 是 2</span></div><div class="line"><span class="comment">// 2, 8 的 LCA 是 6</span></div></pre></td></tr></table></figure>
+<p>提交到 Leetcode，Accepted! :)，运行时间为 44ms。</p>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/c++/local-variables-address-in-a-loop/">C++ 循环内局部变量的地址分配</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/leetcode/236-lowest-common-ancestor-of-a-binary-tree/">Leetcode 题解 - 236. Lowest Common Ancestor of a Binary Tree</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>

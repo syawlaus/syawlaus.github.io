@@ -1,0 +1,1102 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> 合并排序 // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              合并排序
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-05-04
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/数据结构与算法/">数据结构与算法</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>#算法介绍</p>
+<p>还是数字序列的排序问题，给定一个数字序列 1 6 8 4 2 5 3 9 7 0，想要排序为 0 1 2 3 4 5 6 7 8 9，有什么方法？</p>
+<a id="more"></a>
+<p>与<a href="http://syawlaus.github.io/blog/data-structures-and-algorithms/sorting/insertion-sort/" target="_blank" rel="external">插入排序</a>类似，能不能用分治来解决？</p>
+<p>使用分治解决问题，需要把原问题分解为形式相同的子问题，解决子问题后，再把它们的结果合并为原问题的结果。对于排序问题，容易想到，子问题就是对子序列排序。那么问题转化为：怎么把原序列分解为子序列，在对子序列都排序后，把子序列组成为原序列的排序后结果。</p>
+<p>可以考虑把原序列分解为两个子序列，元素数量为原序列的一半。对子序列排序后，再合并即是对原序列排序。</p>
+<p>其中“对子序列排序”的过程，就是递归的过程。假设现在有数字序列 a，分解为两个子序列后，得到 a1、a2。对 a1 采用相同的方式，分解为 a11、a12。我们知道递归需要有 base case 才能结束，那么分解子序列过程的 base case 就是当子序列只有一个元素，只有一个元素的子序列自然是有序的。</p>
+<p>这种思路的排序称为<strong><a href="https://zh.wikipedia.org/wiki/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F" target="_blank" rel="external">合并排序</a></strong>或<strong>归并排序</strong>（Merge sort）。</p>
+<p>把 a 分解为 a1、a2 后，怎么合并 a1、a2 使得合并的结果也是有序的呢？设 a = [1, 6, 8, 4, 2, 5, 3, 9, 7, 0]，那么 a1 = [1, 6, 8, 4, 2]，a2 = [5, 3, 9, 7, 0]。排序后的 a1’ = [1, 2, 4, 6, 8]，a2’ = [0, 3, 5, 7, 9]，那么合并的思路就清晰了：</p>
+<pre><code>a1&apos; = [1, 2, 4, 6, 8]
+       ↑
+       i1
+
+a2&apos; = [0, 3, 5, 7, 9]
+       ↑
+       i2
+
+a&apos; = []
+</code></pre><p>比较 a1’[i1] 和 a2’[i2] 的值，因为 a2’[i2] 较小，所以 a’[0] = a2’[i2] = 0，i2 后移一位：</p>
+<pre><code>a1&apos; = [1, 2, 4, 6, 8]
+       ↑
+       i1
+
+a2&apos; = [0, 3, 5, 7, 9]
+          ↑
+          i2
+
+a&apos; = [0]
+</code></pre><p>比较 a1’[i1] 和 a2’[i2] 的值，因为 a1’[i1] 较小，所以 a[1] = a1’[i1] = 1，i1 后移一位：</p>
+<pre><code>a1&apos; = [1, 2, 4, 6, 8]
+          ↑
+          i1
+
+a2&apos; = [0, 3, 5, 7, 9]
+          ↑
+          i2
+
+a&apos; = [0, 1]
+</code></pre><p>一直重复这个过程，直到遍历完 a1’ 或 a2’ 的全部元素。在这个序列里，a1’ 会先遍历完，此时 a2’ 未遍历的元素只剩下 9：</p>
+<pre><code>a1&apos; = [1, 2, 4, 6, 8]
+                      ↑
+                      i1 (完成遍历）
+
+a2&apos; = [0, 3, 5, 7, 9]
+                   ↑
+                   i2
+
+a&apos; = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+</code></pre><p>a2’ 剩下的全部元素，肯定比 a’ 中全部元素都大，且本身也有序，所以只要按顺序尾插入到 a’ 即可：</p>
+<pre><code>a&apos; = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre><p>接下来编写伪代码。因为需要遍历 a1’ 和 a2’，直到其中一个子序列遍历完毕，所以需要一个 while 循环，while 循环之后，再把未遍历完毕的子序列的剩下元素全部尾插入到 a’：</p>
+<pre><code>merge(a1, a2)
+    size1 = size(a1&apos;)
+    size2 = size(a2&apos;)
+    i1 = i2 = 0
+    while (i1 &lt; size1 and i2 &lt; size2)
+        mergeSingleElement
+    addToA
+</code></pre><p>接下来我们编写 <code>mergeSingleElement</code> 和 <code>addToA</code> 的伪代码，先是 <code>mergeSingleElement</code>。</p>
+<p><code>mergeSingleElement</code> 要做的工作是：</p>
+<ul>
+<li>取 a1’[i1] 和 a2’[i2] 的较小值，尾插入到 a’</li>
+<li>相应的 index 后移一位</li>
+</ul>
+<p>伪代码如下：</p>
+<pre><code>mergeSingleElement
+    if (a1&apos;[i1] &lt; a2&apos;[i2])
+        a&apos;[i] = a1&apos;[i1]
+        i1++
+    else
+        a&apos;[i] = a2&apos;[i1]
+        i2++
+    i++
+</code></pre><p><code>addToA</code> 要做的工作是：</p>
+<ul>
+<li>检查哪个子序列未完成遍历</li>
+<li>把未完成遍历的子序列剩下的元素，尾插入到 a’</li>
+</ul>
+<p>伪代码如下：</p>
+<pre><code>addToA
+    // a1&apos; 未完成遍历
+    if (i1 &lt; size1)
+        for i1 from i1 to (size1 - 1)
+            add a1&apos;[i1] to a&apos;
+    // a2&apos; 未完成遍历
+    if (i2 &lt; size2)
+        for i2 from i2 to (size2 - 1)
+            add a2&apos;[i2] to a&apos;
+</code></pre><p>分析完合并过程，我们回到分解子序列的过程：把序列 a 分解为两个子序列 a1 和 a2，对其进行排序后，再合并为 a’。对 a1 排序时，先把 a1 分解为 a11 和 a12，对其进行排序后，再合并为 a1’。一直分解，直到子序列只有一个元素（base case），自然就是有序的。分解过程的伪代码是：</p>
+<pre><code>mergeSort(a, minIndex, maxIndex)
+    midIndex = (minIndex + maxIndex) / 2
+    a1 = mergeSort(a, minIndex, midIndex)
+    a2 = mergeSort(a, midIndex + 1, maxIndex)
+</code></pre><p>可以看到，<code>mergeSort</code> 的过程是递归的，每一次递归，都把 a 的 [minIndex, maxIndex] 之间的元素组成的子序列分解为两个子序列的排序过程。在每一次递归前，都应先检查一下是否到达了 base case（minIndex &gt;= maxIndex）。伪代码如下：</p>
+<pre><code>mergeSort(a, minIndex, maxIndex)
+    if (minIndex &gt;= maxIndex)   // base case
+        return
+    midIndex = (minIndex + maxIndex) / 2
+    a1 = mergeSort(a, minIndex, midIndex)
+    a2 = mergeSort(a, midIndex + 1, maxIndex)
+</code></pre><p>或</p>
+<pre><code>mergeSort(a, minIndex, maxIndex)
+    if (minIndex &lt; maxIndex)
+        midIndex = (minIndex + maxIndex) / 2
+        a1 = mergeSort(a, minIndex, midIndex)
+        a2 = mergeSort(a, midIndex + 1, maxIndex)
+</code></pre><p>在得到有序的子序列 a1、a2 后，再将其合并为有序的原序列：</p>
+<pre><code>mergeSort(a, minIndex, maxIndex)
+    if (minIndex &lt; maxIndex)
+        midIndex = (minIndex + maxIndex) / 2
+        a1 = mergeSort(a, minIndex, midIndex)
+        a2 = mergeSort(a, midIndex + 1, maxIndex)
+        merge(a1, a2)
+</code></pre><p>整个程序的伪代码，稍后在下面的小节整理给出。</p>
+<hr>
+<p>#可视化效果</p>
+<p>我们先看看合并排序的可视化效果，从图形效果上感受一下这个算法是如何排序的，具体运行是怎样的。</p>
+<p><img src="/images/algorithms/sorting/merge-sort/Merge-sort.gif" alt=""></p>
+<center>（<a href="https://zh.wikipedia.org/wiki/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F" target="_blank" rel="external">图片来源</a>）</center>
+
+<hr>
+<p>#正确性证明</p>
+<p>对 a 排序，先对两个子序列 a1、a2 排序，当 a1、a2 有序后进行合并，合并后 a 就是有序的。那么对 a1、a2 排序时同理。所以整个排序过程是正确的。</p>
+<hr>
+<p>#展开运行过程</p>
+<p>运行过程可见上面的可视化效果。</p>
+<hr>
+<p>#伪代码</p>
+<p>整合上面的算法分析过程的伪代码如下：</p>
+<pre><code>mergeSort(a, minIndex, maxIndex)
+    if (minIndex &lt; maxIndex)
+        midIndex = (minIndex + maxIndex) / 2
+        a1 = mergeSort(a, minIndex, midIndex)
+        a2 = mergeSort(a, midIndex + 1, maxIndex)
+        merge(a1, a2)
+
+merge(a1, a2)
+    size1 = size(a1&apos;)
+    size2 = size(a2&apos;)
+    i1 = i2 = 0
+    while (i1 &lt; size1 and i2 &lt; size2)
+        mergeSingleElement
+    addToA
+
+mergeSingleElement
+    if (a1&apos;[i1] &lt; a2&apos;[i2])
+        a&apos;[i] = a1&apos;[i1]
+        i1++
+    else
+        a&apos;[i] = a2&apos;[i1]
+        i2++
+    i++
+
+addToA
+    // a1&apos; 未完成遍历
+    if (i1 &lt; size1)
+        for i1 from i1 to (size1 - 1)
+            add a1&apos;[i1] to a&apos;
+    // a2&apos; 未完成遍历
+    if (i2 &lt; size2)
+        for i2 from i2 to (size2 - 1)
+            add a2&apos;[i2] to a&apos;
+</code></pre><hr>
+<p>#代码</p>
+<h2 id="基本代码"><a href="#基本代码" class="headerlink" title="基本代码"></a>基本代码</h2><p>伪代码用于描述算法的基本逻辑，只要逻辑没有问题即可。用代码描述则严格许多，在用代码描述上面几个函数前，先给出 <code>main</code> 函数框架：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq = &#123; <span class="number">1</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">0</span> &#125;;</div><div class="line">    mergeSort(seq, <span class="number">0</span>, seq.size());</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来分别是上面几个函数。</p>
+<p>首先是 <code>mergeSort</code>。</p>
+<ul>
+<li><code>mergeSort</code> 任务<ul>
+<li>对一个无序序列进行排序，输出一个新的有序序列</li>
+</ul>
+</li>
+<li>输入参数<ul>
+<li>序列 seq</li>
+<li>对 seq 在范围 [minIndex, maxIndex] 内的子序列排序的下标最小值 minIndex，最大值 maxIndex</li>
+</ul>
+</li>
+<li>输出<ul>
+<li>一个长度跟原序列相同的新序列</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; mergeSort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq,</div><div class="line">                      <span class="keyword">int</span> minIndex,</div><div class="line">                      <span class="keyword">int</span> maxIndex) &#123;</div><div class="line">    <span class="keyword">if</span> (minIndex &lt; maxIndex) &#123;      <span class="comment">// keep dividing</span></div><div class="line">        <span class="keyword">int</span> midIndex = (minIndex + maxIndex) / <span class="number">2</span>;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s1 = mergeSort(seq, minIndex, midIndex);</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s2 = mergeSort(seq, midIndex + <span class="number">1</span>, maxIndex);</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sortedSeq = merge(s1, s2);</div><div class="line">        <span class="keyword">return</span> sortedSeq;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> seq;     <span class="comment">// reach base case, return seq itself</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来是 <code>merge</code>。</p>
+<ul>
+<li><code>merge</code> 任务<ul>
+<li>给定两个有序序列，合并为一个新的有序序列</li>
+</ul>
+</li>
+<li>输入参数<ul>
+<li>两个有序序列 s1、s2</li>
+</ul>
+</li>
+<li>输出<ul>
+<li>合并后的新的有序序列</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s1,</div><div class="line">                  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s2) &#123;</div><div class="line">    <span class="keyword">int</span> i1 = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i2 = <span class="number">0</span>;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq;</div><div class="line">    <span class="keyword">while</span> (i1 &lt; s1.size() &amp;&amp; i2 &lt; s2.size()) &#123;</div><div class="line">        mergeSingleElement();</div><div class="line">    &#125;</div><div class="line">    addToA();</div><div class="line">    <span class="keyword">return</span> seq;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来是 <code>mergeSingleElement</code>。</p>
+<ul>
+<li><code>mergeSingleElement</code> 任务<ul>
+<li>取 s1、s2 未遍历的元素的最小值进行比较（即 a1’[i1] 和 a2’[i2]），取两者之间的较小值尾插入到 seq</li>
+<li>相应的 index（i1, i2）后移一位</li>
+</ul>
+</li>
+<li>输入参数<ul>
+<li>两个有序序列 s1、s2</li>
+<li>s1、s2 当前未遍历的元素的最小值的下标 i1、i2</li>
+<li>需要尾插入的（合并后的）有序序列 seq</li>
+</ul>
+</li>
+<li>输出<ul>
+<li>无</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSingleElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s1,</span></span></div><div class="line">                        <span class="keyword">int</span> index1,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s2,</div><div class="line">                        <span class="keyword">int</span> index2,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq) &#123;</div><div class="line">    <span class="keyword">if</span> (s1[index1] &lt; s2[index2]) &#123;</div><div class="line">        seq.push_back(s1[index1]);</div><div class="line">        index1++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        seq.push_back(s2[index2]);</div><div class="line">        index2++;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来是 <code>addToA</code>。</p>
+<ul>
+<li><code>addToA</code> 任务<ul>
+<li>检查哪个子序列未完成遍历</li>
+<li>把未完成遍历的子序列剩下的元素，尾插入到 seq</li>
+</ul>
+</li>
+<li>输入参数<ul>
+<li>两个有序序列 s1、s2</li>
+<li>s1、s2 当前未遍历的元素的最小值的下标 i1、i2</li>
+<li>需要尾插入的（合并后的）有序序列 seq</li>
+</ul>
+</li>
+<li>输出<ul>
+<li>无</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addToA</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s1,</span></span></div><div class="line">            <span class="keyword">int</span> index1,</div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s2,</div><div class="line">            <span class="keyword">int</span> index2,</div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq) &#123;</div><div class="line">    <span class="comment">// s1 未完成遍历</span></div><div class="line">    <span class="keyword">int</span> size1 = s1.size();</div><div class="line">    <span class="keyword">if</span> (index1 &lt; size1) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index1; i &lt; size1; i++) &#123;</div><div class="line">            seq.push_back(s1[i]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// s2 未完成遍历</span></div><div class="line">    <span class="keyword">int</span> size2 = s2.size();</div><div class="line">    <span class="keyword">if</span> (index2 &lt; size2) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = index2; j &lt; size2; j++) &#123;</div><div class="line">            seq.push_back(s2[j]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>##注意事项</p>
+<p>###按值传参</p>
+<p>需要注意 C++ 的函数<a href="http://syawlaus.github.io/blog/c++/function/passing-arguments/#Pass-by-value（按值传参）" target="_blank" rel="external">按值传参</a>（pass by value）的问题。我们看看 <code>mergeSingleElement</code> 的函数定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSingleElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s1,</span></span></div><div class="line">                        <span class="keyword">int</span> index1,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s2,</div><div class="line">                        <span class="keyword">int</span> index2,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq) &#123;</div><div class="line">    <span class="keyword">if</span> (s1[index1] &lt; s2[index2]) &#123;</div><div class="line">        seq.push_back(s1[index1]);</div><div class="line">        index1++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        seq.push_back(s2[index2]);</div><div class="line">        index2++;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，在 <code>mergeSingleElement</code> 里，把 <code>s1[index1]</code> 尾插入到 seq 后，index1++，但在函数返回后，index1++ 和 <code>seq.push_back(s1[index1])</code> 后的新值无法在函数外生效（index2 同理，不再赘述）。而在后面的 <code>addToA</code> 函数中，需要用到 index1++ 和 <code>seq.push_back(s1[index1])</code> 后的新值，所以需要修改 <code>mergeSingleElement</code> 中 index 和 vector<int> 的传参方式，改为<a href="http://syawlaus.github.io/blog/c++/function/passing-arguments/#Pass-by-reference（按引用传参）/" target="_blank" rel="external">按引用传参</a>（pass by reference）：</int></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSingleElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,        <span class="comment">// 按引用传参</span></span></span></div><div class="line">                        <span class="keyword">int</span>&amp; index1,            <span class="comment">// 按引用传参</span></div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2,        <span class="comment">// 按引用传参</span></div><div class="line">                        <span class="keyword">int</span>&amp; index2,            <span class="comment">// 按引用传参</span></div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq) &#123;     <span class="comment">// 按引用传参</span></div><div class="line">    <span class="keyword">if</span> (s1[index1] &lt; s2[index2]) &#123;</div><div class="line">        seq.push_back(s1[index1]);</div><div class="line">        index1++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        seq.push_back(s2[index2]);</div><div class="line">        index2++;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还有相同的问题的函数还有 <code>addToA</code>、<code>merge</code>、<code>mergeSort</code>，修改为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addToA</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,        <span class="comment">// 按引用传参</span></span></span></div><div class="line">            <span class="keyword">int</span>&amp; index1,            <span class="comment">// 按引用传参</span></div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2,        <span class="comment">// 按引用传参</span></div><div class="line">            <span class="keyword">int</span>&amp; index2,            <span class="comment">// 按引用传参</span></div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq) &#123;     <span class="comment">// 按引用传参</span></div><div class="line">    <span class="comment">// s1 未完成遍历</span></div><div class="line">    <span class="keyword">int</span> size1 = s1.size();</div><div class="line">    <span class="keyword">if</span> (index1 &lt; size1) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index1; i &lt; size1; i++) &#123;</div><div class="line">            seq.push_back(s1[i]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// s2 未完成遍历</span></div><div class="line">    <span class="keyword">int</span> size2 = s2.size();</div><div class="line">    <span class="keyword">if</span> (index2 &lt; size2) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = index2; j &lt; size2; j++) &#123;</div><div class="line">            seq.push_back(s2[j]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,      <span class="comment">// 按引用传参</span></div><div class="line">                  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2) &#123;    <span class="comment">// 按引用传参</span></div><div class="line">    <span class="keyword">int</span> i1 = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i2 = <span class="number">0</span>;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq;</div><div class="line">    <span class="keyword">while</span> (i1 &lt; s1.size() &amp;&amp; i2 &lt; s2.size()) &#123;</div><div class="line">        mergeSingleElement(s1, i1, s2, i2, seq);</div><div class="line">    &#125;</div><div class="line">    addToA(s1, i1, s2, i2, seq);</div><div class="line">    <span class="keyword">return</span> seq;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; mergeSort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq,     <span class="comment">// 按引用传参</span></div><div class="line">                      <span class="keyword">int</span> minIndex,</div><div class="line">                      <span class="keyword">int</span> maxIndex) &#123;</div><div class="line">    <span class="keyword">if</span> (minIndex &lt; maxIndex) &#123;      <span class="comment">// keep dividing</span></div><div class="line">        <span class="keyword">int</span> midIndex = (minIndex + maxIndex) / <span class="number">2</span>;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s1 = mergeSort(seq, minIndex, midIndex);</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s2 = mergeSort(seq, midIndex + <span class="number">1</span>, maxIndex);</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sortedSeq = merge(s1, s2);</div><div class="line">        <span class="keyword">return</span> sortedSeq;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> seq;     <span class="comment">// reach base case, return seq itself</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>##完整可运行代码</p>
+<p>整合上面的代码后，得出可运行代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/********************************************************************r******</span></div><div class="line">* includes</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* namespaces</div><div class="line">*/</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*************************************************************************</span></div><div class="line">* function prototypes</div><div class="line">*/</div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; MergeSort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq);</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; mergeSort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq,</div><div class="line">                      <span class="keyword">int</span> minIndex,</div><div class="line">                      <span class="keyword">int</span> maxIndex);</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,</div><div class="line">                  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSingleElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,</span></span></div><div class="line">                        <span class="keyword">int</span>&amp; index1,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2,</div><div class="line">                        <span class="keyword">int</span>&amp; index2,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addToA</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,</span></span></div><div class="line">            <span class="keyword">int</span>&amp; index1,</div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2,</div><div class="line">            <span class="keyword">int</span>&amp; index2,</div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* function definitions</div><div class="line">*/</div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; MergeSort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq) &#123;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sortedSeq = mergeSort(seq, <span class="number">0</span>, seq.size() - <span class="number">1</span>);</div><div class="line">    <span class="keyword">return</span> sortedSeq;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; mergeSort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq,</div><div class="line">                      <span class="keyword">int</span> minIndex,</div><div class="line">                      <span class="keyword">int</span> maxIndex) &#123;</div><div class="line">    <span class="keyword">if</span> (minIndex &lt; maxIndex) &#123;      <span class="comment">// keep dividing</span></div><div class="line">        <span class="keyword">int</span> midIndex = (minIndex + maxIndex) / <span class="number">2</span>;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s1 = mergeSort(seq, minIndex, midIndex);</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s2 = mergeSort(seq, midIndex + <span class="number">1</span>, maxIndex);</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sortedSeq = merge(s1, s2);</div><div class="line">        <span class="keyword">return</span> sortedSeq;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;      <span class="comment">// reach base case</span></div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; oneElementSeq;</div><div class="line">        oneElementSeq.push_back(seq[minIndex]);</div><div class="line">        <span class="keyword">return</span> oneElementSeq;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,</div><div class="line">                  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2) &#123;</div><div class="line">    <span class="keyword">int</span> i1 = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i2 = <span class="number">0</span>;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq;</div><div class="line">    <span class="keyword">while</span> (i1 &lt; s1.size() &amp;&amp; i2 &lt; s2.size()) &#123;</div><div class="line">        mergeSingleElement(s1, i1, s2, i2, seq);</div><div class="line">    &#125;</div><div class="line">    addToA(s1, i1, s2, i2, seq);</div><div class="line">    <span class="keyword">return</span> seq;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSingleElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,</span></span></div><div class="line">                        <span class="keyword">int</span>&amp; index1,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2,</div><div class="line">                        <span class="keyword">int</span>&amp; index2,</div><div class="line">                        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq) &#123;</div><div class="line">    <span class="keyword">if</span> (s1[index1] &lt; s2[index2]) &#123;</div><div class="line">        seq.push_back(s1[index1]);</div><div class="line">        index1++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        seq.push_back(s2[index2]);</div><div class="line">        index2++;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addToA</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s1,</span></span></div><div class="line">            <span class="keyword">int</span>&amp; index1,</div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; s2,</div><div class="line">            <span class="keyword">int</span>&amp; index2,</div><div class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq) &#123;</div><div class="line">    <span class="comment">// s1 未完成遍历</span></div><div class="line">    <span class="keyword">int</span> size1 = s1.size();</div><div class="line">    <span class="keyword">if</span> (index1 &lt; size1) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index1; i &lt; size1; i++) &#123;</div><div class="line">            seq.push_back(s1[i]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// s2 未完成遍历</span></div><div class="line">    <span class="keyword">int</span> size2 = s2.size();</div><div class="line">    <span class="keyword">if</span> (index2 &lt; size2) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = index2; j &lt; size2; j++) &#123;</div><div class="line">            seq.push_back(s2[j]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">printVector</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> element : seq) &#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; element &lt;&lt; <span class="string">" "</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* main entry</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq = &#123; <span class="number">1</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">0</span> &#125;;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sortedSeq = MergeSort(seq);</div><div class="line">    printVector(sortedSeq);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<p>#运行结果</p>
+<pre><code>0 1 2 3 4 5 6 7 8 9 
+</code></pre><hr>
+<p>#测试</p>
+<pre><code>vector&lt;int&gt; seq = { 0, 0, 0, 0, 0, 0 };
+运行结果：0 0 0 0 0 0 
+
+vector&lt;int&gt; seq = { 0, 0, 1, 2, 3, 4 };
+运行结果：0 0 1 2 3 4 
+
+vector&lt;int&gt; seq = { 4, 3, 2, 1, 0, 0 };
+运行结果：0 0 1 2 3 4 
+</code></pre><hr>
+<p>#改进</p>
+<p>上面程序的问题是，<code>mergeSort</code> 的 else 分支，当把 seq 分解到只有一个元素时（minIndex &gt;= maxIndex），还创建了一个新的 vector 来保存该元素。这里不应该需要额外的内存，应做成 <a href="https://zh.wikipedia.org/wiki/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95" target="_blank" rel="external">in-place</a>（即当本次 <code>mergeSort</code> 只有一个元素时，就可返回，不需要输出），只有在 <code>merge</code> 两个有序子序列时，才需要额外分配内存。代码修改如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/********************************************************************r******</span></div><div class="line">* includes</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* namespaces</div><div class="line">*/</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*************************************************************************</span></div><div class="line">* function prototypes</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeSort2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSort2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq,</span></span></div><div class="line">                <span class="keyword">int</span> minIndex,</div><div class="line">                <span class="keyword">int</span> maxIndex);</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge2(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq,</div><div class="line">                   <span class="keyword">int</span> minIndex,</div><div class="line">                   <span class="keyword">int</span> midIndex,</div><div class="line">                   <span class="keyword">int</span> maxIndex);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSingleElement2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; originSeq,</span></span></div><div class="line">                         <span class="keyword">int</span>&amp; index1,</div><div class="line">                         <span class="keyword">int</span>&amp; index2,</div><div class="line">                         <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; mergedSeq);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addToA2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; originSeq,</span></span></div><div class="line">             <span class="keyword">int</span> index1,</div><div class="line">             <span class="keyword">int</span> midIndex,</div><div class="line">             <span class="keyword">int</span> index2,</div><div class="line">             <span class="keyword">int</span> maxIndex,</div><div class="line">             <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; mergedSeq);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">replaceVector</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; originSeq,</span></span></div><div class="line">                   <span class="keyword">int</span> minIndex,</div><div class="line">                   <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; sortedSeq);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">printVector</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq)</span></span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* function definitions</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeSort2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq)</span> </span>&#123;</div><div class="line">    mergeSort2(seq, <span class="number">0</span>, seq.size() - <span class="number">1</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSort2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq,</span></span></div><div class="line">                <span class="keyword">int</span> minIndex,</div><div class="line">                <span class="keyword">int</span> maxIndex) &#123;</div><div class="line">    <span class="comment">// reach base case</span></div><div class="line">    <span class="keyword">if</span> (minIndex &gt;= maxIndex) &#123;</div><div class="line">        <span class="keyword">return</span>;     </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// keep dividing</span></div><div class="line">    <span class="keyword">int</span> midIndex = (minIndex + maxIndex) / <span class="number">2</span>;</div><div class="line">    mergeSort2(seq, minIndex, midIndex);        <span class="comment">// mergeSort2 is in-place</span></div><div class="line">    mergeSort2(seq, midIndex + <span class="number">1</span>, maxIndex);</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sortedSeq = merge2(seq, minIndex, midIndex, maxIndex);      <span class="comment">// merge2 is NOT in-place</span></div><div class="line">    replaceVector(seq, minIndex, sortedSeq);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge2(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq,</div><div class="line">                   <span class="keyword">int</span> minIndex,</div><div class="line">                   <span class="keyword">int</span> midIndex,</div><div class="line">                   <span class="keyword">int</span> maxIndex) &#123;</div><div class="line">    <span class="keyword">int</span> i1 = minIndex;</div><div class="line">    <span class="keyword">int</span> i2 = midIndex + <span class="number">1</span>;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; mergedSeq;</div><div class="line">    <span class="keyword">while</span> (i1 &lt;= midIndex &amp;&amp; i2 &lt;= maxIndex) &#123;</div><div class="line">        mergeSingleElement2(seq, i1, i2, mergedSeq);</div><div class="line">    &#125;</div><div class="line">    addToA2(seq, i1, midIndex, i2, maxIndex, mergedSeq);</div><div class="line">    <span class="keyword">return</span> mergedSeq;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSingleElement2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; originSeq,</span></span></div><div class="line">                         <span class="keyword">int</span>&amp; index1,</div><div class="line">                         <span class="keyword">int</span>&amp; index2,</div><div class="line">                         <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; mergedSeq) &#123;</div><div class="line">    <span class="keyword">if</span> (originSeq[index1] &lt; originSeq[index2]) &#123;</div><div class="line">        mergedSeq.push_back(originSeq[index1]);</div><div class="line">        index1++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        mergedSeq.push_back(originSeq[index2]);</div><div class="line">        index2++;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">addToA2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; originSeq,</span></span></div><div class="line">             <span class="keyword">int</span> index1,</div><div class="line">             <span class="keyword">int</span> midIndex,</div><div class="line">             <span class="keyword">int</span> index2,</div><div class="line">             <span class="keyword">int</span> maxIndex,</div><div class="line">             <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; mergedSeq) &#123;</div><div class="line">    <span class="comment">// [minIndex, midIndex] 未完成遍历</span></div><div class="line">    <span class="keyword">if</span> (index1 &lt;= midIndex) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index1; i &lt;= midIndex; i++) &#123;</div><div class="line">            mergedSeq.push_back(originSeq[i]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// [midIndex + 1, maxIndex] 未完成遍历</span></div><div class="line">    <span class="keyword">if</span> (index2 &lt;= maxIndex) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = index2; j &lt;= maxIndex; j++) &#123;</div><div class="line">            mergedSeq.push_back(originSeq[j]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">replaceVector</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; originSeq,</span></span></div><div class="line">                   <span class="keyword">int</span> minIndex,</div><div class="line">                   <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; sortedSeq) &#123;</div><div class="line">    <span class="keyword">int</span> i = minIndex;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n : sortedSeq) &#123;</div><div class="line">        originSeq[i] = n;</div><div class="line">        i++;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">printVector</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; seq)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> element : seq) &#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; element &lt;&lt; <span class="string">" "</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* main entry</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq = &#123; <span class="number">1</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">0</span> &#125;;</div><div class="line">    MergeSort2(seq);</div><div class="line">    printVector(seq);</div><div class="line"></div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq2 = &#123; <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span> &#125;;</div><div class="line">    MergeSort2(seq2);</div><div class="line">    printVector(seq2);</div><div class="line"></div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq3 = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">0</span> &#125;;</div><div class="line">    MergeSort2(seq3);</div><div class="line">    printVector(seq3);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 输出结果：</span></div><div class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> </div><div class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> </div><div class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">7</span> <span class="number">9</span></div></pre></td></tr></table></figure>
+<hr>
+<p>#时间复杂度</p>
+<p>如何分析递归程序的时间复杂度？</p>
+<hr>
+<p>#空间复杂度</p>
+<p>如何分析递归程序的空间复杂度？</p>
+<hr>
+<p>#参考资料</p>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/directx11/frequently-used-windows-api/">DirectX 11 编程：常用 Windows API</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/c++/function/passing-arguments/">C++ 函数：传参方式</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本代码"><span class="nav-number">1.</span> <span class="nav-text">基本代码</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>

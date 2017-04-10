@@ -1,0 +1,894 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> DirectX 11 编程：初始化 Windows 窗口 // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              DirectX 11 编程：初始化 Windows 窗口
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-04-26
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/DirectX-11/">DirectX 11</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>在开始使用 DirectX 编程前，需要先创建一个 Windows 窗口，供 DirectX 使用。在创建窗口前，为了熟悉 Windows 编程，先写一个 Hello world 程序看看：</p>
+<a id="more"></a>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* includes</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;    // include the basic windows header file</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* main entry</div><div class="line">*/</div><div class="line"><span class="comment">// the entry point for any Windows program</span></div><div class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hInstance,</span></span></div><div class="line">                   HINSTANCE hPrevInstance,</div><div class="line">                   LPSTR lpCmdLine,</div><div class="line">                   <span class="keyword">int</span> nShowCmd) &#123;</div><div class="line">    <span class="comment">// create a "Hello World" message box using MessageBox()</span></div><div class="line">    MessageBox(<span class="literal">NULL</span>,</div><div class="line">        <span class="string">L"Hello World!"</span>,</div><div class="line">        <span class="string">L"Just another Hello World program!"</span>,</div><div class="line">        MB_ICONEXCLAMATION | MB_OK);</div><div class="line"></div><div class="line">    <span class="comment">// return 0 to Windows</span></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>WINAPI</code> 的作用是颠倒传入的参数的顺序。一般函数的参数从右到左传入，而带有 WINAPI 的函数，参数从左到右传入。</p>
+<p><code>WinMain</code> 是 Windows 程序的入口，相当于 Win32 console 程序的 <code>main</code>。4 个形参的具体说明详见《<a href="http://syawlaus.github.io/blog/directx11/frequently-used-windows-api/#WinMain" target="_blank" rel="external">DirectX 11 编程：常用 Windows API</a>》。</p>
+<p><code>MessageBox</code> 函数用于创建一个 MessageBox。</p>
+<p>上面的代码运行会显示：</p>
+<p><img src="/images/directx11/init_window/hello_world.png" alt=""></p>
+<p>接下来可以把 MessageBox 替换为 Windows 窗口了。</p>
+<p>创建窗口需要三步：</p>
+<ol>
+<li>注册窗口</li>
+<li>创建窗口</li>
+<li>显示窗口</li>
+</ol>
+<p>所以 <code>WinMain</code> 的基本结构是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hInstance,</span></span></div><div class="line">                   HINSTANCE hPrevInstance,</div><div class="line">                   LPSTR lpCmdLine,</div><div class="line">                   <span class="keyword">int</span> nShowCmd) &#123;</div><div class="line">    createAndShowWindow(hInstance, nShowCmd);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createAndShowWindow</span><span class="params">()</span> </span>&#123;</div><div class="line">    registerWindow();</div><div class="line">    createWindow();</div><div class="line">    showWindow();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来分别定义 <code>registerWindow</code>、<code>createWindow</code> 和 <code>showWindow</code>。</p>
+<hr>
+<p>#registerWindow</p>
+<p>注册窗口类（window class）时，需要调用 Windows 的 <code>RegisterClassEx</code> 函数，详见《<a href="http://syawlaus.github.io/blog/directx11/frequently-used-windows-api/#RegisterClassEx" target="_blank" rel="external">DirectX 11 编程：常用 Windows API</a>》。</p>
+<p>在调用 <code>RegisterClassEx</code> 前，先填充好 WNDCLASSEX 结构体的字段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// this struct holds information for the window class</span></div><div class="line"><span class="comment">// the 'EX' is there to indicate that this is the extended version of the struct WNDCLASS</span></div><div class="line">WNDCLASSEX wc;</div><div class="line"></div><div class="line"><span class="comment">// init memory</span></div><div class="line">ZeroMemory(&amp;wc, <span class="keyword">sizeof</span>(WNDCLASSEX));</div><div class="line"></div><div class="line"><span class="comment">// fill in the struct with the needed information</span></div><div class="line">wc.cbSize = <span class="keyword">sizeof</span>(WNDCLASSEX);</div><div class="line">wc.style = CS_HREDRAW | CS_VREDRAW;         <span class="comment">// What these two values do is tell Windows to redraw the window if it is moved vertically or horizontally.</span></div><div class="line">wc.lpfnWndProc = WindowProc;                <span class="comment">// "lpfnWndProc" tells the window class what function to use ("WindowProc()") when it gets a message from Windows</span></div><div class="line">wc.hInstance = hInstance;                   <span class="comment">// a handle to a copy of our application</span></div><div class="line">wc.hCursor = LoadCursor(<span class="literal">NULL</span>, IDC_ARROW);   <span class="comment">// stores the default mouse image for the window class</span></div><div class="line">wc.hbrBackground = (HBRUSH)COLOR_WINDOW;    <span class="comment">// contains the "brush" (is used to indicate the color of the background) that will be used to color the background of our window. </span></div><div class="line">wc.lpszClassName = <span class="string">L"WindowClass1"</span>;         <span class="comment">// the name of the window class we are building. The 'L' that appears before the string, simply tells the compiler that this string should be made of 16-bit Unicode characters, rather than the usual 8-bit ANSI characters.</span></div></pre></td></tr></table></figure>
+<p><code>WindowProc</code> 是我们自定义的函数，用于窗口处理 Windows 消息（如鼠标点击、拖动、缩放大小），代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// the main message handler for the program</span></div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WindowProc</span><span class="params">(HWND hWnd,</span></span></div><div class="line">                            UINT message,</div><div class="line">                            WPARAM wParam,</div><div class="line">                            LPARAM lParam) &#123;</div><div class="line">    <span class="comment">// sort through and find what code to run for the message given</span></div><div class="line">    <span class="keyword">switch</span> (message) &#123;</div><div class="line">    <span class="keyword">case</span> WM_DESTROY: &#123;  <span class="comment">// this message is read when the window is closed</span></div><div class="line">        <span class="comment">// close the application entirely</span></div><div class="line">        PostQuitMessage(<span class="number">0</span>);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Handle any messages the switch statement didn't</span></div><div class="line">    <span class="keyword">return</span> DefWindowProc(hWnd, message, wParam, lParam);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后就可以调用 <code>RegisterClassEx</code> 函数了：</p>
+<pre><code>RegisterClassEx(&amp;wc);
+</code></pre><hr>
+<p>#createWindow</p>
+<p>创建窗口，需要调用 Windows 的 <code>CreateWindowEx</code> 函数，详见《<a href="http://syawlaus.github.io/blog/directx11/frequently-used-windows-api/#CreateWindowEx" target="_blank" rel="external">DirectX 11 编程：常用 Windows API</a>》。</p>
+<p>代码如下：</p>
+<pre><code>RECT wr = { 0, 0, 500, 400 };  // left, top, right, bottom
+AdjustWindowRect(&amp;wr, WS_OVERLAPPEDWINDOW, FALSE);          // adjust the size, client size is 500 * 400
+
+// the handle for the window, filled by a function
+HWND hWnd = CreateWindowEx(NULL,
+                           L&quot;WindowClass1&quot;,                 // name of the window class
+                           L&quot;Our First Windowed Program&quot;,   // title of the window
+                           WS_OVERLAPPEDWINDOW,             // window style
+                           300,                             // x-position of the window
+                           300,                             // y-position of the window
+                           wr.right - wr.left,              // width of the window
+                           wr.bottom - wr.top,              // height of the window
+                           NULL,                            // we have no parent window, NULL
+                           NULL,                            // we aren&apos;t using menus, NULL
+                           hInstance,                       // application handle
+                           NULL);                           // used with multiple windows, NULL
+</code></pre><p><code>AdjustWindowRect</code> 函数根据参数给出的“窗口内的矩形大小”（即除去窗口边框的矩形，下图的 Client Size），计算窗口（包括边框）的实际大小（下图的 Window Size），详见《<a href="http://syawlaus.github.io/blog/directx11/frequently-used-windows-api/#AdjustWindowRect" target="_blank" rel="external">DirectX 11 编程：常用 Windows API</a>》。</p>
+<p><img src="/images/directx11/init_window/client_size_window_size.png" alt=""></p>
+<hr>
+<p>#showWindow</p>
+<p><code>showWindow</code> 只需要调用</p>
+<pre><code>ShowWindow(HWND, int)
+</code></pre><p>即可，<code>ShowWindow(HWND, int)</code> 用法详见《<a href="http://syawlaus.github.io/blog/directx11/frequently-used-windows-api/#ShowWindow" target="_blank" rel="external">DirectX 11 编程：常用 Windows API</a>》。</p>
+<p>把创建窗口的三步整合，得到以下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* includes</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;    // include the basic windows header file</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*************************************************************************</span></div><div class="line">* function prototypes</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createAndShowWindow</span><span class="params">(HINSTANCE hInstance, <span class="keyword">int</span> nCmdShow)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerWindow</span><span class="params">(HINSTANCE hInstance)</span></span>;</div><div class="line"><span class="function">HWND <span class="title">createWindow</span><span class="params">(HINSTANCE hInstance)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">showWindow</span><span class="params">(HWND hWnd, <span class="keyword">int</span> nCmdShow)</span></span>;</div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WindowProc</span><span class="params">(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)</span></span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* function definitions</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createAndShowWindow</span><span class="params">(HINSTANCE hInstance, <span class="keyword">int</span> nCmdShow)</span> </span>&#123;</div><div class="line">    registerWindow(hInstance);</div><div class="line">    HWND hWnd = createWindow(hInstance);</div><div class="line">    showWindow(hWnd, nCmdShow);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerWindow</span><span class="params">(HINSTANCE hInstance)</span> </span>&#123;</div><div class="line">    <span class="comment">// this struct holds information for the window class</span></div><div class="line">    <span class="comment">// the 'EX' is there to indicate that this is the extended version of the struct WNDCLASS</span></div><div class="line">    WNDCLASSEX wc;</div><div class="line"></div><div class="line">    <span class="comment">// clear out the window class for use</span></div><div class="line">    <span class="comment">// ZeroMemory() is a function that initializes an entire block of memory to NULL.</span></div><div class="line">    <span class="comment">// The address provided in the first parameter sets where the block is to start.</span></div><div class="line">    <span class="comment">// The second parameter indicates how long the block is.</span></div><div class="line">    ZeroMemory(&amp;wc, <span class="keyword">sizeof</span>(WNDCLASSEX));</div><div class="line"></div><div class="line">    <span class="comment">// fill in the struct with the needed information</span></div><div class="line">    wc.cbSize = <span class="keyword">sizeof</span>(WNDCLASSEX);</div><div class="line">    wc.style = CS_HREDRAW | CS_VREDRAW;         <span class="comment">// What these two values do is tell Windows to redraw the window if it is moved vertically or horizontally.</span></div><div class="line">    wc.lpfnWndProc = WindowProc;                <span class="comment">// "lpfnWndProc" tells the window class what function to use ("WindowProc()") when it gets a message from Windows</span></div><div class="line">    wc.hInstance = hInstance;                   <span class="comment">// a handle to a copy of our application</span></div><div class="line">    wc.hCursor = LoadCursor(<span class="literal">NULL</span>, IDC_ARROW);   <span class="comment">// stores the default mouse image for the window class</span></div><div class="line">    wc.hbrBackground = (HBRUSH)COLOR_WINDOW;    <span class="comment">// contains the "brush" (is used to indicate the color of the background) that will be used to color the background of our window. </span></div><div class="line">    wc.lpszClassName = <span class="string">L"WindowClass1"</span>;         <span class="comment">// the name of the window class we are building. The 'L' that appears before the string, simply tells the compiler that this string should be made of 16-bit Unicode characters, rather than the usual 8-bit ANSI characters.</span></div><div class="line"></div><div class="line">    RegisterClassEx(&amp;wc);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">HWND <span class="title">createWindow</span><span class="params">(HINSTANCE hInstance)</span> </span>&#123;</div><div class="line">    RECT wr = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">500</span>, <span class="number">400</span> &#125;;                               <span class="comment">// left, top, right, bottom</span></div><div class="line">    AdjustWindowRect(&amp;wr, WS_OVERLAPPEDWINDOW, FALSE);          <span class="comment">// adjust the size, client size is 500 * 400</span></div><div class="line"></div><div class="line">    <span class="comment">// the handle for the window, filled by a function</span></div><div class="line">    HWND hWnd = CreateWindowEx(<span class="literal">NULL</span>,</div><div class="line">                               <span class="string">L"WindowClass1"</span>,                 <span class="comment">// name of the window class</span></div><div class="line">                               <span class="string">L"Our First Windowed Program"</span>,   <span class="comment">// title of the window</span></div><div class="line">                               WS_OVERLAPPEDWINDOW,             <span class="comment">// window style</span></div><div class="line">                               <span class="number">300</span>,                             <span class="comment">// x-position of the window</span></div><div class="line">                               <span class="number">300</span>,                             <span class="comment">// y-position of the window</span></div><div class="line">                               wr.right - wr.left,              <span class="comment">// width of the window</span></div><div class="line">                               wr.bottom - wr.top,              <span class="comment">// height of the window</span></div><div class="line">                               <span class="literal">NULL</span>,                            <span class="comment">// we have no parent window, NULL</span></div><div class="line">                               <span class="literal">NULL</span>,                            <span class="comment">// we aren't using menus, NULL</span></div><div class="line">                               hInstance,                       <span class="comment">// application handle</span></div><div class="line">                               <span class="literal">NULL</span>);                           <span class="comment">// used with multiple windows, NULL</span></div><div class="line">    <span class="keyword">return</span> hWnd;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">showWindow</span><span class="params">(HWND hWnd, <span class="keyword">int</span> nCmdShow)</span> </span>&#123;</div><div class="line">    ShowWindow(hWnd, nCmdShow);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**************************************************************************</span></div><div class="line">* main entry</div><div class="line">*/</div><div class="line"><span class="comment">// the entry point for any Windows program</span></div><div class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hInstance,</span></span></div><div class="line">                   HINSTANCE hPrevInstance,</div><div class="line">                   LPSTR lpCmdLine,</div><div class="line">                   <span class="keyword">int</span> nShowCmd) &#123;</div><div class="line">    createAndShowWindow(hInstance, nShowCmd);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// the main message handler for the program</span></div><div class="line"><span class="function">LRESULT CALLBACK <span class="title">WindowProc</span><span class="params">(HWND hWnd,</span></span></div><div class="line">                            UINT message,</div><div class="line">                            WPARAM wParam,</div><div class="line">                            LPARAM lParam) &#123;</div><div class="line">    <span class="comment">// sort through and find what code to run for the message given</span></div><div class="line">    <span class="keyword">switch</span> (message) &#123;</div><div class="line">    <span class="keyword">case</span> WM_DESTROY: &#123;  <span class="comment">// this message is read when the window is closed</span></div><div class="line">        <span class="comment">// close the application entirely</span></div><div class="line">        PostQuitMessage(<span class="number">0</span>);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Handle any messages the switch statement didn't</span></div><div class="line">    <span class="keyword">return</span> DefWindowProc(hWnd, message, wParam, lParam);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行后显示：</p>
+<p><img src="/images/directx11/init_window/init_window.png" alt=""></p>
+<hr>
+<p>#参考资料</p>
+<ul>
+<li><a href="http://www.directxtutorial.com/Lesson.aspx?lessonid=11-1-2" target="_blank" rel="external">Lesson 2: A Primer of Basic Windows</a></li>
+<li><a href="http://www.directxtutorial.com/Lesson.aspx?lessonid=11-1-3" target="_blank" rel="external">Lesson 3: Creating a Window</a></li>
+<li><a href="http://www.directxtutorial.com/Lesson.aspx?lessonid=11-1-4" target="_blank" rel="external">Lesson 4: Window Size and Client Size</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/bb384843.aspx" target="_blank" rel="external">Walkthrough: Creating Windows Desktop Applications (C++)</a></li>
+</ul>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/version-control/create-a-private-repo-on-Bitbucket/">在 Bitbucket 创建私人项目仓库</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/directx11/frequently-used-windows-api/">DirectX 11 编程：常用 Windows API</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>

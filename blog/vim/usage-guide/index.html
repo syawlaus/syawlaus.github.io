@@ -1,0 +1,1040 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+
+
+  <meta name="keywords" content="Hexo, next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/iceberg.png?v=0.4.2" />
+
+
+
+
+  <title> Vim 使用指南 // syawlaus </title>
+</head>
+
+<body>
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">syawlaus</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-categories">
+        <a href="/categories">
+          <i class="menu-item-icon icon-categories"></i> <br />
+          分类
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              Vim 使用指南
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2015-12-14
+        </span>
+
+        
+          <span class="post-category">
+            &nbsp; | &nbsp; 分类于
+            
+              <a href="/categories/Vim/">Vim</a>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <p>#原则</p>
+<p><strong>Vim tutor：切记您要在使用中学习，而不是在记忆中学习。</strong></p>
+<a id="more"></a>
+<hr>
+<p>#光标移动</p>
+<p>光标上下左右移动</p>
+<pre><code>    K
+H     L
+  J
+</code></pre><p>光标移动到行首</p>
+<pre><code>0（数字 0）
+</code></pre><p>光标移动到行首首个非空白字符</p>
+<pre><code>^
+</code></pre><p>光标移动到行尾</p>
+<pre><code>$
+</code></pre><p>光标移到文件第一行</p>
+<pre><code>gg
+</code></pre><p>光标移到文件最后一行</p>
+<pre><code>G
+</code></pre><p>光标移到某一行</p>
+<pre><code>行号 + gg / 行号 + G
+</code></pre><p>查看当前行的信息</p>
+<pre><code>Ctrl-G
+</code></pre><p>单词间的光标移动</p>
+<pre><code>w       移到下个单词首，记忆：next word
+W       移到下个以 blank 分隔的单词首
+
+b       移到单词首，记忆：back to head
+B       移到以 blank 分隔的单词首
+
+e       移到单词尾，记忆：end of word
+E       移到以 blank 分隔的单词尾
+
+  cursor  ew         E W
+     |    ||         | |
+X = (name_1,vision_3); # this is a comment
+</code></pre><p>光标移到当前行上/下一个字符 <code>x</code></p>
+<pre><code>Fx / fx
+</code></pre><p>匹配光标所在括号，移到其匹配的括号</p>
+<pre><code>%
+</code></pre><p>匹配光标所在单词，移到上/下一个单词</p>
+<pre><code># / *
+</code></pre><p>向上一页</p>
+<pre><code>Ctrl-B  -- 记忆：backward page
+</code></pre><p>向上半页</p>
+<pre><code>Ctrl-U
+</code></pre><p>向下一页</p>
+<pre><code>Ctrl-F  -- 记忆：fordward page
+</code></pre><p>向下半页</p>
+<pre><code>Ctrl-D
+</code></pre><p>光标移到当前屏幕的第一行</p>
+<pre><code>H -- 记忆：highest line
+</code></pre><p>光标移到当前屏幕的中间行</p>
+<pre><code>M -- 记忆：middle line
+</code></pre><p>光标移到当前屏幕的末行</p>
+<pre><code>L -- 记忆：lowest line
+</code></pre><p>光标移到跳转列表的上一个位置（old &lt;- new）</p>
+<pre><code>Ctrl-O
+</code></pre><p>光标移到跳转列表的下一个位置（old -&gt; new）</p>
+<pre><code>Ctrl-I
+</code></pre><hr>
+<p>#Insert 模式</p>
+<p>切换为 <code>Insert 模式</code></p>
+<pre><code>i  -- 在光标前输入，记忆：insert
+I  -- 在当前行的首个非空白字符前输入（即 ^i）
+
+a  -- 在光标后输入，记忆：append
+A  -- 在当前行的行尾输入
+
+o  -- 在光标下一行行首输入
+O  -- 在光标上一行行首输入
+</code></pre><p>退出 <code>Insert 模式</code>，返回到 <code>Normal 模式</code></p>
+<pre><code>&lt;Esc&gt;
+</code></pre><p>删除并切换为 <code>Insert 模式</code></p>
+<pre><code>C / c$  -- 删除当前行光标后面的字符，并切换为 Insert 模式（即 d$a），记忆：change
+c^      -- 删除光标到行首首个非空白字符，并切换为 Insert 模式（即 d^i）
+cc      -- 删除当前行，并切换为 Insert 模式（即 ddO）
+cfx     -- 删除光标到下一个 x 字符之间的内容，并切换为 Insert 模式（即 dfxi）
+</code></pre><p>上一条补全</p>
+<pre><code>Ctrl-P  -- 记忆：previous completion
+</code></pre><p>下一条补全</p>
+<pre><code>Ctrl-N  -- 记忆：next completion
+</code></pre><hr>
+<p>#编辑（Normal 模式）</p>
+<p>删除光标所在字条</p>
+<pre><code>x
+</code></pre><p>undo</p>
+<pre><code>u
+</code></pre><p>undo 整行的修改 </p>
+<pre><code>U
+</code></pre><p>redo</p>
+<pre><code>Ctrl-R
+</code></pre><hr>
+<p>#查找/替换</p>
+<p>在当前文件中查找（自动 wrapscan，除非 wrapscan 被复位）</p>
+<pre><code>/key   -- 往下查找
+?key   -- 往上查找
+</code></pre><p>仅在本次查找忽略大小写</p>
+<pre><code>/key\c
+</code></pre><p>查看下一个查找结果</p>
+<pre><code>n   -- 正向查看（与 / 或 ? 查找方向一致），记忆：next
+N   -- 反向查看（与 / 或 ? 查找方向相反）
+</code></pre><p>查找结果移除高亮显示</p>
+<pre><code>:nohls  -- 记忆：no highlight search
+</code></pre><p>替换当前行第一个 old 为 new</p>
+<pre><code>:s/old/new  -- 记忆：search
+</code></pre><p>替换当前行全部 old 为 new</p>
+<pre><code>:s/old/new/g  -- 记忆：global
+</code></pre><p>替换两行之间全部 old 为 new</p>
+<pre><code>:#,#s/old/new/g  -- #指行号，:3,10s/old/new/g 即替换第 3~10 行之间全部 old 为 new
+</code></pre><p>替换整个文件全部 old 为 new</p>
+<pre><code>:%s/old/new/g
+</code></pre><p>替换整个文件全部 old 为 new，且替换前会询问用户（y/n）</p>
+<pre><code>:%s/old/new/gc  -- 记忆：global confirm
+</code></pre><p>替换光标所在字符</p>
+<pre><code>r -- 按下 r 后输入新字符，记忆：replace
+</code></pre><p>进入/退出替换模式</p>
+<pre><code>R / &lt;Esc&gt;
+</code></pre><hr>
+<p>#复制/剪切/粘贴</p>
+<p>删除当前行</p>
+<pre><code>dd
+</code></pre><p>删除 N 行（向下删除）</p>
+<pre><code>Ndd
+</code></pre><p>从光标处删除至当前单词尾</p>
+<pre><code>de  -- 记忆：delete to word end
+</code></pre><p>删除光标所在单词</p>
+<pre><code>daw  -- 记忆：delete a word
+</code></pre><p>删除 () 块</p>
+<pre><code>dab  -- 记忆：delete a block
+</code></pre><p>删除 () 块里面的内容</p>
+<pre><code>dib  -- 记忆：delete inner block
+</code></pre><p>删除 {} 块</p>
+<pre><code>daB  -- 记忆：delete a Block
+</code></pre><p>删除 {} 块里面的内容</p>
+<pre><code>diB  -- 记忆：delete inner Block
+</code></pre><p>复制</p>
+<pre><code>y  -- 先按 v 进入 Visual 模式，HJKL 选择文字区域后按 y 复制，记忆：copy
+</code></pre><p>复制当前行</p>
+<pre><code>yy
+</code></pre><p>粘贴</p>
+<pre><code>p  -- Normal 模式下使用，记忆：paste
+</code></pre><p>注意：<code>d</code> 命令都可以用 <code>c</code> 命令代替，而且执行后还切换到 <code>Insert 模式</code></p>
+<hr>
+<p>#Visual 模式</p>
+<p>切换至 <code>Visual 模式</code></p>
+<pre><code>v
+</code></pre><p>退出 <code>Visual 模式</code></p>
+<pre><code>&lt;Esc&gt;
+</code></pre><p>可视行（<code>Visual line</code>）</p>
+<pre><code>V
+</code></pre><p>可视块（<code>Visual block</code>）</p>
+<pre><code>Ctrl-V
+</code></pre><hr>
+<p>#存档/退出</p>
+<p>写入文件 / 强制写入文件</p>
+<pre><code>:w / :w! -- 记忆：write
+</code></pre><p>退出 Vim 或 <code>help</code> / 强制退出 Vim 或 <code>help</code>（且不写入）</p>
+<pre><code>:q / :q! -- 记忆：quit
+</code></pre><p>写入文件并退出 Vim</p>
+<pre><code>:wq
+或
+:x
+</code></pre><hr>
+<p>#分屏</p>
+<p>上下分屏</p>
+<pre><code>Ctrl-W S        -- 上下分屏，记忆：split
+或
+:sp [fileName]  -- 不加 fileName 是当前文件分屏，加 fileName 是不同文件分屏
+</code></pre><p>左右分屏</p>
+<pre><code>Ctrl-W V         -- 左右分屏，记忆：vertical split
+或
+:vsp [fileName]  -- 同 :sp [fileName]）
+</code></pre><p>切换分屏</p>
+<pre><code>Ctrl-W HJKL  -- 光标移到左下右上的分屏
+</code></pre><p>关闭分屏</p>
+<pre><code>Ctrl-W C  -- 关闭光标所在分屏，记忆：close
+Ctrl-W Q  -- 关闭光标所在分屏，如果只剩最后一个分屏，则退出 Vim
+</code></pre><p>调整分屏尺寸</p>
+<pre><code>Ctrl-W =  -- 让所有分屏高度一样
+Ctrl-W +  -- 增加高度
+Ctrl-W -  -- 减小高度
+</code></pre><p>互换分屏位置</p>
+<pre><code>Ctrl-W L
+Ctrl-W R
+</code></pre><hr>
+<p>#宏</p>
+<p>录制一个宏 a 并保存到寄存器中</p>
+<pre><code>qa
+</code></pre><p>停止录制宏</p>
+<pre><code>q
+</code></pre><p>播放宏 a</p>
+<pre><code>@a
+</code></pre><hr>
+<p>#其它操作</p>
+<p>进入 <code>help</code></p>
+<pre><code>:help
+</code></pre><p>查看某命令的 <code>help</code></p>
+<pre><code>:help cmd
+</code></pre><p>补全命令</p>
+<pre><code>输入:命令时，Ctrl-D 可查看可能的补全结果
+</code></pre><p>返回 <code>Normal 模式</code> / 在 <code>Normal 模式</code> 下取消当前未输入完的命令</p>
+<pre><code>&lt;Esc&gt;
+</code></pre><p>Vim 所有删除操作，删除后都复制到剪贴板（即剪切）</p>
+<p><code>y</code> 是操作符，可 <code>number + ope</code> 结合使用，如 <code>y2aw</code> <code>2yaw</code> 就是复制两个单词</p>
+<pre><code>operator [number] motion
+[number] operator motion
+</code></pre><p>执行上一条命令</p>
+<pre><code>.
+</code></pre><hr>
+<p>#教程图</p>
+<p><img src="/images/vim/usage-guide/lession 1 - basic editing.gif" alt=""><br><img src="/images/vim/usage-guide/lession 2 - operators &amp; repetition.gif" alt=""><br><img src="/images/vim/usage-guide/lession 3 - yank &amp; paste.gif" alt=""><br><img src="/images/vim/usage-guide/lession 4 - searching.gif" alt=""><br><img src="/images/vim/usage-guide/lession 5 - marks &amp; macros.gif" alt=""><br><img src="/images/vim/usage-guide/lession 6 - various motions.gif" alt=""><br><img src="/images/vim/usage-guide/lession 7 - various commands.gif" alt=""><br><img src="/images/vim/usage-guide/Vim-Cheat-Sheet-for-Programmers.png" alt=""></p>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/json/learning-json/">学习 JSON</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/vim/easymotion/">Vim 插件之 EasyMotion</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="/iceberg.png" alt="syawlaus" />
+          <p class="site-author-name">syawlaus</p>
+        </div>
+        <p class="site-description motion-element"></p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp; 
+  2017
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">syawlaus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+</body>
+</html>
