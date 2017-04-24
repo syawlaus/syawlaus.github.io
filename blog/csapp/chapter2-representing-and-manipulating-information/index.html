@@ -154,12 +154,12 @@
 <p>In isolation, a single bit is not very useful. When we group bits together and apply some <em>interpretation</em> that gives meaning to the different possible bit patterns, however, we can represent the elements of any finite set.</p>
 </blockquote>
 <p>现代计算机保存和处理的信息，其实都是一组 01 电信号。显然，单个电信号位只能表示两个值，用处不大，组合多个电信号，每种组合表示一种信息。对于多种组合，对其进行不同的<em>解析（interpretation）</em>，可以表示多种不同的信息。</p>
-<p>数据在计算机中都以二进制 01 串表示，不同的编码（encoding）／解析方式（interpretation）能表示／读取不同类型的数据，如整数、浮点数、字符、字符串、可执行文件等。</p>
+<p>数据在计算机中都以二进制 01 串表示，不同的编码（encoding）能表示不同类型的数据，不同的解析方式（interpretation）读取不同类型的数据，如整数、浮点数、字符、字符串、可执行文件等。</p>
 <blockquote>
 <p>Computer representations use a limited number of bits to encode a number and hence some operations can <em>overflow</em> when the results are too large to be represented.</p>
 </blockquote>
 <p>对于 32 位设备，总共可以表示 2<sup>32</sup> 种信息。但如果信息总量超过了 2<sup>32</sup> 种，则 32 位设备无法一一对应表示这么多信息，就会<em>溢出（overflow）</em>。</p>
-<p>注：为了方便阐述，以下我默认机器都是 32 位。</p>
+<p>注：为了方便阐述，以下默认机器都是 32 位。</p>
 <blockquote>
 <p>Floating-point arithmetic is not associative, due to the finite precision of the representation. For example, the C expression (3.14+1e20)-1e20 will evaluate to 0.0 on most machines, while 3.14+(1e20-1e20) will evaluate to 3.14. The different mathematical properties of integer vs. floating-point arithmetic stem from the difference in how they handle the finiteness of their representations - integer representations can encode a comparatively small range of values, but do so precisely, while floating-point representations can encode a wide range of values, but only approximately.</p>
 </blockquote>
@@ -168,10 +168,10 @@
 <blockquote>
 <p>Rather than accessing individual bits in memory, most computers use blocks of eight bits, or <em>bytes</em>, as the smallest addressable unit of memory. A machine-level program views memory as a very large array of bytes, referred to as <em>virtual memory</em>. Every byte of memory is identified by a unique number, known as its <em>address</em>, and the set of all possible addresses is known as the <em>virtual address space</em>.</p>
 </blockquote>
-<p>大多数计算机使用 8 位二进制组合而成的<em>字节（byte）</em>来表示一块信息，并作为最小的可寻址单位，即存储器每个地址表示的数据都是一个字节，而不是一个位。具象地理解，就像街上每间店铺都有一个门牌号。</p>
+<p>大多数计算机使用 8 位二进制组合而成的<em>字节（byte）</em>来表示一块信息，并作为最小的可寻址单位，即存储器每个地址表示的数据都是一个字节，而不是一个位。具象地理解，就像街上每间店铺都有一个门牌号，店铺 = 每个字节，门牌号 = 每个字节对应的虚拟地址。</p>
 <blockquote>
 <p>In subsequent chapters, we will cover how the compiler and run-time system partitions this memory space into more manageable units to store the different <em>program objects</em>, that is, program data, instructions, and control information. Various mechanisms are used to allocate and manage the storage for different parts of the program. This management is all performed within the virtual address space.</p>
-<p>Although the C compiler maintains pointer type information, the actual machine-level program it generates has no information about data types. It simply treats each program bject as a block of bytes, and the program itself as a sequence of bytes.</p>
+<p>Although the C compiler maintains pointer type information, the actual machine-level program it generates has no information about data types. It simply treats each program object as a block of bytes, and the program itself as a sequence of bytes.</p>
 </blockquote>
 <h2 id="十六进制表示法"><a href="#十六进制表示法" class="headerlink" title="十六进制表示法"></a>十六进制表示法</h2><p>由于二进制表示过于冗长，所以使用十六进制来表示。每个十六进制位，能表示 4 个二进制位的所有组合（16 = 2<sup>4</sup>）。两个十六进制位能表示一个字节。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.2.png" alt=""></p>
@@ -179,14 +179,14 @@
 <p>Every computer has a <em>word size</em>, indicating the nominal size of integer and pointer data. Since a virtual address is encoded by such a word, the most important system parameter determined by the word size is the maximum size of the virtual address space. That is, for a machine with a w-bit word size, the virtual addresses can range from 0 to 2<sup>w</sup>-1, giving the program access to at most 2<sup>w</sup> bytes.</p>
 </blockquote>
 <h2 id="字"><a href="#字" class="headerlink" title="字"></a>字</h2><p>计算机的<em>字长</em>（word-size），表示单个整数或指针数据所占内存大小。</p>
-<p>我对 <em>word</em> 的理解是，操作系统对内存的解析（interpret）和使用的最小单位。比如在 32 位设备上，一个 word 就是 32 位，设备能访问的虚拟地址最大为 2<sup>32</sup>。</p>
+<p>我对 <em>word</em> 的理解是，操作系统对内存的解析（interpret）和使用的最小单位。比如在 32 位设备上，一个 word 就是 32 位，设备能访问的虚拟地址的范围是 0 到 2<sup>32</sup>-1。</p>
 <h2 id="数据大小"><a href="#数据大小" class="headerlink" title="数据大小"></a>数据大小</h2><p><img src="/images/csapp/chapter2-representing-and-manipulating-information/Figure-2.3.png" alt=""></p>
 <blockquote>
 <p>A “long” integer uses the full word size of the machine. A pointer also uses the full word size of the machine.</p>
 <p>One aspect of program portability is to make the program insensitive to the exact sizes of the different data types.</p>
 </blockquote>
 <h2 id="寻址和字节序"><a href="#寻址和字节序" class="headerlink" title="寻址和字节序"></a>寻址和字节序</h2><blockquote>
-<p>For program objects that span multiple bytes, we must establish two conventions: what the address of the object will be, and how we will order the bytes in memory (Big endian / Little endian).</p>
+<p>For program objects that span multiple bytes, we must establish two conventions: what the address of the object will be, and how we will order the bytes in memory (Big endian /  Little endian).</p>
 </blockquote>
 <p>对于多字节对象，不同设备可能使用不同的字节排列方式，Big endian 是最高有效字节排在前面，Little endian 是最高有效字节排在后面。</p>
 <p><img src="/images/csapp/chapter2-representing-and-manipulating-information/byte-orderings.png" alt=""></p>
@@ -235,7 +235,7 @@
 <li><code>&gt;&gt;</code> 逻辑右移，在高位补 0。</li>
 <li><code>&gt;&gt;</code> 算术右移，在高位补原最高位的值。</li>
 </ul>
-<p>如果对于 w 位数据，移位 k &gt; w 怎么办？一般做法是移动 k mod w 位。</p>
+<p>如果对于 w 位数据，移 k &gt; w 位怎么办？一般做法是移动 k mod w 位。</p>
 <blockquote>
 <p>The C standard do not precisely define which type of right shift should be used. For unsigned data (i.e., integral objects declared with the qualifier <em>unsigned</em>), right shifts must be logical. For signed data (the default), either arithmetic or logical shifts may be used. This unfortunately means that any code assuming one form or the other will potentially encounter portability problems. In practice, however, almost all compiler/machine combinations use arithmetic right shifts for signed data, and many programmers assume this to be the case.</p>
 <p>Java, on the other hand, has a precise definition of how right shifts should be performed. The expression x &gt;&gt; k shifts x arithmetically by k positions, while x &gt;&gt;&gt; k shifts it logically.</p>
@@ -244,7 +244,7 @@
 <h1 id="整数表示"><a href="#整数表示" class="headerlink" title="整数表示"></a>整数表示</h1><p>对于数的表示，可分为无符号数（unsigned numbers）和有符号数（signed numbers）。</p>
 <ul>
 <li>对于无符号整数（unsigned integers），其二进制 01 串里每一位都是数位。</li>
-<li>对于有符号整数（signed integers），其二进制 01 串里，最高位是符号权位，其它的是数位。<ul>
+<li>对于有符号整数（signed integers），其二进制 01 串里，最高位是符号位，其它的是数位。<ul>
 <li>有符号数共有三种表示法：补码（Two’s Complement）／反码（Ones’ Complement）／原码（Sign-Magnitude）。</li>
 </ul>
 </li>
@@ -378,7 +378,8 @@
 <p>As we have seen, the “integer” arithmetic performed by computers is really a form of modular arithmetic.</p>
 <p>We have especially seen that the <em>unsigned</em> data type, while conceptually straightforward, can lead to behaviors that even experienced programmers do not expect.</p>
 </blockquote>
-
+<hr>
+<h1 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h1>
       
     </div>
 
@@ -452,14 +453,14 @@
         <div class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-count">113</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">17</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
@@ -490,7 +491,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#信息存储"><span class="nav-number">1.</span> <span class="nav-text">信息存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#十六进制表示法"><span class="nav-number">1.1.</span> <span class="nav-text">十六进制表示法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字"><span class="nav-number">1.2.</span> <span class="nav-text">字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据大小"><span class="nav-number">1.3.</span> <span class="nav-text">数据大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻址和字节序"><span class="nav-number">1.4.</span> <span class="nav-text">寻址和字节序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串表示"><span class="nav-number">1.5.</span> <span class="nav-text">字符串表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码表示"><span class="nav-number">1.6.</span> <span class="nav-text">代码表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布尔代数"><span class="nav-number">1.7.</span> <span class="nav-text">布尔代数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言的逻辑操作"><span class="nav-number">1.8.</span> <span class="nav-text">C 语言的逻辑操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言中移位操作"><span class="nav-number">1.9.</span> <span class="nav-text">C 语言中移位操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整数表示"><span class="nav-number">2.</span> <span class="nav-text">整数表示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整数的数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">整数的数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号整数编码"><span class="nav-number">2.2.</span> <span class="nav-text">无符号整数编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有符号整数的补码编码"><span class="nav-number">2.3.</span> <span class="nav-text">有符号整数的补码编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有符号-无符号整数之间的转换"><span class="nav-number">2.4.</span> <span class="nav-text">有符号/无符号整数之间的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言中的有符号-符号整数"><span class="nav-number">2.5.</span> <span class="nav-text">C 语言中的有符号/符号整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展一个数字的位表示"><span class="nav-number">2.6.</span> <span class="nav-text">扩展一个数字的位表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#截断数字"><span class="nav-number">2.7.</span> <span class="nav-text">截断数字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整数运算"><span class="nav-number">3.</span> <span class="nav-text">整数运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号加法"><span class="nav-number">3.1.</span> <span class="nav-text">无符号加法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码加法"><span class="nav-number">3.2.</span> <span class="nav-text">补码加法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码取反"><span class="nav-number">3.3.</span> <span class="nav-text">补码取反</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号乘法"><span class="nav-number">3.4.</span> <span class="nav-text">无符号乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码乘法"><span class="nav-number">3.5.</span> <span class="nav-text">补码乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乘以常数"><span class="nav-number">3.6.</span> <span class="nav-text">乘以常数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#除以-2-的幂"><span class="nav-number">3.7.</span> <span class="nav-text">除以 2 的幂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于整数运算的最后思考"><span class="nav-number">3.8.</span> <span class="nav-text">关于整数运算的最后思考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#信息存储"><span class="nav-number">1.</span> <span class="nav-text">信息存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#十六进制表示法"><span class="nav-number">1.1.</span> <span class="nav-text">十六进制表示法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字"><span class="nav-number">1.2.</span> <span class="nav-text">字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据大小"><span class="nav-number">1.3.</span> <span class="nav-text">数据大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻址和字节序"><span class="nav-number">1.4.</span> <span class="nav-text">寻址和字节序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串表示"><span class="nav-number">1.5.</span> <span class="nav-text">字符串表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码表示"><span class="nav-number">1.6.</span> <span class="nav-text">代码表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布尔代数"><span class="nav-number">1.7.</span> <span class="nav-text">布尔代数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言的逻辑操作"><span class="nav-number">1.8.</span> <span class="nav-text">C 语言的逻辑操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言中移位操作"><span class="nav-number">1.9.</span> <span class="nav-text">C 语言中移位操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整数表示"><span class="nav-number">2.</span> <span class="nav-text">整数表示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整数的数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">整数的数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号整数编码"><span class="nav-number">2.2.</span> <span class="nav-text">无符号整数编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有符号整数的补码编码"><span class="nav-number">2.3.</span> <span class="nav-text">有符号整数的补码编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有符号-无符号整数之间的转换"><span class="nav-number">2.4.</span> <span class="nav-text">有符号/无符号整数之间的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-语言中的有符号-符号整数"><span class="nav-number">2.5.</span> <span class="nav-text">C 语言中的有符号/符号整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展一个数字的位表示"><span class="nav-number">2.6.</span> <span class="nav-text">扩展一个数字的位表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#截断数字"><span class="nav-number">2.7.</span> <span class="nav-text">截断数字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整数运算"><span class="nav-number">3.</span> <span class="nav-text">整数运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号加法"><span class="nav-number">3.1.</span> <span class="nav-text">无符号加法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码加法"><span class="nav-number">3.2.</span> <span class="nav-text">补码加法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码取反"><span class="nav-number">3.3.</span> <span class="nav-text">补码取反</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无符号乘法"><span class="nav-number">3.4.</span> <span class="nav-text">无符号乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补码乘法"><span class="nav-number">3.5.</span> <span class="nav-text">补码乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乘以常数"><span class="nav-number">3.6.</span> <span class="nav-text">乘以常数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#除以-2-的幂"><span class="nav-number">3.7.</span> <span class="nav-text">除以 2 的幂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于整数运算的最后思考"><span class="nav-number">3.8.</span> <span class="nav-text">关于整数运算的最后思考</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浮点数"><span class="nav-number">4.</span> <span class="nav-text">浮点数</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
